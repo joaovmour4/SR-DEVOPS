@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb')
 const userSchema = require('../schemas/userSchema')
+const passwordHash = require('../services/passwordHash')
 
 module.exports = class userController{
     static async newUser(req, res){
@@ -7,9 +8,9 @@ module.exports = class userController{
             const {userName, userPassword} = req.body
 
             const userData = {
+                _id: new ObjectId(),
                 userName:userName,
-                userPassword:userPassword,
-                _id: new ObjectId()
+                userPassword: await passwordHash(userPassword)
             }
 
             const createdUser = await userSchema.create(userData)
@@ -21,15 +22,34 @@ module.exports = class userController{
         }
     }
 
-    static async getUser(req, res){
+    static async getUsers(req, res){
         try{
-            const {id} = req.params
-
-            const user = await userSchema.findById(id)
+            const user = await userSchema.find()
 
             return res.status(200).json({message: user})
         }
         catch(error){
+            return res.status(400).json({message: error.message})
+        }
+    }
+
+    static async loginUser(req, res){
+        try{
+            const {userName, userPassword} = req.body
+
+            const userData = {
+                userName: userName,
+                userPassword: await passwordHash(userPassword)
+            }
+
+            const userBD = await userSchema.find({userName:userName})
+
+            if(userBD.userName === userData.userName && userBD.userPassword === userData.userPassword){
+                return res.status(200).json({message: 'Login efetuado com sucesso', userBD})
+            }else{
+                return res.status(300).json({message: 'Usuário ou senha incorretos.'})
+            }
+        }catch(error){
             return res.status(400).json({message: error.message})
         }
     }
