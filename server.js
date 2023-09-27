@@ -12,7 +12,7 @@ const userRoutes = require('./routes/userRoutes')
 app.use('/user', userRoutes)
 
 mongoose.set('strictQuery', false)
-const mongodb = 'mongodb://127.0.0.1:27017/'
+const mongodb = 'mongodb://mongo:27017/'
 
 main().catch((err)=>console.log(err))
 
