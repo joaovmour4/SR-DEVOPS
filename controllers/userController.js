@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb')
 const userSchema = require('../schemas/userSchema')
 const passwordHash = require('../services/passwordHash')
+const passwordCompare = require('../services/passwordCompare')
 
 module.exports = class userController{
     static async newUser(req, res){
@@ -37,17 +38,14 @@ module.exports = class userController{
         try{
             const {userName, userPassword} = req.body
 
-            const userData = {
-                userName: userName,
-                userPassword: await passwordHash(userPassword)
-            }
-
             const userBD = await userSchema.find({userName:userName})
 
-            if(userBD.userName === userData.userName && userBD.userPassword === userData.userPassword){
+            const compare = await passwordCompare(userPassword, userBD.userPassword)
+
+            if(compare){
                 return res.status(200).json({message: 'Login efetuado com sucesso', userBD})
             }else{
-                return res.status(300).json({message: 'Usuário ou senha incorretos.'})
+                return res.status(300).json({message: 'Usuário ou senha incorretos.', compare})
             }
         }catch(error){
             return res.status(400).json({message: error.message})
