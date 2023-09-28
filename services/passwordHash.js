@@ -1,8 +1,12 @@
 const bcrypt = require('bcrypt')
 
-function passwordHash(password){
-    const hash = bcrypt.hash(password.toString(), 10)
-    return hash
+async function passwordHash(password){
+    bcrypt.hash(password.toString(), 10, (err, hash)=>{
+        if(err){
+            throw new Error(err)
+        }
+        return hash
+    })
 }
 
 module.exports = passwordHash
