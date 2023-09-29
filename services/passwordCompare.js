@@ -1,12 +1,11 @@
 const bcrypt = require('bcrypt')
 
 async function passwordCompare(plainPassword, hashPassword){
-    bcrypt.compare(plainPassword, hashPassword, (err, res)=>{
-        if(err)
-            throw new Error(err)
-
-        return res
-    })
+    if(hashPassword){
+        compare = bcrypt.compare(plainPassword, hashPassword)
+        return compare
+    }else
+        return false
 }
 
 module.exports = passwordCompare

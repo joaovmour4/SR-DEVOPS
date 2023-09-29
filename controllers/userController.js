@@ -39,14 +39,16 @@ module.exports = class userController{
             const {userName, userPassword} = req.body
 
             const userBD = await userSchema.find({userName:userName})
-            const data = JSON.parse(userBD)
+            if(userBD.length === 0)
+                return res.status(401).json({message: 'Usuário não encontrado.'})
 
-            const compare = await passwordCompare(userPassword, data.userPassword)
+            const compare = await passwordCompare(userPassword, userBD[0].userPassword)
+
 
             if(compare){
-                return res.status(200).json({message: 'Login efetuado com sucesso.', compare})
+                return res.status(200).json({message: 'Login efetuado com sucesso.'})
             }else{
-                return res.status(300).json({message: 'Usuário ou senha incorretos.'})
+                return res.status(401).json({message: 'Usuário ou senha incorretos.'})
             }
         }catch(error){
             return res.status(400).json({message: error.message})
