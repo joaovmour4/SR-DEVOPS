@@ -63,7 +63,7 @@ module.exports = class userController{
             if(user){
                 const userDelete = await userSchema.deleteOne({_id:_id})
                 if(userDelete.deletedCount !== 0){
-                    return res.status(200).json({message:'O usuário foi deletado com sucesso.', userDelete})
+                    return res.status(200).json({message:'O usuário foi deletado com sucesso.'})
                 }else{
                     return res.status(400).json({message: 'Não foi possivel deletar o usuário.'})
                 }
