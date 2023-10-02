@@ -93,6 +93,13 @@ module.exports = class userController{
 
     static async updateUser(req, res){
         try{
+            const token = req.headers['authorization']
+            const authToken = await verifyJWT(token)
+
+            if(!authToken.auth)
+                return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+
+
             const {userName, userPassword} = req.body
 
             const userNewData = {
