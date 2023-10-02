@@ -2,16 +2,20 @@ const { ObjectId } = require('mongodb')
 const userSchema = require('../schemas/userSchema')
 const passwordHash = require('../services/passwordHash')
 const passwordCompare = require('../services/passwordCompare')
+const jwtAuth = require('../services/jwtAuth')
+const verifyJWT = require('../services/verifyJWT')
 
 module.exports = class userController{
     static async newUser(req, res){
         try{
-            const {userName, userPassword} = req.body
+            const {userName, userEmail, userPassword} = req.body
 
             const userData = {
                 _id: new ObjectId(),
                 userName:userName,
-                userPassword: await passwordHash(userPassword)
+                userEmail: userEmail,
+                userPassword: await passwordHash(userPassword),
+                userSubsidio: false
             }
 
             const createdUser = await userSchema.create(userData)
@@ -25,6 +29,12 @@ module.exports = class userController{
 
     static async getUsers(req, res){
         try{
+            const token = req.headers['authorization']
+            const authToken = await verifyJWT(token)
+
+            if(!authToken.auth)
+                return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+
             const user = await userSchema.find()
 
             return res.status(200).json({message: user})
@@ -46,7 +56,8 @@ module.exports = class userController{
 
 
             if(compare){
-                return res.status(200).json({message: 'Login efetuado com sucesso.'})
+                const jwtToken = await jwtAuth(userBD[0]._id)
+                return res.status(200).json({message: 'Login efetuado com sucesso.', jwtToken})
             }else{
                 return res.status(401).json({message: 'Usuário ou senha incorretos.'})
             }
@@ -57,13 +68,19 @@ module.exports = class userController{
 
     static async deleteUser(req, res){
         try{
+            const token = req.headers['authorization']
+            const authToken = await verifyJWT(token)
+
+            if(!authToken.auth)
+                return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+
             const {_id} = req.body
             const user = await userSchema.find({_id:_id})
 
             if(user){
                 const userDelete = await userSchema.deleteOne({_id:_id})
                 if(userDelete.deletedCount !== 0){
-                    return res.status(200).json({message:'O usuário foi deletado com sucesso.'})
+                    return res.status(200).json({message: 'O usuário foi deletado com sucesso.'})
                 }else{
                     return res.status(400).json({message: 'Não foi possivel deletar o usuário.'})
                 }
