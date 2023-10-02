@@ -73,4 +73,21 @@ module.exports = class userController{
             return res.status(400).json({message: error})
         }
     }
+
+    static async updateUser(req, res){
+        try{
+            const {userName, userPassword} = req.body
+
+            const userNewData = {
+                userName: userName,
+                userPassword: await passwordHash(userPassword)
+            }
+            const updateUser = await userSchema.updateOne(userNewData)
+
+            return res.status(200).json({message: 'Dados do usuário atualizados com sucesso.', updateUser})
+        }   
+        catch(error){
+            return res.status(400).json({message: error.message})
+        }
+    }
 }   
