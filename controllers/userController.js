@@ -54,4 +54,23 @@ module.exports = class userController{
             return res.status(400).json({message: error.message})
         }
     }
-}
+
+    static async deleteUser(req, res){
+        try{
+            const {_id} = req.body
+            const user = await userSchema.find({_id:_id})
+
+            if(user){
+                const userDelete = await userSchema.deleteOne({_id:_id})
+                if(userDelete.deletedCount !== 0){
+                    return res.status(200).json({message:'O usuário foi deletado com sucesso.', userDelete})
+                }else{
+                    return res.status(400).json({message: 'Não foi possivel deletar o usuário.'})
+                }
+            }
+        }
+        catch(error){
+            return res.status(400).json({message: error})
+        }
+    }
+}   

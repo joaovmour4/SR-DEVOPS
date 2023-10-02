@@ -13,8 +13,8 @@ app.use('/user', userRoutes)
 
 mongoose.set('strictQuery', false)
 // Conexão via docker
-const mongodb = 'mongodb://mongo:27017/' 
-// const mongodb = 'mongodb://localhost:27017/' 
+//const mongodb = 'mongodb://mongo:27017/' 
+const mongodb = 'mongodb://127.0.0.1:27017' 
 
 main().catch((err)=>console.log(err))
 
