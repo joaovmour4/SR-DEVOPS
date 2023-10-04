@@ -57,6 +57,28 @@ jobs:
       - name: Execute njsscan
         run: njsscan .
 
+  dast-stackhawk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: create env file
+        run: |
+          touch .env
+
+      - name: start containers
+        run: docker-compose up -d
+
+      - name: scan my app
+        uses: stackhawk/hawkscan-action@v1.3.0
+        with:
+          apiKey: ${{ secrets.HAWK_API_KEY }}
+          environmentVariables: HAWK_SCAN_USERNAME HAWK_APPLICATION_ID HAWK_SCAN_PASSWORD
+        env:
+          HAWK_SCAN_USERNAME: ${{ secrets.HAWK_SCAN_USERNAME }}
+          HAWK_APPLICATION_ID: ${{ secrets.HAWK_APPLICATION_ID }}
+          HAWK_SCAN_PASSWORD: ${{ secrets.HAWK_SCAN_PASSWORD }}
 
   build-and-push:
     needs: [sast-check_dependencies, sast-njsscan]
