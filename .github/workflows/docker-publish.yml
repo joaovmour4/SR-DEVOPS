@@ -38,9 +38,9 @@ jobs:
 
       - name: snyk scan for lib vulnerabilities (SAST)
         run: sudo snyk test 
-        
-  build-and-push:
 
+  build-and-push:
+    needs: sast-check_dependencies
     runs-on: ubuntu-latest
     permissions:
       contents: read
