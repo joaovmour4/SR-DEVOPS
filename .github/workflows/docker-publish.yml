@@ -38,9 +38,28 @@ jobs:
 
       - name: snyk scan for lib vulnerabilities (SAST)
         run: sudo snyk test 
+  
+  sast-njsscan:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: njsscan (install dependencies)
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests_html njsscan
+
+      - name: Execute njsscan
+        run: njsscan .
+
 
   build-and-push:
-    needs: sast-check_dependencies
+    needs: [sast-check_dependencies, sast-njsscan]
     runs-on: ubuntu-latest
     permissions:
       contents: read
