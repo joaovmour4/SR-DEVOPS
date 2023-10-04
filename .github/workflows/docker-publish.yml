@@ -69,7 +69,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-  deploy-images:
+  deploy-images-to-production:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -97,16 +97,6 @@ jobs:
         # repository is public to avoid leaking data.  If you would like to publish
         # transparency data even for private images, pass --force to cosign below.
         # https://github.com/sigstore/cosign
-  deploy-production:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-
-    steps:
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
         env:
