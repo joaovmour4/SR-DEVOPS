@@ -81,7 +81,7 @@ jobs:
           HAWK_SCAN_PASSWORD: ${{ secrets.HAWK_SCAN_PASSWORD }}
 
   build-and-push:
-    needs: [sast-check_dependencies, sast-njsscan]
+    needs: [sast-check_dependencies, sast-njsscan, dast-stackhawk]
     runs-on: ubuntu-latest
     permissions:
       contents: read
