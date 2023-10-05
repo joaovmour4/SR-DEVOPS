@@ -163,7 +163,7 @@
                     "message": {
                       "type": "string"
                     },
-                    "schema": {
+                    "jwtToken": {
                       "type": "object",
                       "properties": {
                         "auth": {
