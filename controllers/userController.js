@@ -74,11 +74,11 @@ module.exports = class userController{
             if(!authToken.auth)
                 return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
 
-            const {_id} = req.body
-            const user = await userSchema.find({_id:_id})
+            const {id} = req.params
+            const user = await userSchema.find({_id:id})
 
             if(user){
-                const userDelete = await userSchema.deleteOne({_id:_id})
+                const userDelete = await userSchema.deleteOne({_id:id})
                 if(userDelete.deletedCount !== 0){
                     return res.status(200).json({message: 'O usuário foi deletado com sucesso.'})
                 }else{
@@ -88,6 +88,35 @@ module.exports = class userController{
         }
         catch(error){
             return res.status(400).json({message: error})
+        }
+    }
+
+    static async updateUser(req, res){
+        try{
+            const token = req.headers['authorization']
+            const authToken = await verifyJWT(token)
+
+            if(!authToken.auth)
+                return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+
+            const {id} = req.params
+
+            const {userName, userPassword} = req.body
+
+            const userNewData = {
+                userName: userName,
+                userPassword: await passwordHash(userPassword)
+            }
+            const updateUser = await userSchema.updateOne({_id:id}, userNewData)
+
+            if(updateUser.modifiedCount !== 0){
+                return res.status(200).json({message: 'Dados do usuário atualizados com sucesso.', updateUser})
+            }else{
+                return res.status(400).json({message: 'Não houve alterações nos dados', updateUser})
+            }
+        }   
+        catch(error){
+            return res.status(400).json({message: error.message})
         }
     }
 }   

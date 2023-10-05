@@ -1,0 +1,153 @@
+openapi: 3.0.1
+info:
+  title: API CRUD
+  description: API CRUD de usuários do sistema de compra de tickets do Restaurante Universitário UNIFESSPA
+  version: 0.0.1
+paths:
+  /user:
+    parameters:
+    - name: Authorization
+      in: header
+      schema:
+        type: string
+    get:
+      summary: Recupera todos os usuários cadastrados
+      responses:
+        200:
+          description: Sucesso
+          content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/User'
+    post:
+      summary: Cria um novo usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserBody'
+      responses:
+        201:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user/{id}:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: integer
+      required: true
+    - name: Authorization
+      in: header
+      schema:
+        type: string
+      required: true
+    # get:
+    #   summary: Recupera uma entidade de usuário pelo ID
+    #   responses:
+    #     200:
+    #       description: Sucesso
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/Apresentacao"
+    #     404:
+    #       description: Apresentação não encontrada
+    #       content:
+    #         application/json:
+    #           example: "NotFound"
+    delete:
+      summary: Deleta um usuário
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        404:
+          description: Usuário não encontrado
+          content:
+            application/json:
+              example: "NotFound"
+    put:
+      summary: Alterar um usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                userPassword:
+                  type: string
+      responses:
+        404:
+          description: Usuário não encontrado
+          content:
+            application/json:
+              example: "NotFound"
+  /login:
+    post:
+      summary: Realizar login de usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                userPassword:
+                  type: string
+      responses:
+        200:
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  schema:
+                    type: object
+                    properties:
+                      auth:
+                        type: boolean
+                      token:
+                        type: string
+              
+              
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        userName:
+          type: string
+        userPassword:
+          type: string
+        userEmail:
+          type: string
+        userSubsidio:
+          type: boolean
+    UserBody:
+      type: object
+      properties:
+        userName:
+          type: string
+        userPassword:
+          type: string
+        userEmail:
+          type: string
+        
+  
