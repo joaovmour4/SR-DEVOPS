@@ -29,11 +29,15 @@ module.exports = class userController{
 
     static async getUsers(req, res){
         try{
-            const token = req.headers['authorization']
-            const authToken = await verifyJWT(token)
-
-            if(!authToken.auth)
-                return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+            if(req.headers.authorization){
+                const token = req.headers.authorization.split(' ')[1]
+                const authToken = await verifyJWT(token)
+    
+                if(!authToken.auth)
+                    return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+            }else{
+                return res.status(401).json({message: 'Solicitação não autorizada'})
+            }
 
             const user = await userSchema.find()
 
@@ -68,11 +72,15 @@ module.exports = class userController{
 
     static async deleteUser(req, res){
         try{
-            const token = req.headers['authorization']
-            const authToken = await verifyJWT(token)
-
-            if(!authToken.auth)
-                return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+            if(req.headers.authorization){
+                const token = req.headers.authorization.split(' ')[1]
+                const authToken = await verifyJWT(token)
+    
+                if(!authToken.auth)
+                    return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+            }else{
+                return res.status(401).json({message: 'Solicitação não autorizada'})
+            }
 
             const {id} = req.params
             const user = await userSchema.find({_id:id})
@@ -93,11 +101,15 @@ module.exports = class userController{
 
     static async updateUser(req, res){
         try{
-            const token = req.headers['authorization']
-            const authToken = await verifyJWT(token)
-
-            if(!authToken.auth)
-                return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+            if(req.headers.authorization){
+                const token = req.headers.authorization.split(' ')[1]
+                const authToken = await verifyJWT(token)
+    
+                if(!authToken.auth)
+                    return res.status(401).json({message: 'Solicitação não autorizada, realize o login novamente.'})
+            }else{
+                return res.status(401).json({message: 'Solicitação não autorizada'})
+            }
 
             const {id} = req.params
 

@@ -7,16 +7,12 @@
   },
   "paths": {
     "/user": {
-      "parameters": [
-        {
-          "name": "Authorization",
-          "in": "header",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
       "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Recupera todos os usuários cadastrados",
         "responses": {
           "200": {
@@ -65,20 +61,17 @@
           "name": "id",
           "in": "path",
           "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "Authorization",
-          "in": "header",
-          "schema": {
             "type": "string"
           },
           "required": true
         }
       ],
       "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Deleta um usuário",
         "responses": {
           "200": {
@@ -102,6 +95,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Alterar um usuário",
         "requestBody": {
           "content": {
@@ -163,7 +161,7 @@
                     "message": {
                       "type": "string"
                     },
-                    "jwtToken": {
+                    "schema": {
                       "type": "object",
                       "properties": {
                         "auth": {
@@ -219,6 +217,18 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

@@ -5,12 +5,9 @@ info:
   version: 0.0.1
 paths:
   /user:
-    parameters:
-    - name: Authorization
-      in: header
-      schema:
-        type: string
     get:
+      security:
+        - bearerAuth: []
       summary: Recupera todos os usuários cadastrados
       responses:
         200:
@@ -40,11 +37,6 @@ paths:
     - name: id
       in: path
       schema:
-        type: integer
-      required: true
-    - name: Authorization
-      in: header
-      schema:
         type: string
       required: true
     # get:
@@ -62,6 +54,8 @@ paths:
     #         application/json:
     #           example: "NotFound"
     delete:
+      security:
+          - bearerAuth: []
       summary: Deleta um usuário
       responses:
         200:
@@ -76,6 +70,8 @@ paths:
             application/json:
               example: "NotFound"
     put:
+      security:
+        - bearerAuth: []
       summary: Alterar um usuário
       requestBody:
         content:
@@ -149,5 +145,13 @@ components:
           type: string
         userEmail:
           type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
         
+security:
+  - bearerAuth: [] 
   
