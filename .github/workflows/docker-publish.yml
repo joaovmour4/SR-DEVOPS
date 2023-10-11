@@ -82,7 +82,7 @@ jobs:
 
   deploy-staging:
     name: Deploy to staging
-    # needs: [sast-check_dependencies, sast-njsscan, dast-stackhawk]
+    needs: [sast-check_dependencies, sast-njsscan, dast-stackhawk]
     environment: staging
     runs-on: ubuntu-latest
     permissions:
