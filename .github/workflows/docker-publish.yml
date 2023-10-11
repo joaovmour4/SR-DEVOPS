@@ -81,6 +81,7 @@ jobs:
           HAWK_SCAN_PASSWORD: ${{ secrets.HAWK_SCAN_PASSWORD }}
 
   deploy-staging:
+    name: Deploy to staging
     needs: [sast-check_dependencies, sast-njsscan, dast-stackhawk]
     environment: staging
     runs-on: ubuntu-latest
@@ -156,7 +157,7 @@ jobs:
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
         
   deploy-production:
-    needs: staging
+    needs: deploy-staging
     environment: production
     runs-on: ubuntu-latest
     permissions:
