@@ -27,8 +27,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with: 
           node-version: '18'
       - run: npm install
@@ -43,9 +43,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: '3.x'
 
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: create env file
         run: |
@@ -71,7 +71,7 @@ jobs:
         run: docker-compose up -d
 
       - name: scan my app
-        uses: stackhawk/hawkscan-action@v1.3.0
+        uses: stackhawk/hawkscan-action@v2.1.2
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
           environmentVariables: HAWK_SCAN_USERNAME HAWK_APPLICATION_ID HAWK_SCAN_PASSWORD
@@ -79,9 +79,11 @@ jobs:
           HAWK_SCAN_USERNAME: ${{ secrets.HAWK_SCAN_USERNAME }}
           HAWK_APPLICATION_ID: ${{ secrets.HAWK_APPLICATION_ID }}
           HAWK_SCAN_PASSWORD: ${{ secrets.HAWK_SCAN_PASSWORD }}
-
-  build-and-push:
+        
+  deploy-production:
+    name: Deploy to production
     needs: [sast-check_dependencies, sast-njsscan, dast-stackhawk]
+    environment: production
     runs-on: ubuntu-latest
     permissions:
       contents: read
