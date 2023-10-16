@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const swagger = require('swagger-ui-express')
-const swaggerFile = require('./api/openapi')
+const swaggerFile = require('./api/swagger_output.json')
 const app = express()
 
 app.use(express.json())
@@ -11,13 +11,12 @@ const userSchema = require('./schemas/userSchema')
 
 const userRoutes = require('./routes/userRoutes')
 
-// app.use('/', swagger.serve, swagger.setup(swaggerFile))
 app.use('/', userRoutes, swagger.serve, swagger.setup(swaggerFile))
 
 mongoose.set('strictQuery', false)
 // Conexão via docker
-// const mongodb = 'mongodb://mongo:27017/' 
-const mongodb = 'mongodb://127.0.0.1:27017' 
+const mongodb = 'mongodb://mongo:27017/' 
+// const mongodb = 'mongodb://127.0.0.1:27017' 
 
 main().catch((err)=>console.log(err))
 

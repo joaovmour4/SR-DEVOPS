@@ -28,6 +28,9 @@ module.exports = class userController{
 
     static async getUsers(req, res){
         try{
+            /* #swagger.security = [{
+                "bearerAuth": []
+            }] */
             const users = await userSchema.find()
 
             return res.status(200).json({message: users})
@@ -61,6 +64,9 @@ module.exports = class userController{
 
     static async deleteUser(req, res){
         try{
+            /* #swagger.security = [{
+            "bearerAuth": []
+            }] */
             const {id} = req.params
             const user = await userSchema.find({_id:id})
 
@@ -80,6 +86,9 @@ module.exports = class userController{
 
     static async updateUser(req, res){
         try{
+            /* #swagger.security = [{
+            "bearerAuth": []
+            }] */
             const {id} = req.params
 
             const {userName, userPassword} = req.body
