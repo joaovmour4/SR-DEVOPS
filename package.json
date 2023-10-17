@@ -4,10 +4,8 @@
   "description": "Repositório para a reprodução do artigo científico sobre DevOps e DevSecOps",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "swagger-autogen": "node api/swagger.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "project-run": "node api/swagger.js && node server.js"
+    "start": "node api/swagger.js && nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",

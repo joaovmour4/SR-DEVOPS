@@ -14,7 +14,8 @@ module.exports = class userController{
                 userName:userName,
                 userEmail: userEmail,
                 userPassword: await passwordHash(userPassword),
-                userSubsidio: false
+                userSubsidio: false,
+                userCargo: 'tec'
             }
 
             const createdUser = await userSchema.create(userData)
@@ -31,8 +32,11 @@ module.exports = class userController{
             /* #swagger.security = [{
                 "bearerAuth": []
             }] */
-            const users = await userSchema.find()
 
+            if(res.user.userCargo === 'user')
+                return res.status(401).json({message: 'Unauthorized.'})
+            
+            const users = await userSchema.find()
             return res.status(200).json({message: users})
         }
         catch(error){
@@ -52,7 +56,7 @@ module.exports = class userController{
 
 
             if(compare){
-                const jwtToken = await jwtAuth(userBD[0]._id)
+                const jwtToken = await jwtAuth(userBD[0])
                 return res.status(200).json({message: 'Login efetuado com sucesso.', jwtToken})
             }else{
                 return res.status(401).json({message: 'Usuário ou senha incorretos.'})
@@ -67,6 +71,10 @@ module.exports = class userController{
             /* #swagger.security = [{
             "bearerAuth": []
             }] */
+
+            if(res.user.userCargo !== 'admin')
+                return res.status(401).json({message: 'Unauthorized.'})
+
             const {id} = req.params
             const user = await userSchema.find({_id:id})
 
@@ -89,6 +97,12 @@ module.exports = class userController{
             /* #swagger.security = [{
             "bearerAuth": []
             }] */
+
+            if(res.user.userCargo !== 'admin'){
+                return res.status(401).json({message: 'Unauthorized.'})
+            }
+                
+
             const {id} = req.params
 
             const {userName, userPassword} = req.body

@@ -6,8 +6,11 @@ async function verifyJWT(req, res, next){
             const token = req.headers['authorization'].split(' ')[1]
             const decoded = jwt.verify(token, 'tokenPassword')
 
-            if(decoded.userID){
-                res.userID = decoded.userID
+            if(decoded._id){
+                res.user = {
+                    _id: decoded._id,
+                    userCargo: decoded.userCargo
+                }
                 next()
             }
             else
