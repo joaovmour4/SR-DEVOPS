@@ -9,7 +9,8 @@ async function verifyJWT(req, res, next){
             if(decoded._id){
                 res.user = {
                     _id: decoded._id,
-                    userCargo: decoded.userCargo
+                    userCargo: decoded.userCargo,
+                    userSubsidio: decoded.userSubsidio
                 }
                 next()
             }
