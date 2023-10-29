@@ -31,4 +31,37 @@ module.exports = class purchaseController{
             return res.status(400).json({message:error.message})
         }
     }
+
+    static async getPurchases(req, res){
+        try{
+            /* #swagger.security = [{
+                "bearerAuth": []
+            }] */
+
+            if(res.user.userCargo === 'user')
+                return res.status(401).json({message: 'Unauthorized.'})
+            
+            const purchases = await purchaseSchema.find()
+            return res.status(200).json({message: purchases})
+        }
+        catch(error){
+            return res.status(400).json({message:error.message})
+        }
+    }
+
+    static async userPurchases(req, res){
+        try{
+            /* #swagger.security = [{
+                "bearerAuth": []
+            }] */
+            
+            const user = await userSchema.findById(res.user._id)
+            const purchases = []
+            purchases.push(await purchaseSchema.findById(user.userPurchases[0]))
+            return res.status(200).json({message: purchases})
+        }
+        catch(error){
+            return res.status(400).json({message:error.message})
+        }   
+    }
 }

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 
 const purchaseSchema = new Schema({
     _id: String,
-    userId: ObjectId,
+    userId: String,
     quantity: Number,
     value: Decimal128,
     purchaseDate: Date

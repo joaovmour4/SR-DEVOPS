@@ -4,5 +4,6 @@ const router = express.Router()
 const verifyJWT = require('../services/verifyJWT')
 
 router.post("/purchase", verifyJWT, purchaseController.newPurchase)
+router.get("/purchase", verifyJWT, purchaseController.getPurchases)
 
 module.exports = router
