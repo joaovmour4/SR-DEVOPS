@@ -7,6 +7,8 @@ const jwtAuth = require('../services/jwtAuth')
 module.exports = class userController{
     static async newUser(req, res){
         try{
+            // #swagger.tags = ['Usuário']
+
             const {userName, userEmail, userPassword} = req.body
 
             const userData = {
@@ -29,7 +31,9 @@ module.exports = class userController{
 
     static async getUsers(req, res){
         try{
-            /* #swagger.security = [{
+            /* 
+                #swagger.tags = ['Usuário']
+                #swagger.security = [{
                 "bearerAuth": []
             }] */
 
@@ -46,6 +50,7 @@ module.exports = class userController{
 
     static async loginUser(req, res){
         try{
+            // #swagger.tags = ['Autenticação']
             const {userName, userPassword} = req.body
 
             const userBD = await userSchema.find({userName:userName})
@@ -68,8 +73,10 @@ module.exports = class userController{
 
     static async deleteUser(req, res){
         try{
-            /* #swagger.security = [{
-            "bearerAuth": []
+            /* 
+                #swagger.tags = ['Usuário']
+                #swagger.security = [{
+                "bearerAuth": []
             }] */
 
             if(res.user.userCargo !== 'admin')
@@ -94,8 +101,10 @@ module.exports = class userController{
 
     static async updateUser(req, res){
         try{
-            /* #swagger.security = [{
-            "bearerAuth": []
+            /* 
+                #swagger.tags = ['Usuário']
+                #swagger.security = [{
+                "bearerAuth": []
             }] */
 
             if(res.user.userCargo !== 'admin'){

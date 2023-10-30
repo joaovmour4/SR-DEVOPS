@@ -5,6 +5,12 @@ const userSchema = require("../schemas/userSchema")
 module.exports = class purchaseController{
     static async newPurchase(req, res){
         try{
+            /* 
+                #swagger.tags = ['Compra']
+                #swagger.security = [{
+                "bearerAuth": []
+            }] */
+
             var {quantity} = req.body
             var value = 0
             if(res.user.userSubsidio){
@@ -34,7 +40,9 @@ module.exports = class purchaseController{
 
     static async getPurchases(req, res){
         try{
-            /* #swagger.security = [{
+            /* 
+                #swagger.tags = ['Compra']
+                #swagger.security = [{
                 "bearerAuth": []
             }] */
 
@@ -51,7 +59,9 @@ module.exports = class purchaseController{
 
     static async userPurchases(req, res){
         try{
-            /* #swagger.security = [{
+            /* 
+                #swagger.tags = ['Usuário']
+                #swagger.security = [{
                 "bearerAuth": []
             }] */
             

@@ -13,6 +13,9 @@
   "paths": {
     "/user": {
       "post": {
+        "tags": [
+          "Usuário"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -44,6 +47,9 @@
         }
       },
       "get": {
+        "tags": [
+          "Usuário"
+        ],
         "description": "",
         "parameters": [
           {
@@ -74,6 +80,9 @@
     },
     "/user/{id}": {
       "put": {
+        "tags": [
+          "Usuário"
+        ],
         "description": "",
         "parameters": [
           {
@@ -127,6 +136,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Usuário"
+        ],
         "description": "",
         "parameters": [
           {
@@ -165,6 +177,9 @@
     },
     "/login": {
       "post": {
+        "tags": [
+          "Autenticação"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -198,13 +213,106 @@
     },
     "/user/purchases": {
       "get": {
+        "tags": [
+          "Usuário"
+        ],
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/purchase": {
+      "post": {
+        "tags": [
+          "Compra"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Compra"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
