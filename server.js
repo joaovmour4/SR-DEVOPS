@@ -19,10 +19,10 @@ app.use('/doc', swagger.serve, swagger.setup(swaggerFile))
 mongoose.set('strictQuery', false)
 
 // Conexão via docker
-// const mongodb = 'mongodb://mongo:27017/' 
+const mongodb = 'mongodb://mongo:27017/' 
 
 // Conexão local
-const mongodb = 'mongodb://127.0.0.1:27017'
+// const mongodb = 'mongodb://127.0.0.1:27017'
 
 async function main(){
     await mongoose.connect(mongodb)
