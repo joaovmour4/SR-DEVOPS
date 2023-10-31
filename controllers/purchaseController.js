@@ -6,9 +6,9 @@ module.exports = class purchaseController{
     static async newPurchase(req, res){
         try{
             /* 
-                #swagger.tags = ['Compra']
-                #swagger.security = [{
-                "bearerAuth": []
+            #swagger.tags = ['Compra']
+            #swagger.security = [{
+            "bearerAuth": []
             }] */
 
             var {quantity} = req.body
@@ -41,9 +41,9 @@ module.exports = class purchaseController{
     static async getPurchases(req, res){
         try{
             /* 
-                #swagger.tags = ['Compra']
-                #swagger.security = [{
-                "bearerAuth": []
+            #swagger.tags = ['Compra']
+            #swagger.security = [{
+            "bearerAuth": []
             }] */
 
             if(res.user.userCargo === 'user')
@@ -60,14 +60,18 @@ module.exports = class purchaseController{
     static async userPurchases(req, res){
         try{
             /* 
-                #swagger.tags = ['Usuário']
-                #swagger.security = [{
-                "bearerAuth": []
+            #swagger.tags = ['Usuário']
+            #swagger.security = [{
+            "bearerAuth": []
             }] */
             
             const user = await userSchema.findById(res.user._id)
             const purchases = []
-            purchases.push(await purchaseSchema.findById(user.userPurchases[0]))
+
+            for(let key in Object.keys(user.userPurchases)){
+                let currentPurchase = await purchaseSchema.findById(user.userPurchases[key])
+                purchases.push(currentPurchase)
+            }
             return res.status(200).json({message: purchases})
         }
         catch(error){

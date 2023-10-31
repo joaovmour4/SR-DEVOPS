@@ -32,9 +32,9 @@ module.exports = class userController{
     static async getUsers(req, res){
         try{
             /* 
-                #swagger.tags = ['Usuário']
-                #swagger.security = [{
-                "bearerAuth": []
+            #swagger.tags = ['Usuário']
+            #swagger.security = [{
+            "bearerAuth": []
             }] */
 
             if(res.user.userCargo === 'user')
@@ -74,9 +74,9 @@ module.exports = class userController{
     static async deleteUser(req, res){
         try{
             /* 
-                #swagger.tags = ['Usuário']
-                #swagger.security = [{
-                "bearerAuth": []
+            #swagger.tags = ['Usuário']
+            #swagger.security = [{
+            "bearerAuth": []
             }] */
 
             if(res.user.userCargo !== 'admin')
@@ -102,9 +102,9 @@ module.exports = class userController{
     static async updateUser(req, res){
         try{
             /* 
-                #swagger.tags = ['Usuário']
-                #swagger.security = [{
-                "bearerAuth": []
+            #swagger.tags = ['Usuário']
+            #swagger.security = [{
+            "bearerAuth": []
             }] */
 
             if(res.user.userCargo !== 'admin'){

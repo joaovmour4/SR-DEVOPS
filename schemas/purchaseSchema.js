@@ -7,7 +7,7 @@ const purchaseSchema = new Schema({
     _id: String,
     userId: String,
     quantity: Number,
-    value: Decimal128,
+    value: Number,//Decimal128,
     purchaseDate: Date
 })
 
