@@ -53,15 +53,15 @@ module.exports = class userController{
             // #swagger.tags = ['Autenticação']
             const {userName, userPassword} = req.body
 
-            const userBD = await userSchema.find({userName:userName})
+            const userBD = await userSchema.findOne({userName:userName})
             if(userBD.length === 0)
                 return res.status(401).json({message: 'Usuário não encontrado.'})
 
-            const compare = await passwordCompare(userPassword, userBD[0].userPassword)
+            const compare = await passwordCompare(userPassword, userBD.userPassword)
 
 
             if(compare){
-                const jwtToken = await jwtAuth(userBD[0])
+                const jwtToken = await jwtAuth(userBD)
                 return res.status(200).json({message: 'Login efetuado com sucesso.', jwtToken})
             }else{
                 return res.status(401).json({message: 'Usuário ou senha incorretos.'})

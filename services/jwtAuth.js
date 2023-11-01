@@ -2,9 +2,14 @@ const jwt = require('jsonwebtoken')
 
 async function jwtAuth(user){
     try{
-        const {_id, userCargo, userSubsidio} = user
-        const token = jwt.sign({ _id, userCargo, userSubsidio}, 'tokenPassword', {
-            expiresIn: 1800 // expira em 30 minutos
+        const userInfo = {
+            _id: user._id, 
+            userCargo: user.userCargo, 
+            userSubsidio: user.userSubsidio
+        }
+
+        const token = jwt.sign(userInfo, 'tokenPassword', {
+            expiresIn: 120 // expira em 2 minutos
         })
 
         return {auth: true, token: token}
