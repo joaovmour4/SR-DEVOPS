@@ -9,7 +9,7 @@ async function jwtAuth(user){
         }
 
         const token = jwt.sign(userInfo, 'tokenPassword', {
-            expiresIn: 120 // expira em 2 minutos
+            expiresIn: '15m' // expira em 1 minutos
         })
 
         return {auth: true, token: token}

@@ -4,18 +4,18 @@ async function verifyJWT(req, res, next){
     try{
         if(req.headers['authorization']){
             const token = req.headers['authorization'].split(' ')[1]
-            const decoded = jwt.verify(token, 'tokenPassword')
-
-            if(decoded._id){
+            jwt.verify(token, 'tokenPassword', (err, decoded)=>{
+                if(err)
+                    return res.status(500).json({message: 'Token expirado, realize o login novamente.'})
+                
                 res.user = {
                     _id: decoded._id,
                     userCargo: decoded.userCargo,
                     userSubsidio: decoded.userSubsidio
                 }
                 next()
-            }
-            else
-                return res.status(401).json({message: 'A autenticação falhou.'})
+            })
+
         }else{
             return res.status(401).json({message: 'Nenhum token de autenticação fornecido.'})
         }
