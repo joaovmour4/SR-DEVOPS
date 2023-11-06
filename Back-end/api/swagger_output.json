@@ -175,6 +175,39 @@
         ]
       }
     },
+    "/user/purchases": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/login": {
       "post": {
         "tags": [
@@ -209,39 +242,6 @@
             }
           }
         }
-      }
-    },
-    "/user/purchases": {
-      "get": {
-        "tags": [
-          "Usuário"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
       }
     },
     "/purchase": {
@@ -321,6 +321,47 @@
           }
         ]
       }
+    },
+    "/purchase/{userName}": {
+      "get": {
+        "tags": [
+          "Compra"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -329,6 +370,73 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "1"
+          },
+          "userName": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "userPassword": {
+            "type": "string",
+            "example": "Password"
+          },
+          "userEmail": {
+            "type": "string",
+            "example": "john.doe@mail.com"
+          },
+          "userSubsidio": {
+            "type": "boolean",
+            "example": true
+          },
+          "userCargo": {
+            "type": "string",
+            "example": "user"
+          },
+          "userPurchases": {
+            "type": "array",
+            "example": [
+              "1",
+              "2",
+              "3"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Purchase": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "1"
+          },
+          "userId": {
+            "type": "string",
+            "example": "1"
+          },
+          "quantity": {
+            "type": "number",
+            "example": 1
+          },
+          "value": {
+            "type": "number",
+            "example": 13
+          },
+          "purchaseDate": {
+            "type": "string",
+            "example": "01-01-2023"
+          }
+        }
       }
     }
   }

@@ -16,7 +16,29 @@ const doc = {
                 scheme: 'bearer',
                 bearerFormat: 'JWT',
             }
+        },
+        schemas: {
+          User: {
+              userId: '1',
+              userName: 'John Doe',
+              userPassword: 'Password',
+              userEmail: 'john.doe@mail.com',
+              userSubsidio: true,
+              userCargo: 'user',
+              userPurchases: [
+                '1',
+                '2',
+                '3'
+              ]
+          },
+          Purchase: {
+            _id: '1',
+            userId: '1',
+            quantity: 1,
+            value: 13,
+            purchaseDate: '01-01-2023'
         }
+      }
     }
   };
 

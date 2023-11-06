@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb')
 const userSchema = require('../schemas/userSchema')
+const purchaseSchema = require('../schemas/purchaseSchema')
 const passwordHash = require('../services/passwordHash')
 const passwordCompare = require('../services/passwordCompare')
 const jwtAuth = require('../services/jwtAuth')
@@ -17,7 +18,7 @@ module.exports = class userController{
                 userEmail: userEmail,
                 userPassword: await passwordHash(userPassword),
                 userSubsidio: false,
-                userCargo: 'tec'
+                userCargo: 'user'
             }
 
             const createdUser = await userSchema.create(userData)
@@ -48,7 +49,7 @@ module.exports = class userController{
         }
     }
 
-    static async loginUser(req, res){
+    static async login(req, res){
         try{
             // #swagger.tags = ['Autenticação']
             const {userName, userPassword} = req.body
@@ -131,5 +132,27 @@ module.exports = class userController{
         catch(error){
             return res.status(400).json({message: error.message})
         }
+    }
+
+    static async currentUserPurchases(req, res){
+        try{
+            /* 
+            #swagger.tags = ['Usuário']
+            #swagger.security = [{
+            "bearerAuth": []
+            }] */
+            
+            const user = await userSchema.findById(res.user._id)
+            const purchases = []
+
+            for(let key in Object.keys(user.userPurchases)){
+                let currentPurchase = await purchaseSchema.findById(user.userPurchases[key])
+                purchases.push(currentPurchase)
+            }
+            return res.status(200).json({message: purchases})
+        }
+        catch(error){
+            return res.status(400).json({message:error.message})
+        }   
     }
 }   
