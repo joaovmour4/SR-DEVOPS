@@ -7,10 +7,11 @@ import imgLogin from "../img/login.png";
 export default function Header(){
     return (
         <section>
-            <header style={{backgroundColor: '#2cbc63'}}>
+            <header className="bg-cor-um flex grow-0 justify-center">
                 <img src={imgRU} alt="Imagem do RU da Unifesspa"/>
             </header>
-            <nav class="navegacao" style={{backgroundColor: "#D9D9D9"}}>
+            <nav className="bg-cor-dois flex justify-center first-letter:"
+            class="navegacao" style={{backgroundColor: "#D9D9D9"}}>
                 <a class="cardapio" href="./cardapio.html">
                     <img class="cadapio_img" src={imgCardapio} alt="img do cardapio"/>
                     <label class="texto">

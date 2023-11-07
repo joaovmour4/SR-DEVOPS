@@ -9,7 +9,7 @@ export default function Footer(){
         <>
         <footer className="flex flex-col flex-grow-0">
             <div>
-                <div style={{backgroundColor: '#D9D9D9'}} className="flex justify-center gap-8 py-1">
+                <div className="bg-cor-dois flex justify-center gap-8 py-1">
                     <a href="https://www.unifesspa.edu.br/fale-conosco">
                         <img src={contato} alt=""/>
                     </a>
@@ -17,7 +17,7 @@ export default function Footer(){
                         <img src={instagram} alt=""/>
                     </a>
                 </div>
-                <div style={{backgroundColor: '#0042B1'}} className="flex flex-wrap justify-between p-2 md:p-4">
+                <div className="bg-cor-quatro flex flex-wrap justify-between p-2 md:p-4">
                     <picture class="informacao">
                         <img src={informacao} alt="imagem informação"/>
                     </picture>
