@@ -5,7 +5,7 @@ import Footer from '../componentes/Footer';
 export default function cardapio(){
     return (
         <>
-
+            
         </>
     )
 }

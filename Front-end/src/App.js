@@ -2,24 +2,16 @@ import React from 'react';
 import './App.css';
 import Header from '../src/componentes/Header'
 import Footer from '../src/componentes/Footer'
+import Carousel from '../src/componentes/Carousel';
 
 export default function App() {
   return (
     <>
-      <Header>
-
-      </Header>
+    {/* abaixo é o componente header */}
+      <Header/> 
       <main className="flex flex-grow flex-col justify-center items-center p-10 md:p-20">
-            <div>
-                <div id="img">
-                    <img src="../src/img/ru0.JPG"/>
-                    <img src="./img/ru1.JPG"/>
-                    <img src="./img/ru2.JPG"/>
-                    <img src="./img/ru3.JPG"/>
-                    <img src="./img/ru4.JPG"/>
-                    <img src="./img/ru5.JPG"/>
-                </div>
-            </div>
+            {/* abaixo é o componente do carrossel */}
+            <Carousel/>
             <p className="max-w-80 text-justify pt-4">
                 O Restaurante Universitário (RU) da Unifesspa está instalado na Unidade III do Campus de Marabá, localizado na Avenida dos Ipês, s/n, Loteamento Cidade Jardim.
             </p>
@@ -35,9 +27,8 @@ export default function App() {
             <p class="link-do-edital">Para mais informações, acesse a <a href="https://proex.unifesspa.edu.br/images/Instrucao_Normativa_02.2023_PROEX_-_institui_o_processo_de_subsidio_no_R.U_da_UNIFESSPA.pdf">Instrução Normativa n° 02/2023 PROEX</a> no site <a href="https://proex.unifesspa.edu.br">proex.unifesspa.edu.br</a>.</p>
         </main>
 
-        <Footer>
-
-        </Footer>
+        {/* abaixo é o componente do footer */}
+        <Footer/>
     </>
   );
 }
