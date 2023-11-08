@@ -10,17 +10,16 @@ export default function Header(){
             <header className="bg-cor-um flex grow-0 justify-center">
                 <img src={imgRU} alt="Imagem do RU da Unifesspa"/>
             </header>
-            <nav className="bg-cor-dois flex justify-center first-letter:"
-            class="navegacao" style={{backgroundColor: "#D9D9D9"}}>
-                <a class="cardapio" href="./cardapio.html">
-                    <img class="cadapio_img" src={imgCardapio} alt="img do cardapio"/>
-                    <label class="texto">
+            <nav className="bg-cor-dois flex justify-center first-letter gap-x-4 py-2 flex-grow-0">
+                <a className="flex flex-col items-center" href="./cardapio.html">
+                    <img className="h-6 w-6" src={imgCardapio} alt="img do cardapio"/>
+                    <label className="text-sm">
                         CARDÁPIO
                     </label>
                 </a>
-                <a class="login" href="./login.html">
-                    <img class="login_img" src={imgLogin} alt="img do login"/>
-                    <label class="texto">
+                <a className="flex flex-col items-center" href="./login.html">
+                    <img className="h-6 w-6" src={imgLogin} alt="img do login"/>
+                    <label className="bg-gray-300 text-sm">
                         LOGIN
                     </label>
                 </a>
