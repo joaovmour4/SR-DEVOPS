@@ -13,15 +13,15 @@ export default function Header() {
         </header>
         <nav className="bg-cor-dois flex justify-center first-letter gap-x-4 py-2 flex-grow-0">
           <p className="flex flex-col items-center">
-            <img className="h-6 w-6" src={imgCardapio} alt="img do cardápio" />
+            <img className="h-8 w-8 fill-black" src={imgCardapio} alt="img do cardápio" />
             <label className="text-sm">
             <a href="https://www.w3schools.com">
-                Cardápio
+                CARDÁPIO
               </a>
             </label>
           </p>
           <p className="flex flex-col items-center">
-            <img className="h-6 w-6" src={imgLogin} alt="img do login" />
+            <img className="h-8 w-8" src={imgLogin} alt="img do login" />
             <p className="bg-gray-300 text-sm">
               <a href="https://www.w3schools.com">
                 LOGIN

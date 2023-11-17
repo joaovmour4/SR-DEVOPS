@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Carousel from '../componentes/Carousel'
+import imgArrowDown from '../img/arrow_down.png'
+import imgArrowUp from '../img/arrow_up.png'
 
 export default function Home() {
 
@@ -18,7 +20,7 @@ export default function Home() {
                 O objetivo do funcionamento do RU é fornecer refeições nutricionalmente equilibradas, seguras do ponto de vista higiênico-sanitário, adequadas às necessidades nutricionais dos usuários e à baixo custo, atuando como um dos instrumentos da política de permanência dos(as) discentes na educação superior pública federal, representando um eixo estratégico da Política Nacional de Assistência Estudantil (PNAES).
             </p>
             {objetivo ? null : (
-                <p onClick={() => setObjetivo(true)} className='text-sky-300 underline'>ler mais</p>
+                <p onClick={() => setObjetivo(true)} className='underline h-8 w-8'><img src={imgArrowDown}/ ></p>
             )}
             {
                 objetivo ? (
@@ -29,7 +31,7 @@ export default function Home() {
             <p className="max-w-80 text-justify pt-4">
                 Assim, o discente de graduação que se encaixar em qualquer uma das condições descritas acima poderá se dirigir ao caixa do RU, apresentando documento oficial com foto e pagar R$2,00.
             </p>
-            <p onClick={() => setObjetivo(false)} className='underline text-center text-sky-300'>Ler menos</p>
+            <p onClick={() => setObjetivo(false)} className='underline h-8 w-8'><img src={imgArrowUp}/></p>
                     </div>
                 ) : null
             }
