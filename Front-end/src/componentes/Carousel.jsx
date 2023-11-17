@@ -18,13 +18,12 @@ export default function Carousel() {
   }, [contador, imagens.length]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full transform translate-x-[-100%] transition-transform duration-500"
-           style={{ backgroundImage: `url(${imagens[(contador - 1 + imagens.length) % imagens.length]})` }} />
-      <div className="absolute top-0 left-0 w-full h-full transform transition-transform duration-500"
-           style={{ backgroundImage: `url(${imagens[contador]})` }} />
-      <div className="absolute top-0 left-0 w-full h-full transform translate-x-[100%] transition-transform duration-500"
-           style={{ backgroundImage: `url(${imagens[(contador + 1) % imagens.length]})` }} />
-    </div>
+    <section className="w-5/5 md:w-2/4 h-2/3 md:h-3/5 mx-auto">
+      <img
+        className="w-full h-full"
+        src={imagens[contador]}
+        alt={`Imagem ${contador}`}
+      />
+    </section>
   );
 }
