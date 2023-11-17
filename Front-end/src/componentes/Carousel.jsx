@@ -13,16 +13,18 @@ export default function Carousel() {
   useEffect(() => {
     const interval = setInterval(() => {
       setContador((contador + 1) % imagens.length);
-    }, 2000)
+    }, 2000);
     return () => clearInterval(interval);
-  }, [contador]);
+  }, [contador, imagens.length]);
 
   return (
-    <section className="w-4/5 h-5/6 md:w-4/5 sm:h-5/6 flex items-center">
-      <img
-        src={imagens[contador]}
-        alt={`Imagem ${contador}`}
-      />
-    </section>
+    <div className="relative w-full h-full overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full transform translate-x-[-100%] transition-transform duration-500"
+           style={{ backgroundImage: `url(${imagens[(contador - 1 + imagens.length) % imagens.length]})` }} />
+      <div className="absolute top-0 left-0 w-full h-full transform transition-transform duration-500"
+           style={{ backgroundImage: `url(${imagens[contador]})` }} />
+      <div className="absolute top-0 left-0 w-full h-full transform translate-x-[100%] transition-transform duration-500"
+           style={{ backgroundImage: `url(${imagens[(contador + 1) % imagens.length]})` }} />
+    </div>
   );
 }

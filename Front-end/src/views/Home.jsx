@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Carousel from '../../src/componentes/Carousel'
+import Carousel from '../componentes/Carousel'
 
 export default function Home() {
 

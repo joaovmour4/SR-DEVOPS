@@ -1,8 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 export default function Cardapio(){
     return (
         <>
+        <Link to={'/'}>
+            Home
+        </Link>
             <main class="cardapio">
                 <div class="container">
                     <h1>DIA E PRATO</h1>
