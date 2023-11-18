@@ -10,7 +10,6 @@ export default function Home() {
   return (
     <div>
         <main className="flex flex-grow flex-col justify-center items-center p-10 md:p-20">
-            {/* abaixo é o componente do carrossel */}
             <Carousel/>
             <p className="max-w-80 text-justify pt-4">
                 O Restaurante Universitário (RU) da Unifesspa está instalado na Unidade III do Campus de Marabá, localizado na Avenida dos Ipês, s/n, Loteamento Cidade Jardim.
