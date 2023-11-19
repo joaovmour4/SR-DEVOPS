@@ -3,7 +3,6 @@ import instagram from "../svg/instagram.svg";
 import contato from "../svg/contato.svg";
 import informacao from "../img/informacao.png";
 import brasil from "../img/brasil.png";
-import { Link } from 'react-router-dom';
 
 export default function Footer(){
     return (
