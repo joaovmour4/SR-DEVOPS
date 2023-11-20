@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 
 const cardapioData = {
     SEGUNDA: {
@@ -32,7 +34,7 @@ const cardapioData = {
       acompanhamentos: ['ARROZ ARBÓREO', 'FEIJÃO ANGELA', 'BATATA GRATINADA', 'SALADA DE AGRIÃO E ALFACE', 'MELÃO'],
     },
   };
-  
+
 
 export default function Cardapio() {
   const [clickedBlock, setClickedBlock] = useState(null);
@@ -44,6 +46,11 @@ export default function Cardapio() {
 
   const handleCloseModal = () => {
     setClickedBlock(null);
+  };
+
+  const handleCompraClick = () => {
+    // Navegar para a tela de login ao clicar em "Comprar"
+    window.location.href = '/login';
   };
 
   return (
@@ -69,28 +76,28 @@ export default function Cardapio() {
       </main>
 
       {clickedBlock && (
-  <div className="fixed inset-0 flex items-center justify-center">
-    <div className="absolute inset-0 bg-gray-800 opacity-75" onClick={handleCloseModal}></div>
-    <div className="relative bg-white p-8 rounded-lg text-center">
-      <h2 className="text-center mb-4">{clickedBlock}</h2>
-      <p className="text-left">{cardapioData[clickedBlock].prato}</p>
-      <p className="text-left">{cardapioData[clickedBlock].vegetariano}</p>
-      <ul className="text-left">
-        {cardapioData[clickedBlock].acompanhamentos.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-      <div className="flex justify-between mt-4">
-        <button className="bg-blue-500 text-white py-2 px-4 rounded" onClick={() => console.log('Comprar')}>
-          Comprar
-        </button>
-        <button className="bg-red-500 text-white py-2 px-4 rounded" onClick={handleCloseModal}>
-          Fechar
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gray-800 opacity-75" onClick={handleCloseModal}></div>
+          <div className="relative bg-white p-8 rounded-lg text-center">
+            <h2 className="text-center mb-4">{clickedBlock}</h2>
+            <p className="text-left">{cardapioData[clickedBlock].prato}</p>
+            <p className="text-left">{cardapioData[clickedBlock].vegetariano}</p>
+            <ul className="text-left">
+              {cardapioData[clickedBlock].acompanhamentos.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+            <div className="flex justify-between mt-4">
+              <button className="bg-blue-500 text-white py-2 px-4 rounded" onClick={handleCompraClick}>
+                Comprar
+              </button>
+              <button className="bg-red-500 text-white py-2 px-4 rounded" onClick={handleCloseModal}>
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
