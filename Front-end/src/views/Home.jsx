@@ -30,7 +30,7 @@ export default function Home() {
             <p className="max-w-80 text-justify pt-4">
                 Assim, o discente de graduação que se encaixar em qualquer uma das condições descritas acima poderá se dirigir ao caixa do RU, apresentando documento oficial com foto e pagar R$2,00.
             </p>
-            <p onClick={() => setObjetivo(false)} className='underline h-8 w-8'><img src={imgArrowUp}/></p>
+            <p onClick={() => setObjetivo(false)} className='underline h-8 w-8'><img src={imgArrowUp} alt=""/></p>
                     </div>
                 ) : null
             }
