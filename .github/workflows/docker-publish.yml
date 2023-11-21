@@ -37,7 +37,9 @@ jobs:
         run: sudo npm install -g snyk && snyk auth ${{ secrets.SNYK_TOKEN }}
 
       - name: snyk scan for lib vulnerabilities (SAST)
-        run: sudo snyk test 
+        run: |
+          cd ./back-end
+          sudo snyk test
   
   sast-njsscan:
     runs-on: ubuntu-latest
@@ -55,7 +57,7 @@ jobs:
           pip install requests_html njsscan
 
       - name: Execute njsscan
-        run: njsscan .
+        run: njsscan ./back-end
 
   dast-stackhawk:
     runs-on: ubuntu-latest
@@ -68,7 +70,7 @@ jobs:
           touch .env
 
       - name: start containers
-        run: docker-compose up -d
+        run: docker-compose -f /back-end/docker-compose.yml up -d
 
       - name: scan my app
         uses: stackhawk/hawkscan-action@v2.1.2
