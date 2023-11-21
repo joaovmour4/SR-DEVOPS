@@ -31,10 +31,14 @@ jobs:
       - uses: actions/setup-node@v3
         with: 
           node-version: '18'
-      - run: npm install
+      - run: |
+          cd ./back-end/
+          npm install
 
       - name: install and configure SNYK
-        run: sudo npm install -g snyk && snyk auth ${{ secrets.SNYK_TOKEN }}
+        run: |
+          cd ./back-end/
+          sudo npm install -g snyk && snyk auth ${{ secrets.SNYK_TOKEN }}
 
       - name: snyk scan for lib vulnerabilities (SAST)
         run: |
@@ -57,7 +61,7 @@ jobs:
           pip install requests_html njsscan
 
       - name: Execute njsscan
-        run: njsscan ./back-end
+        run: njsscan ./back-end/
 
   dast-stackhawk:
     runs-on: ubuntu-latest
