@@ -32,17 +32,17 @@ jobs:
         with: 
           node-version: '18'
       - run: |
-          cd ./back-end/
+          cd ../back-end/
           npm install
 
       - name: install and configure SNYK
         run: |
-          cd ./back-end/
+          cd ../back-end/
           sudo npm install -g snyk && snyk auth ${{ secrets.SNYK_TOKEN }}
 
       - name: snyk scan for lib vulnerabilities (SAST)
         run: |
-          cd ./back-end
+          cd ../back-end
           sudo snyk test
   
   sast-njsscan:
@@ -61,7 +61,7 @@ jobs:
           pip install requests_html njsscan
 
       - name: Execute njsscan
-        run: njsscan ./back-end/
+        run: njsscan ../back-end/
 
   dast-stackhawk:
     runs-on: ubuntu-latest
@@ -71,16 +71,16 @@ jobs:
 
       - name: create env file
         run: |
-          touch .env
+          touch ./back-end/.env
 
       - name: start containers
-        run: docker-compose -f /back-end/docker-compose.yml up -d
+        run: docker-compose -f ./back-end/docker-compose.yml up -d
 
       - name: scan my app
         uses: stackhawk/hawkscan-action@v2.1.2
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
-          environmentVariables: HAWK_SCAN_USERNAME HAWK_APPLICATION_ID HAWK_SCAN_PASSWORD
+          # environmentVariables: HAWK_SCAN_USERNAME HAWK_APPLICATION_ID HAWK_SCAN_PASSWORD
         env:
           HAWK_SCAN_USERNAME: ${{ secrets.HAWK_SCAN_USERNAME }}
           HAWK_APPLICATION_ID: ${{ secrets.HAWK_APPLICATION_ID }}
