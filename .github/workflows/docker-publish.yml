@@ -32,17 +32,17 @@ jobs:
         with: 
           node-version: '18'
       - run: |
-          cd back-end
+          cd ./Back-end
           npm install
 
       - name: install and configure SNYK
         run: |
-          cd back-end
+          cd ./Back-end
           sudo npm install -g snyk && snyk auth ${{ secrets.SNYK_TOKEN }}
 
       - name: snyk scan for lib vulnerabilities (SAST)
         run: |
-          cd back-end
+          cd ./Back-end
           sudo snyk test
   
   sast-njsscan:
