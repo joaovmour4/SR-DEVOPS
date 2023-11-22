@@ -1,7 +1,7 @@
 # -- stackhawk configuration for SR-DEVOPS --
 app:
   # -- An applicationId obtained from the StackHawk platform. --
-  applicationId: 8a397134-08ad-401e-a1c8-db4f031ee38a # (required)
+  applicationId: 67bf89dc-ce0b-4cc7-9f08-08959d49dc78 # (required)
   # -- The environment for the applicationId defined in the StackHawk platform. --
   env: Production # (required)
   # -- The url of your application to scan --
@@ -10,10 +10,10 @@ app:
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
   openApiConf:
-    # path: /swagger.json # OR...
-    filePath: ./Back-end/api/swagger_output.json
-  # autoPolicy: true
-  # autoInputVectors: true
+    path: /doc # OR...
+#     filePath: openApi.json
+  autoPolicy: true
+  autoInputVectors: true
   # Configuration Docs: https://docs.stackhawk.com/hawkscan/configuration/
 
 # -- If Authenticated Scanning is needed, add here --
