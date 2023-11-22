@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const swagger = require('swagger-ui-express')
@@ -18,11 +19,8 @@ app.use('/doc', swagger.serve, swagger.setup(swaggerFile))
 
 mongoose.set('strictQuery', false)
 
-// Conexão via docker
-const mongodb = 'mongodb://mongo:27017/RU-UNIFESSPA'
-
-// Conexão local
-// const mongodb = 'mongodb://127.0.0.1:27017/RU-UNIFESSPA'
+// Conexão com o DB
+const mongodb = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@sr-devops.kc3riqy.mongodb.net/?retryWrites=true&w=majority`
 
 async function main(){
     await mongoose.connect(mongodb)
