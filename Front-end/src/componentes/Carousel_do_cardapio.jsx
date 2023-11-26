@@ -2,7 +2,6 @@ import React from 'react';
 import Slider from 'react-slick';
 
 const CarouselCardapio = () => {
-  // Configurações do carrossel
   const configuracoesCarrossel = {
     dots: true,
     infinite: true,
@@ -23,7 +22,7 @@ const CarouselCardapio = () => {
         <div className="w-full h-64 md:h-96 lg:h-96 overflow-hidden">
           <img src="https://source.unsplash.com/800x600/?meal" alt="Comida 2" className="w-full h-full object-cover" />
         </div>
-        {/* Adicione mais imagens conforme necessário */}
+      
       </Slider>
     </div>
   );

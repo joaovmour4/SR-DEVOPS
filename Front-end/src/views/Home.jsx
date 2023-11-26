@@ -10,7 +10,7 @@ export default function Home() {
     <div className="flex flex-col items-center">
       <Carousel />
 
-      <div className="max-w-2xl text-center w-3/4">
+      <div className="max-w-4xl text-center w-3/4">
         <p className="text-justify pt-4">
           O Restaurante Universitário (RU) da Unifesspa está instalado na Unidade III do Campus de Marabá, localizado na Avenida dos Ipês, s/n, Loteamento Cidade Jardim.
         </p>
@@ -51,9 +51,24 @@ export default function Home() {
           </div>
         )}
 
-        <p className="text-justify pt-4 link-do-edital">
-          Para mais informações, acesse a <a href="https://proex.unifesspa.edu.br/images/Instrucao_Normativa_02.2023_PROEX_-_institui_o_processo_de_subsidio_no_R.U_da_UNIFESSPA.pdf" target="_blank" rel="noopener noreferrer">Instrução Normativa n° 02/2023 PROEX</a> no site <a href="https://proex.unifesspa.edu.br" target="_blank" rel="noopener noreferrer">proex.unifesspa.edu.br</a>.
-        </p>
+          <p className="text-justify pt-4 link-do-edital">
+            Para mais informações, acesse a{' '}
+            <a
+              href="https://proex.unifesspa.edu.br/images/Instrucao_Normativa_02.2023_PROEX_-_institui_o_processo_de_subsidio_no_R.U_da_UNIFESSPA.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              Instrução Normativa n° 02/2023 PROEX
+            </a>{' '}
+            no site{' '}
+            <a
+              href="https://proex.unifesspa.edu.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+            >proex.unifesspa.edu.br</a>.
+          </p>
       </div>
     </div>
   );

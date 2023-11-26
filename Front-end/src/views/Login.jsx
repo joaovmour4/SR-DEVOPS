@@ -5,19 +5,19 @@ import imgAcenando from "../img/aluno.png";
 export default function Login() {
   const [loginEfetuado, setLoginEfetuado] = useState(false);
   const navigate = useNavigate(); 
-  // Alteração isso aqui depois para verificar se o usuario existe ou não
+  // ovo alterar isso aqui depois para verificar se o usuario existe ou não
   const realizarLogin = () => {
     setLoginEfetuado(true);
 
     setTimeout(() => {
       // Simula a navegação para a página de compras após 2 segundos
-      navigate("/compra");  // Alteração aqui
+      navigate("/user");
     }, 3000);
   };
 
   return (
     <>
-      <main className="container flex flex-col justify-center items-center flex-grow min-h-screen">
+     <main className="container flex flex-col justify-center items-center flex-grow min-h-screen w-full mx-auto">
         {!loginEfetuado ? (
           <div className="aluno flex flex-col items-center gap-4">
             <img className="w-32 animate-bounce" src={imgAcenando} alt="GIF acenando" />
@@ -54,7 +54,6 @@ export default function Login() {
         ) : (
           <div className="aluno flex flex-col items-center gap-4">
             <p className="text-2xl font-bold mb-4 text-green-500">Login efetuado com sucesso!</p>
-            {/* Adicione aqui o GIF ou mensagem de sucesso */}
           </div>
         )}
       </main>
