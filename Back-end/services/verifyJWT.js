@@ -1,10 +1,11 @@
+const dotenv = require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
 async function verifyJWT(req, res, next){
     try{
         if(req.headers['authorization']){
             const token = req.headers['authorization'].split(' ')[1]
-            jwt.verify(token, 'tokenPassword', (err, decoded)=>{
+            jwt.verify(token, process.env.JWT_TOKEN, (err, decoded)=>{
                 if(err)
                     return res.status(500).json({message: 'Token expirado, realize o login novamente.'})
                 

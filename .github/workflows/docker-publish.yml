@@ -88,7 +88,7 @@ jobs:
         
   deploy-production:
     name: Deploy to production
-    #needs: [sast-check_dependencies, sast-njsscan, dast-stackhawk]
+    needs: [sast-check_dependencies, sast-njsscan, dast-stackhawk]
     environment: production
     runs-on: ubuntu-latest
     permissions:

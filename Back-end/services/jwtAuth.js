@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
 async function jwtAuth(user){
@@ -8,7 +9,7 @@ async function jwtAuth(user){
             userSubsidio: user.userSubsidio
         }
 
-        const token = jwt.sign(userInfo, 'tokenPassword', {
+        const token = jwt.sign(userInfo, process.env.JWT_TOKEN, {
             expiresIn: '15m' // expira em 1 minutos
         })
 
