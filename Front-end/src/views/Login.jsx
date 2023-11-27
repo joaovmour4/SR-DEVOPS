@@ -15,6 +15,10 @@ export default function Login() {
     }, 3000);
   };
 
+  const irCadastro = () => {
+    navigate("/cadastro");
+  }
+
   return (
     <>
      <main className="container flex flex-col justify-center items-center flex-grow min-h-screen w-full mx-auto">
@@ -45,7 +49,7 @@ export default function Login() {
                 >
                   ENTRAR
                 </button>
-                <button className="cadastroVisitante bg-gray-300 p-2 hover:bg-gray-200" id="cadastroVisitante">
+                <button className="cadastroVisitante bg-gray-300 p-2 hover:bg-gray-200" id="cadastroVisitante" onClick={irCadastro}>
                   CADASTRO VISITANTE
                 </button>
               </div>

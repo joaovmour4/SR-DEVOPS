@@ -37,6 +37,7 @@ export default function Admin() {
       };
     };
 
+    const isMobile = window.innerWidth <= 767; // solução temporaria para media querie
 
   return (
     <div className="h-screen flex flex-col bg-gray-200">
@@ -84,17 +85,27 @@ export default function Admin() {
         isOpen={isUpdatePratosOpen}
         onRequestClose={closeUpdatePratos}
         style={{
-          content: {
+            content: {
             height: "80%",
             width: "80%",
             margin: "auto",
             borderRadius: "10px",
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
             gap: "20px",
-          },
+            alignItems: "center",
+            },
+            
+            "@media (max-width: 767px)": {
+            content: {
+                gridTemplateColumns: "1fr", 
+                width: "90%",
+                margin: 0,
+            },
+            },
         }}
-      >
+>
+
         {/* SEGUNDA */}
         <div className="p-4 shadow-md">
           <h2 className="text-center">SEGUNDA</h2>
