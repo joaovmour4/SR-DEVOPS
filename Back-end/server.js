@@ -12,9 +12,10 @@ app.use(express.urlencoded({extended:true}))
 // Importando os endpoints
 const userRoutes = require('./routes/userRoutes')
 const purchaseRoutes = require('./routes/purchaseRoutes')
+const pratoRoutes = require('./routes/pratoRoutes')
 
 // Configurando os middlewares
-app.use('/', userRoutes, purchaseRoutes)
+app.use('/', userRoutes, purchaseRoutes, pratoRoutes)
 app.use('/doc', swagger.serve, swagger.setup(swaggerFile))
 
 mongoose.set('strictQuery', false)
