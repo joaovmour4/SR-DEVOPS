@@ -27,7 +27,7 @@ export default function Login() {
             <form className="form_aluno text-center" onSubmit={(e) => e.preventDefault()}>
               <input
                 id="user"
-                className="nome bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4"
+                className="nome bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4 block"
                 type="email"
                 name="username"
                 placeholder="E-MAIL"
@@ -35,7 +35,7 @@ export default function Login() {
               />
               <input
                 id="password"
-                className="senha bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4"
+                className="senha bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4 block"
                 type="password"
                 name="pwd"
                 placeholder="SENHA"
