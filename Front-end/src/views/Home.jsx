@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Carousel from '../componentes/Carousel';
+import Carousel from '../componentes/Carousel/Carousel';
 import imgArrowDown from '../img/arrow_down.png';
 import imgArrowUp from '../img/arrow_up.png';
 

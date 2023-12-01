@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import img0 from '../img/ru0.jpg';
-import img1 from '../img/ru1.JPG';
-import img2 from '../img/ru2.JPG';
-import img3 from '../img/ru3.JPG';
-import img4 from '../img/ru4.JPG';
-import img5 from '../img/ru5.JPG';
+import img0 from '../../img/ru0.jpg';
+import img1 from '../../img/ru1.JPG';
+import img2 from '../../img/ru2.JPG';
+import img3 from '../../img/ru3.JPG';
+import img4 from '../../img/ru4.JPG';
+import img5 from '../../img/ru5.JPG';
 
 const Carrossel = () => {
   const [contador, setContador] = useState(0);

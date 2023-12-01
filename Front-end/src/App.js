@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from '../src/componentes/Header';
-import Footer from '../src/componentes/Footer';
+import Header from '../src/componentes/Header/Header';
+import Footer from '../src/componentes/Footer/Footer';
 import Home from '../src/views/Home';
 import Compra from '../src/views/Compra';
 import Cardapio from "../src/views/Cardapio";

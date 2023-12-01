@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CarouselCardapio from '../componentes/Carousel_do_cardapio';
+import CarouselCardapio from '../componentes/Carousel_do_cardapio/Carousel_do_cardapio';
 
 const CardapioData = {
   SEGUNDA: {
