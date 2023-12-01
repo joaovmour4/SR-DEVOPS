@@ -5,7 +5,7 @@ async function verifyJWT(req, res, next){
     try{
         if(req.headers['authorization']){
             const token = req.headers['authorization'].split(' ')[1]
-            jwt.verify(token, process.env.JWT_TOKEN, (err, decoded)=>{
+            jwt.verify(token, process.env.JWT_SECRET, (err, decoded)=>{
                 if(err)
                     return res.status(500).json({message: 'Token expirado, realize o login novamente.'})
                 

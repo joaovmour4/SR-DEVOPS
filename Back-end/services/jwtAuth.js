@@ -9,7 +9,7 @@ async function jwtAuth(user){
             userSubsidio: user.userSubsidio
         }
 
-        const token = jwt.sign(userInfo, process.env.JWT_TOKEN, {
+        const token = jwt.sign(userInfo, process.env.JWT_SECRET, {
             expiresIn: '15m' // expira em 1 minutos
         })
 
