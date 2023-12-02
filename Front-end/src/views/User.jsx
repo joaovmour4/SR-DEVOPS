@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import UserInfo from "../componentes/UserInfo/UserInfo";
 import UserButtons from "../componentes/UserButton/UserButton";
 import PurchaseHistoryModal from "../componentes/PurchaseHistoryModal/PurchaseHistoryModal";
-import AdminButtons from "../componentes/AdminButtons/AdminButtons"; // Importando AdminButtons
-import ModalGerenciamentoUsuarios from "../componentes/AdminManagerUser/AdminManagerUser"; // Importando ModalGerenciamentoUsuarios
-import SearchUser from "../componentes/SearchUser/SeachUser" // Importando SearchUser
-import UpdatePratos from "../componentes/UpdatePratos/UpdatePratos"; // Importando UpdatePratos
+import AdminButtons from "../componentes/AdminButtons/AdminButtons"; 
+import ModalGerenciamentoUsuarios from "../componentes/AdminManagerUser/AdminManagerUser";
+import SearchUser from "../componentes/SearchUser/SeachUser" 
+import UpdatePratos from "../componentes/UpdatePratos/UpdatePratos"; 
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
 
