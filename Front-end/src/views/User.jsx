@@ -15,16 +15,24 @@ const User = ({ userRole }) => {
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [roleUser, setRoleUser] = useState('')
 
   useEffect(() => {
-    if (state && state.userName) {
-      setUserName(state.userName);
-    } else {
-      setUserName('Nome Indisponível');
-    }
+    const userName = localStorage.getItem('userName');
+    const userRole = localStorage.getItem('userCargo');
+    const userSubsidio = localStorage.getItem('userSubsidio');
 
-    setIsAdmin(state && state.userRole === 'admin');
-  }, [state]);
+    setRoleUser(userRole)
+
+    setUserName(userName);
+    if (userRole === 'admin') {
+      setIsAdmin(true);
+    }
+  },[])
+
+
+
+
 
   const openModal = async () => {
     try {
@@ -48,7 +56,7 @@ const User = ({ userRole }) => {
   return (
     <>
       <main className="h-screen flex flex-col">
-        <UserInfo userName={userName} userRole={state && state.userRole} />
+        <UserInfo userName={userName} userRole={roleUser} />
         <UserButtons openModal={openModal} />
 
         {isAdmin && (

@@ -12,20 +12,23 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:3000/login", {
         userName: username,
-        userPassword: password
+        userPassword: password,
       });
-  
-      localStorage.setItem("userName", response.data.userName);
-      localStorage.setItem("token", response.data.jwtToken.token);
-  
+
+      const { user, message } = response.data
+
+      const { userName, _id, jwtToken, userCargo } = user
+
+      console.log(response.data)
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("_id", _id);
+      localStorage.setItem("token", jwtToken.token);
+      localStorage.setItem("userCargo", userCargo);
+
       setTimeout(() => {
-        navigate("/user", {
-          state: {
-            userName: response.data.userName,
-            userRole: response.data.jwtToken.userCargo
-          }
-        });
-      }, 1000);
+        navigate("/user");
+      })
+      setLoginEfetuado(true)
     } catch (error) {
       console.error("Erro no login:", error);
     }
@@ -45,7 +48,7 @@ const Login = () => {
               <input
                 id="user"
                 className="nome bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4 block"
-                type="email"
+                type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="E-MAIL"

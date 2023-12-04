@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import imgAluno from "../img/aluno.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Cadastro() {
+  const navigate = useNavigate();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -15,7 +17,16 @@ export default function Cadastro() {
         userPassword: senha
       });
 
-      console.log("Resposta do cadastro:", response);
+      console.log("Resposta do cadastro:", response.data);
+      const { userCargo, userName } = response.data.createdUser
+
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("userCargo", userCargo);
+
+      setTimeout(() => {
+        navigate("/user");
+      },1000)
+
 
     } catch (error) {
       console.error("Erro no cadastro:", error);
