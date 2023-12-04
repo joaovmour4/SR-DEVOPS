@@ -8,6 +8,7 @@ import SearchUser from "../componentes/SearchUser/SeachUser"
 import UpdatePratos from "../componentes/UpdatePratos/UpdatePratos"; 
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
+import jwt from 'jsonwebtoken'
 
 const User = ({ userRole }) => {
   const { state } = useLocation();
@@ -18,9 +19,14 @@ const User = ({ userRole }) => {
   const [roleUser, setRoleUser] = useState('')
 
   useEffect(() => {
-    const userName = localStorage.getItem('userName');
-    const userRole = localStorage.getItem('userCargo');
-    const userSubsidio = localStorage.getItem('userSubsidio');
+    jwt.verify(localStorage.getItem('token'), process.env.JWT_SECRET, (err, decoded)=>{
+      if(err)
+        console.log(err)
+        
+      const userName = decoded.userName;
+      const userRole = decoded.userCargo;
+      const userSubsidio = decoded.userSubsidio;
+    })
 
     setRoleUser(userRole)
 
