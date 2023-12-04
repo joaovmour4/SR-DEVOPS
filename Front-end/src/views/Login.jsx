@@ -1,43 +1,65 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import imgAcenando from "../img/aluno.png";
+import axios from 'axios';
 
-export default function Login() {
+const Login = () => {
   const [loginEfetuado, setLoginEfetuado] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const realizarLogin = () => {
-    setLoginEfetuado(true);
+  const realizarLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/login", {
+        userName: username,
+        userPassword: password,
+      });
 
-    setTimeout(() => {
-      navigate("/user");
-    }, );
+      const { user, message } = response.data
+
+      const { userName, _id, jwtToken, userCargo } = user
+
+      console.log(response.data)
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("_id", _id);
+      localStorage.setItem("token", jwtToken.token);
+      localStorage.setItem("userCargo", userCargo);
+
+      setTimeout(() => {
+        navigate("/user");
+      })
+      setLoginEfetuado(true)
+    } catch (error) {
+      console.error("Erro no login:", error);
+    }
   };
+  
 
   const irCadastro = () => {
     navigate("/cadastro");
-  }
+  };
 
   return (
     <>
-     <main className="container flex flex-col justify-center items-center flex-grow min-h-screen w-full mx-auto">
+      <main className="container flex flex-col justify-center items-center flex-grow min-h-screen w-full mx-auto">
         {!loginEfetuado ? (
           <div className="aluno flex flex-col items-center gap-4">
-            <img className="w-32 animate-bounce" src={imgAcenando} alt="GIF acenando" />
             <form className="form_aluno text-center" onSubmit={(e) => e.preventDefault()}>
               <input
                 id="user"
-                className="nome bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4"
-                type="email"
-                name="username"
+                className="nome bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4 block"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder="E-MAIL"
                 autoComplete="on"
               />
               <input
                 id="password"
-                className="senha bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4"
+                className="senha bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4 block"
                 type="password"
-                name="pwd"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="SENHA"
               />
               <div className="buttons grid grid-cols-1 gap-4 w-64 mx-auto">
@@ -58,4 +80,6 @@ export default function Login() {
       </main>
     </>
   );
-}
+};
+
+export default Login;

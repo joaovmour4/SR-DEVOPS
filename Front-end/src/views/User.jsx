@@ -1,12 +1,52 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import UserInfo from "../componentes/UserInfo/UserInfo";
+import UserButtons from "../componentes/UserButton/UserButton";
+import PurchaseHistoryModal from "../componentes/PurchaseHistoryModal/PurchaseHistoryModal";
+import AdminButtons from "../componentes/AdminButtons/AdminButtons"; 
+import ModalGerenciamentoUsuarios from "../componentes/AdminManagerUser/AdminManagerUser";
+import SearchUser from "../componentes/SearchUser/SeachUser" 
+import UpdatePratos from "../componentes/UpdatePratos/UpdatePratos"; 
+import { useLocation } from "react-router-dom";
+import axios from 'axios';
 
-export default function User() {
+const User = ({ userRole }) => {
+  const { state } = useLocation();
+  const [userName, setUserName] = useState('');
+  const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [roleUser, setRoleUser] = useState('')
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  useEffect(() => {
+    const userName = localStorage.getItem('userName');
+    const userRole = localStorage.getItem('userCargo');
+    const userSubsidio = localStorage.getItem('userSubsidio');
+
+    setRoleUser(userRole)
+
+    setUserName(userName);
+    if (userRole === 'admin') {
+      setIsAdmin(true);
+    }
+  },[])
+
+
+
+
+
+  const openModal = async () => {
+    try {
+      const response = await axios.get('/user/purchases', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      setPurchaseHistory(response.data);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('Erro ao obter o histórico de compras:', error);
+    }
   };
 
   const closeModal = () => {
@@ -16,57 +56,22 @@ export default function User() {
   return (
     <>
       <main className="h-screen flex flex-col">
-        <div className="h-80 flex flex-col items-center bg-gray-300 p-4 mb-8">
-          <div className="w-48 h-48 rounded-full bg-white mb-2"></div>
-          <div className="w-full text-center">
-            <div className="w-full text-center">
-              <p className="w-80 p-2 rounded mb-2 mx-auto">NOME DO USER</p>
-              <p>NÍVEL</p>
-            </div>
-          </div>
-        </div>
+        <UserInfo userName={userName} userRole={roleUser} />
+        <UserButtons openModal={openModal} />
 
-        <div className="flex flex-col items-center gap-5">
-          <div className="mb-4">
-            <button
-              className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700"
-              onClick={openModal}
-            >
-              HISTÓRICO
-            </button>
-          </div>
-          <div>
-          <Link to="/pagamento">
-            <button className="p-2 bg-green-500 text-white rounded hover:bg-green-700">
-              PAGAMENTO
-            </button>
-          </Link>  
-          </div>
-        </div>
+        {isAdmin && (
+          <>
+            <AdminButtons abrirModal={() => console.log('Abrir modal de admin')} />
+            <SearchUser handleClick={() => console.log('Buscar usuário')} />
+            <UpdatePratos handleSubmit={() => console.log('Atualizar pratos')} />
+          </>
+        )}
 
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          style={{
-            content: {
-              height: "70%",
-              width: "80%",
-              margin: "auto",
-              borderRadius: "10px",
-            },
-          }}
-        >
-          <div className="flex justify-end">
-            <button
-              className="text-red-500 hover:text-red-700 text-xl font-bold cursor-pointer"
-              onClick={closeModal}
-            >
-              X
-            </button>
-          </div>
-          <h2 className="text-center">Histórico de Compras</h2>
-        </Modal>
+        <ModalGerenciamentoUsuarios isOpen={isModalOpen} fecharModal={closeModal} listaUsuarios={[]} />
+        <PurchaseHistoryModal isOpen={isModalOpen} closeModal={closeModal} purchaseHistory={purchaseHistory} />
       </main>
     </>
   );
-}
+};
+
+export default User;

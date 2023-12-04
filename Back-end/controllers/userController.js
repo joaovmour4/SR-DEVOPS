@@ -63,10 +63,20 @@ module.exports = class userController{
 
             if(compare){
                 const jwtToken = await jwtAuth(userBD)
-                return res.status(200).json({message: 'Login efetuado com sucesso.', jwtToken})
+                return res.status(200).json({
+                    message: 'Login efetuado com sucesso.',
+                    user: { 
+                    userName: userBD.userName,
+                    _id: userBD._id,
+                    userCargo: userBD.userCargo,
+                    jwtToken: jwtToken
+                }})
             }else{
                 return res.status(401).json({message: 'Usuário ou senha incorretos.'})
             }
+
+
+
         }catch(error){
             return res.status(400).json({message: error.message})
         }
