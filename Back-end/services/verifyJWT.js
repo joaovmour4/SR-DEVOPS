@@ -11,6 +11,7 @@ async function verifyJWT(req, res, next){
                 
                 res.user = {
                     _id: decoded._id,
+                    userName: decoded.userName,
                     userCargo: decoded.userCargo,
                     userSubsidio: decoded.userSubsidio
                 }

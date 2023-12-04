@@ -5,6 +5,7 @@ async function jwtAuth(user){
     try{
         const userInfo = {
             _id: user._id, 
+            userName: user.userName,
             userCargo: user.userCargo, 
             userSubsidio: user.userSubsidio
         }
