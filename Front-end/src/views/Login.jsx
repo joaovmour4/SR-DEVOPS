@@ -20,10 +20,7 @@ const Login = () => {
       const { userName, _id, jwtToken, userCargo } = user
 
       console.log(response.data)
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("_id", _id);
       localStorage.setItem("token", jwtToken.token);
-      localStorage.setItem("userCargo", userCargo);
 
       setTimeout(() => {
         navigate("/user");

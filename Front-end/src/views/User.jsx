@@ -8,7 +8,7 @@ import SearchUser from "../componentes/SearchUser/SeachUser"
 import UpdatePratos from "../componentes/UpdatePratos/UpdatePratos"; 
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
-import jwt from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode'
 
 const User = ({ userRole }) => {
   const { state } = useLocation();
@@ -19,7 +19,7 @@ const User = ({ userRole }) => {
   const [roleUser, setRoleUser] = useState('')
 
   useEffect(() => {
-    const decoded = jwt.decode(localStorage.getItem('token'))
+    const decoded = jwtDecode(localStorage.getItem('token'))
     const userName = decoded.userName;
     const userRole = decoded.userCargo;
     const userSubsidio = decoded.userSubsidio;
