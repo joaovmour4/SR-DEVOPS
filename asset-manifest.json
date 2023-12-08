@@ -1,24 +1,29 @@
 {
   "files": {
-    "main.css": "/joaovmour4.github.io/SR-DEVOPS/static/css/main.29c30dc1.css",
-    "main.js": "/joaovmour4.github.io/SR-DEVOPS/static/js/main.11a0c425.js",
-    "static/js/787.6fc528e1.chunk.js": "/joaovmour4.github.io/SR-DEVOPS/static/js/787.6fc528e1.chunk.js",
-    "static/media/ru2.JPG": "/joaovmour4.github.io/SR-DEVOPS/static/media/ru2.0d495edf6ab3ff2a4217.JPG",
-    "static/media/ru3.JPG": "/joaovmour4.github.io/SR-DEVOPS/static/media/ru3.f275f712454c159849b1.JPG",
-    "static/media/ru4.JPG": "/joaovmour4.github.io/SR-DEVOPS/static/media/ru4.c03747a7ae4e6f5c056b.JPG",
-    "static/media/ru5.JPG": "/joaovmour4.github.io/SR-DEVOPS/static/media/ru5.e5af5750a356f49dd61d.JPG",
-    "static/media/ru1.JPG": "/joaovmour4.github.io/SR-DEVOPS/static/media/ru1.cd0767f862c9b7794667.JPG",
-    "static/media/ru0.jpg": "/joaovmour4.github.io/SR-DEVOPS/static/media/ru0.ee72ec62e0b7c970fa94.jpg",
-    "static/media/aluno.png": "/joaovmour4.github.io/SR-DEVOPS/static/media/aluno.ade8ef5ca406ef0ce4f4.png",
-    "static/media/contato.svg": "/joaovmour4.github.io/SR-DEVOPS/static/media/contato.628cdf0ef7b4cdca0c76f426e5c9e4c3.svg",
-    "static/media/instagram.svg": "/joaovmour4.github.io/SR-DEVOPS/static/media/instagram.a63c9476fa83b33ffc32894544c5ccb7.svg",
-    "index.html": "/joaovmour4.github.io/SR-DEVOPS/index.html",
-    "main.29c30dc1.css.map": "/joaovmour4.github.io/SR-DEVOPS/static/css/main.29c30dc1.css.map",
-    "main.11a0c425.js.map": "/joaovmour4.github.io/SR-DEVOPS/static/js/main.11a0c425.js.map",
-    "787.6fc528e1.chunk.js.map": "/joaovmour4.github.io/SR-DEVOPS/static/js/787.6fc528e1.chunk.js.map"
+    "main.css": "/SR-DEVOPS/static/css/main.680bfd84.css",
+    "main.js": "/SR-DEVOPS/static/js/main.eaf49920.js",
+    "static/js/787.6fc528e1.chunk.js": "/SR-DEVOPS/static/js/787.6fc528e1.chunk.js",
+    "static/media/ru2.JPG": "/SR-DEVOPS/static/media/ru2.0d495edf6ab3ff2a4217.JPG",
+    "static/media/ru3.JPG": "/SR-DEVOPS/static/media/ru3.f275f712454c159849b1.JPG",
+    "static/media/ru4.JPG": "/SR-DEVOPS/static/media/ru4.c03747a7ae4e6f5c056b.JPG",
+    "static/media/ru5.JPG": "/SR-DEVOPS/static/media/ru5.e5af5750a356f49dd61d.JPG",
+    "static/media/ru1.JPG": "/SR-DEVOPS/static/media/ru1.cd0767f862c9b7794667.JPG",
+    "static/media/ru0.jpg": "/SR-DEVOPS/static/media/ru0.ee72ec62e0b7c970fa94.jpg",
+    "static/media/qrcode.jpeg": "/SR-DEVOPS/static/media/qrcode.460c8fffe478c4bb6ca6.jpeg",
+    "static/media/aluno.png": "/SR-DEVOPS/static/media/aluno.ade8ef5ca406ef0ce4f4.png",
+    "static/media/slick.svg": "/SR-DEVOPS/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/contato.svg": "/SR-DEVOPS/static/media/contato.628cdf0ef7b4cdca0c76f426e5c9e4c3.svg",
+    "static/media/slick.eot": "/SR-DEVOPS/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/SR-DEVOPS/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/SR-DEVOPS/static/media/slick.295183786cd8a1389865.woff",
+    "static/media/instagram.svg": "/SR-DEVOPS/static/media/instagram.a63c9476fa83b33ffc32894544c5ccb7.svg",
+    "index.html": "/SR-DEVOPS/index.html",
+    "main.680bfd84.css.map": "/SR-DEVOPS/static/css/main.680bfd84.css.map",
+    "main.eaf49920.js.map": "/SR-DEVOPS/static/js/main.eaf49920.js.map",
+    "787.6fc528e1.chunk.js.map": "/SR-DEVOPS/static/js/787.6fc528e1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.29c30dc1.css",
-    "static/js/main.11a0c425.js"
+    "static/css/main.680bfd84.css",
+    "static/js/main.eaf49920.js"
   ]
 }
