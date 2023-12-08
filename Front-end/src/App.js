@@ -9,6 +9,7 @@ import Cadastro from '../src/views/Cadastro';
 import Login from './views/Login';
 import Pagamento from './views/Pagamento';
 import User from './views/User';
+import ControlheUsuario from './views/ControlheUsuario';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/pagamento" element={<Pagamento />} />
           <Route path="/user" element={<User/>}/>
+          <Route path="/controlheusuario" element={<ControlheUsuario/>}/>
         </Routes>
         <Footer />
       </>
