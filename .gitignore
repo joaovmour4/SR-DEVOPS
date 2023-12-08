@@ -10,7 +10,7 @@ node_modules
 /Back-end/api/swagger_output.json
 
 # production
-/build
+build
 
 # misc
 .DS_Store

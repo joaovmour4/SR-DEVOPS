@@ -10,6 +10,7 @@ import Login from './views/Login';
 import Pagamento from './views/Pagamento';
 import User from './views/User';
 import ControlheUsuario from './views/ControlheUsuario';
+import AdicionarPratos from './views/AdicionarPratos'
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/pagamento" element={<Pagamento />} />
           <Route path="/user" element={<User/>}/>
           <Route path="/controlheusuario" element={<ControlheUsuario/>}/>
+          <Route path="/adicionarpratos" element={<AdicionarPratos/>}/>
         </Routes>
         <Footer />
       </>

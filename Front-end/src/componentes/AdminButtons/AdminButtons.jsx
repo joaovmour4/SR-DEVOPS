@@ -2,39 +2,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 
-const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, handleUpdatePratos, listaUsuarios }) => {
+const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, listaUsuarios }) => {
   return (
     <div className="flex flex-col items-center gap-5 max-w-35 min-w-35">
       <div className="mb-4">
-        <button
-          className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700"
-          onClick={abrirModal}
-        >
-          GERENCIAR USUÁRIOS
-        </button>
+        <Link to="/controlheusuario">
+          <button
+            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8"
+            onClick={abrirModal}
+          >
+            GERENCIAR USUÁRIOS
+          </button>
+        </Link>
       </div>
       <div>
-        <button
+        {/* <button
           className="p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
           onClick={handleSearchUser}
         >
-          Buscar Usuário
-        </button>
+          BUSCAR USUÁRIO
+        </button> */}
       </div>
       <div>
-        <button
-          className="p-2 bg-green-500 text-white rounded hover:bg-green-700"
-          onClick={handleUpdatePratos}
-        >
-          Atualizar Pratos
-        </button>
+        <Link to="/adicionarpratos">
+          <button className="p-2 bg-green-500 text-white rounded hover:bg-green-700">
+            ATUALIZAR PRATOS
+          </button>
+        </Link>
       </div>
       <div>
-        <Link to="/configuracoes">
+        {/* <Link to="/configuracoes">
           <button className="p-2 bg-blue-500 text-white rounded hover:bg-blue-700">
             CONFIGURAÇÕES
           </button>
-        </Link>
+        </Link> */}
       </div>
 
       {/* Modal de Gerenciamento de Usuários */}

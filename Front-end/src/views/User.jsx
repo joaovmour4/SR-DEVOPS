@@ -7,13 +7,13 @@ import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-const User = ({ userRole }) => {
+const User = () => {
   const { state } = useLocation();
   const [userName, setUserName] = useState('');
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [roleUser, setRoleUser] = useState('')
+  const [roleUser, setRoleUser] = useState('');
 
   useEffect(() => {
     const decoded = jwtDecode(localStorage.getItem('token'))
@@ -68,7 +68,17 @@ const User = ({ userRole }) => {
             fecharModal={closeModal}
             handleSearchUser={handleSearchUser}
             handleUpdatePratos={handleUpdatePratos}
-            listaUsuarios={[]}  // Alista de usuários
+            listaUsuarios={[]}  // lista de usuários
+          />
+        )}
+
+        {roleUser === 'tec' && (
+          <UserButtons
+            isOpen={isModalOpen}
+            abrirModal={openModal}
+            fecharModal={closeModal}
+            handleSearchUser={handleSearchUser}
+            handleUpdatePratos={handleUpdatePratos}
           />
         )}
 
