@@ -101,7 +101,7 @@ export default function ControleUsuario() {
         )}
 
         {isEdicaoAtiva && (
-          <div className="flex items-center mt-2 justify-center">
+          <div className="flex items-center mt-2 justify-center flex-col mb-4">
             <input
               type="text"
               className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 leading-tight focus:outline-none focus:shadow-outline"
