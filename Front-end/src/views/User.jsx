@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import UserInfo from "../componentes/UserInfo/UserInfo";
 import UserButtons from "../componentes/UserButton/UserButton";
 import PurchaseHistoryModal from "../componentes/PurchaseHistoryModal/PurchaseHistoryModal";
 import AdminButtons from "../componentes/AdminButtons/AdminButtons"
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { AuthContext } from '../Context/AuthContext';
 
 const User = () => {
-  const { state } = useLocation();
+
+  const { signed, user } = useContext(AuthContext)
+  
   const [userName, setUserName] = useState('');
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,17 +19,14 @@ const User = () => {
   const [roleUser, setRoleUser] = useState('');
 
   useEffect(() => {
-    const decoded = jwtDecode(localStorage.getItem('token'))
-    const userName = decoded.userName;
-    const userRole = decoded.userCargo;
-
-    setRoleUser(userRole)
-
-    setUserName(userName);
-    if (userRole === 'admin') {
-      setIsAdmin(true);
+    if (signed) {
+      setRoleUser(user.userCargo)
+      if (roleUser === 'admin') {
+        setIsAdmin(true)
+      }
+      setUserName(user.userName)
     }
-  }, [])
+  },[signed])
 
   const openModal = async () => {
     try {
@@ -57,11 +57,12 @@ const User = () => {
 
   return (
     <>
-      <main className="h-screen flex flex-col mb-12">
+      {signed ? (
+        <main className="h-screen flex flex-col mb-12">
         <UserInfo userName={userName} userRole={roleUser} />
         <UserButtons openModal={openModal} />
 
-        {isAdmin && (
+        {roleUser === 'admin' && (
           <AdminButtons
             isOpen={isModalOpen}
             abrirModal={openModal}
@@ -72,18 +73,12 @@ const User = () => {
           />
         )}
 
-        {roleUser === 'tec' && (
-          <UserButtons
-            isOpen={isModalOpen}
-            abrirModal={openModal}
-            fecharModal={closeModal}
-            handleSearchUser={handleSearchUser}
-            handleUpdatePratos={handleUpdatePratos}
-          />
-        )}
-
         <PurchaseHistoryModal isOpen={isModalOpen} closeModal={closeModal} purchaseHistory={purchaseHistory} />
       </main>
+      ): (
+        <Navigate to="/login" />
+      )
+      }
     </>
   );
 };

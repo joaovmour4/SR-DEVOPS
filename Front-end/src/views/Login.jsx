@@ -1,47 +1,38 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from '../Context/AuthContext';
+import { Link } from "react-router-dom";
 
 const Login = () => {
+  const { login, signed } = useContext(AuthContext)
   const [loginEfetuado, setLoginEfetuado] = useState(false);
-  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const realizarLogin = async () => {
+  function handleSubmit(e){
+    if (username === '' || password === '') return alert('Preencha todos os campos')
+    e.preventDefault()
+    setUsername(username)
+    setPassword(password)
     try {
-      const response = await axios.post("http://localhost:3000/login", {
-        userName: username,
-        userPassword: password,
-      });
-
-      const { user, message } = response.data
-
-      const { userName, _id, jwtToken, userCargo } = user
-
-      console.log(response.data)
-      localStorage.setItem("token", jwtToken.token);
-
-      setTimeout(() => {
-        navigate("/user");
-      })
-      setLoginEfetuado(true)
-    } catch (error) {
-      console.error("Erro no login:", error);
+      login({nameUser: username, passowrdUser: password})
+    } catch ( err ) {
+      console.error('Erro no login:', err)
     }
-  };
-  
+  }
 
-  const irCadastro = () => {
-    navigate("/cadastro");
-  };
+  useEffect(() => {
+    if (signed) {
+      setLoginEfetuado(true)
+    }
+
+  },[signed])
 
   return (
     <>
       <main className="container flex flex-col justify-center items-center flex-grow min-h-screen w-full mx-auto">
-        {!loginEfetuado ? (
+        {!signed ? (
           <div className="aluno flex flex-col items-center gap-4">
-            <form className="form_aluno text-center" onSubmit={(e) => e.preventDefault()}>
+            <form className="form_aluno text-center" onSubmit={handleSubmit}>
               <input
                 id="user"
                 className="nome bg-gray-300 rounded-md p-2 box-shadow w-64 mb-2 md:mx-4 block"
@@ -61,19 +52,19 @@ const Login = () => {
               />
               <div className="buttons grid grid-cols-1 gap-4 w-64 mx-auto">
                 <button
-                  onClick={realizarLogin}
+                  onClick={handleSubmit}
                   className="entrar_aluno bg-green-500 text-white p-2 hover:bg-green-600"
                   id="entrarAluno"
                 >
                   ENTRAR
                 </button>
-                <button className="cadastroVisitante bg-gray-300 p-2 hover:bg-gray-200" id="cadastroVisitante" onClick={irCadastro}>
+                <Link to={'/cadastro'} className="cadastroVisitante bg-gray-300 p-2 hover:bg-gray-200" id="cadastroVisitante">
                   CADASTRO VISITANTE
-                </button>
+                </Link>
               </div>
             </form>
           </div>
-        ) : null}
+        ) : <div>Você já esta logado <Link to={"/user"}>Ir para User</Link></div>}
       </main>
     </>
   );

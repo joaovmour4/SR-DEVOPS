@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../Context/AuthContext';
 
 export default function ControleUsuario() {
+  const { user } = useContext(AuthContext);
   const [idUsuario, setIdUsuario] = useState('');
   const [usuarioEncontrado, setUsuarioEncontrado] = useState(null);
   const [mostrarInputBusca, setMostrarInputBusca] = useState(true);
@@ -13,57 +15,54 @@ export default function ControleUsuario() {
   const [historicoCompras, setHistoricoCompras] = useState([]);
   const [isHistoricoVisivel, setHistoricoVisivel] = useState(false);
 
-  useEffect(() => {
-    if (usuarioEncontrado) {
-      setNovoNome(usuarioEncontrado.userName);
-    }
-  }, [usuarioEncontrado]);
+  // useEffect(() => {
+  //   if (usuarioEncontrado) {
+  //     setNovoNome(usuarioEncontrado.userName);
+  //   }
+  // }, [usuarioEncontrado]);
+
+  console.log(user)
 
   const handleBuscarUsuario = () => {
-    axios.get(`http://localhost:3000/user?userName=${idUsuario}`)
-      .then(response => {
-        const foundUser = response.data.message[0];
-        setUsuarioEncontrado({
-          userId: foundUser._id,
-          userName: foundUser.userName,
-          userPassword: foundUser.userPassword,
-          userEmail: foundUser.userEmail,
-          userSubsidio: foundUser.userSubsidio,
-          userCargo: foundUser.userCargo,
-          userPurchases: foundUser.userPurchases,
-        });
-        setMostrarInputBusca(false);
-        setMostrarBotoes(true);
-      })
-      .catch(error => {
-        console.error('Erro ao buscar o usuário:', error);
-        setUsuarioEncontrado(null);
-        setMostrarBotoes(false);
-        setMostrarInputBusca(true);
-        setEdicaoAtiva(false);
-        setHistoricoVisivel(false);
-      });
+    // Suponha que você tenha o token armazenado em algum lugar, como em uma variável chamada authToken
+    const authToken = user.jwtToken.token
+  
+    axios.get(`http://localhost:3000/user`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+    .then(response => {
+      console.log(response.data.message)
+      setUsuarioEncontrado(response.data.message.find(user => user.userName === idUsuario));
+      setMostrarInputBusca(false);
+      setMostrarBotoes(true);
+    })
+    .catch(error => {
+      console.error(error);
+      // Trate o erro aqui, se necessário
+    });
   };
 
-  const handleAlterarDados = () => {
-    axios.put(`http://localhost:3000/user/${usuarioEncontrado.userId}`, {
-      userName: novoNome,
-      userPassword: novaSenha,
-      userEmail: novoEmail,
-    })
-      .then(response => {
-        console.log('Dados do usuário atualizados com sucesso!');
-        setEdicaoAtiva(false);
-        setUsuarioEncontrado({
-          ...usuarioEncontrado,
-          userName: novoNome,
-          userEmail: novoEmail,
-        });
-      })
-      .catch(error => {
-        console.error('Erro ao atualizar os dados do usuário:', error);
-      });
-  };
+  // const handleAlterarDados = () => {
+  //   axios.put(`http://localhost:3000/user/${usuarioEncontrado.userId}`, {
+  //     userName: novoNome,
+  //     userPassword: novaSenha,
+  //     userEmail: novoEmail,
+  //   })
+  //     .then(response => {
+  //       console.log('Dados do usuário atualizados com sucesso!');
+  //       setEdicaoAtiva(false);
+  //       setUsuarioEncontrado({
+  //         ...usuarioEncontrado,
+  //         userName: novoNome,
+  //         userEmail: novoEmail,
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.error('Erro ao atualizar os dados do usuário:', error);
+  //     });
+  // };
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -89,6 +88,7 @@ export default function ControleUsuario() {
         {mostrarBotoes && (
           <div className="mb-4">
             <p className="text-gray-700 text-sm font-bold mb-2">Nome do Usuário: {usuarioEncontrado?.userName}</p>
+            <p className="text-gray-700 text-sm font-bold mb-2">Id usuário: {usuarioEncontrado?._id}</p>
             {!isEdicaoAtiva && (
               <button
                 className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline items-center"
@@ -125,7 +125,7 @@ export default function ControleUsuario() {
             />
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={handleAlterarDados}
+              // onClick={handleAlterarDados}
             >
               Confirmar
             </button>

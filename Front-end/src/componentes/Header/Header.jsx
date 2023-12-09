@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from 'react-router-dom';
 import imgRU from "../../img/RU-por-extenso-b 1.png";
 import imgCardapio from "../../img/cardapio.png";
 import imgLogin from "../../img/login.png";
 
+import { AuthContext } from '../../Context/AuthContext';
+
 export default function Header() {
+
+  const { signed } = useContext(AuthContext)
   return (
     <section>
       <header className="bg-cor-um flex grow-0 justify-center">
@@ -21,9 +25,15 @@ export default function Header() {
         </p>
         <p className="flex flex-col items-center">
           <img className="h-8 w-8" src={imgLogin} alt="img do login" />
-          <Link className="bg-gray-300 text-sm" to={"/login"}>
-            LOGIN
-          </Link>
+          {!signed ? (
+            <Link className="text-sm" to={"/login"}>
+              LOGIN
+            </Link>
+          ) : (
+            <Link className="text-sm" to={"/user"}>
+              USUÁRIO
+            </Link>
+          )}
         </p>
       </nav>
       </section>

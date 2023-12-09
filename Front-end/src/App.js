@@ -11,11 +11,13 @@ import Pagamento from './views/Pagamento';
 import User from './views/User';
 import ControlheUsuario from './views/ControlheUsuario';
 import AdicionarPratos from './views/AdicionarPratos'
+import { AuthProvider } from './Context/AuthContext';
 
 export default function App() {
   return (
     <BrowserRouter>
       <>
+      <AuthProvider>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -29,6 +31,7 @@ export default function App() {
           <Route path="/adicionarpratos" element={<AdicionarPratos/>}/>
         </Routes>
         <Footer />
+      </AuthProvider>
       </>
     </BrowserRouter>
   );
