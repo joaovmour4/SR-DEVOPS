@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/SR-DEVOPS/Front-end/static/css/main.44735b0e.css",
-    "main.js": "/SR-DEVOPS/Front-end/static/js/main.fbb39498.js",
+    "main.css": "/SR-DEVOPS/Front-end/static/css/main.1d42882e.css",
+    "main.js": "/SR-DEVOPS/Front-end/static/js/main.ad72ddd1.js",
     "static/js/787.6fc528e1.chunk.js": "/SR-DEVOPS/Front-end/static/js/787.6fc528e1.chunk.js",
     "static/media/ru2.JPG": "/SR-DEVOPS/Front-end/static/media/ru2.0d495edf6ab3ff2a4217.JPG",
     "static/media/ru3.JPG": "/SR-DEVOPS/Front-end/static/media/ru3.f275f712454c159849b1.JPG",
@@ -18,12 +18,12 @@
     "static/media/slick.woff": "/SR-DEVOPS/Front-end/static/media/slick.295183786cd8a1389865.woff",
     "static/media/instagram.svg": "/SR-DEVOPS/Front-end/static/media/instagram.a63c9476fa83b33ffc32894544c5ccb7.svg",
     "index.html": "/SR-DEVOPS/Front-end/index.html",
-    "main.44735b0e.css.map": "/SR-DEVOPS/Front-end/static/css/main.44735b0e.css.map",
-    "main.fbb39498.js.map": "/SR-DEVOPS/Front-end/static/js/main.fbb39498.js.map",
+    "main.1d42882e.css.map": "/SR-DEVOPS/Front-end/static/css/main.1d42882e.css.map",
+    "main.ad72ddd1.js.map": "/SR-DEVOPS/Front-end/static/js/main.ad72ddd1.js.map",
     "787.6fc528e1.chunk.js.map": "/SR-DEVOPS/Front-end/static/js/787.6fc528e1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.44735b0e.css",
-    "static/js/main.fbb39498.js"
+    "static/css/main.1d42882e.css",
+    "static/js/main.ad72ddd1.js"
   ]
 }
