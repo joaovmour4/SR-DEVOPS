@@ -46,7 +46,6 @@ export default function ControleUsuario() {
   };
 
   const handleAlterarDados = () => {
-    // Realizar o PUT na rota http://localhost:3000/user/{id} com os dados atualizados
     axios.put(`http://localhost:3000/user/${usuarioEncontrado.userId}`, {
       userName: novoNome,
       userPassword: novaSenha,
