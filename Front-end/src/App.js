@@ -11,6 +11,8 @@ import Pagamento from './views/Pagamento';
 import User from './views/User';
 import ControlheUsuario from './views/ControlheUsuario';
 import AdicionarPratos from './views/AdicionarPratos'
+import ListUser from './views/ListUser';
+import ListPratos from './views/ListPratos'
 import { AuthProvider } from './Context/AuthContext';
 
 export default function App() {
@@ -29,6 +31,8 @@ export default function App() {
           <Route path="/user" element={<User/>}/>
           <Route path="/controlheusuario" element={<ControlheUsuario/>}/>
           <Route path="/adicionarpratos" element={<AdicionarPratos/>}/>
+          <Route path="/listuser" element={<ListUser/>}/>
+          <Route path="/listpratos" element={<ListPratos/>}/>
         </Routes>
         <Footer />
       </AuthProvider>

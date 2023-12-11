@@ -15,27 +15,21 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
           </button>
         </Link>
       </div>
-      <div>
-        {/* <button
-          className="p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-          onClick={handleSearchUser}
-        >
-          BUSCAR USUÁRIO
-        </button> */}
-      </div>
+      <Link to="/listpratos">
+          <button
+            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8"
+            onClick={abrirModal}
+          >
+            VISUALIZAR PRATOS E CARDAPIO
+          </button>
+        </Link>
       <div>
         <Link to="/adicionarpratos">
           <button className="p-2 bg-green-500 text-white rounded hover:bg-green-700">
             ATUALIZAR PRATOS
           </button>
         </Link>
-      </div>
-      <div>
-        {/* <Link to="/configuracoes">
-          <button className="p-2 bg-blue-500 text-white rounded hover:bg-blue-700">
-            CONFIGURAÇÕES
-          </button>
-        </Link> */}
+        
       </div>
 
       {/* Modal de Gerenciamento de Usuários */}
