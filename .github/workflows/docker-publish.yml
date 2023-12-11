@@ -74,7 +74,7 @@ jobs:
           touch ./Back-end/.env
 
       - name: start containers
-        run: docker-compose -f ./Back-end/docker-compose.yml up -d
+        run: docker-compose -f ./Back-end/docker-compose.yml up -d --build
 
       - name: scan my app
         uses: stackhawk/hawkscan-action@v2.1.2
