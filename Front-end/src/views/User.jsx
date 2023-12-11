@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import UserInfo from "../componentes/UserInfo/UserInfo";
 import UserButtons from "../componentes/UserButton/UserButton";
+import AdminButtons from "../componentes/AdminButtons/AdminButtons";
 import PurchaseHistoryModal from "../componentes/PurchaseHistoryModal/PurchaseHistoryModal";
-import AdminButtons from "../componentes/AdminButtons/AdminButtons"
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from '../Context/AuthContext';
 
 const User = () => {
-
-  const { signed, user } = useContext(AuthContext)
+  const { signed, user } = useContext(AuthContext);
   
   const [userName, setUserName] = useState('');
   const [purchaseHistory, setPurchaseHistory] = useState([]);
@@ -20,13 +18,11 @@ const User = () => {
 
   useEffect(() => {
     if (signed) {
-      setRoleUser(user.userCargo)
-      if (roleUser === 'admin') {
-        setIsAdmin(true)
-      }
-      setUserName(user.userName)
+      setRoleUser(user.userCargo);
+      setIsAdmin(roleUser === 'admin');
+      setUserName(user.userName);
     }
-  },[signed])
+  }, [signed, roleUser, user]);
 
   const openModal = async () => {
     try {
@@ -56,30 +52,27 @@ const User = () => {
   };
 
   return (
-    <>
+    <div>
       {signed ? (
         <main className="h-screen flex flex-col mb-12">
-        <UserInfo userName={userName} userRole={roleUser} />
-        <UserButtons openModal={openModal} />
+          <UserInfo userName={userName} userRole={roleUser} />
+          
+          {isAdmin ? (
+            <AdminButtons
+              handleSearchUser={handleSearchUser}
+              handleUpdatePratos={handleUpdatePratos}
+              listaUsuarios={[]}  // lista de usuários
+            />
+          ) : (
+            <UserButtons openModal={openModal} />
+          )}
 
-        {roleUser === 'admin' && (
-          <AdminButtons
-            isOpen={isModalOpen}
-            abrirModal={openModal}
-            fecharModal={closeModal}
-            handleSearchUser={handleSearchUser}
-            handleUpdatePratos={handleUpdatePratos}
-            listaUsuarios={[]}  // lista de usuários
-          />
-        )}
-
-        <PurchaseHistoryModal isOpen={isModalOpen} closeModal={closeModal} purchaseHistory={purchaseHistory} />
-      </main>
-      ): (
+          <PurchaseHistoryModal isOpen={isModalOpen} closeModal={closeModal} purchaseHistory={purchaseHistory} />
+        </main>
+      ) : (
         <Navigate to="/login" />
-      )
-      }
-    </>
+      )}
+    </div>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const ListaPratos = () => {
@@ -59,12 +60,14 @@ const ListaPratos = () => {
         <p className="text-xl font-semibold">
           Total de pratos adicionados: {contadorPratos}
         </p>
+        <Link to="/pagamento">
         <button
           className="bg-green-500 text-white py-2 px-4 rounded-md mt-2 mb-8"
           onClick={handlePagar}
         >
           Pagar
         </button>
+      </Link>
       </div>
     </div>
   );

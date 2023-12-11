@@ -6,26 +6,38 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
   return (
     <div className="flex flex-col items-center gap-5 max-w-35 min-w-35">
       <div className="mb-4">
+        <Link to="/listuser">
+          <button
+            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8 min-w-[265px]"
+            onClick={abrirModal}
+          >
+            LISTA USUÁRIOS
+          </button>
+        </Link>
+      </div>
+      <div className="mb-4">  
         <Link to="/controlheusuario">
           <button
-            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8"
+            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]"
             onClick={abrirModal}
           >
             GERENCIAR USUÁRIOS
           </button>
         </Link>
       </div>
+      <div className="mb-4">
       <Link to="/listpratos">
           <button
-            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8"
+            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]"
             onClick={abrirModal}
           >
-            VISUALIZAR PRATOS E CARDAPIO
+            VISUALIZAR PRATOS E CARDÁPIO
           </button>
         </Link>
-      <div>
+      </div>
+      <div className="mb-10">
         <Link to="/adicionarpratos">
-          <button className="p-2 bg-green-500 text-white rounded hover:bg-green-700">
+          <button className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700  mb-10 min-w-[265px]">
             ATUALIZAR PRATOS
           </button>
         </Link>
