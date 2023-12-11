@@ -9,9 +9,9 @@ app:
   authentication: 
     usernamePassword:
       loginPath: /login
-      usernameField: "userName"
-      passwordField: "userPassword"
-      scanUsername: user
+      usernameField: userName
+      passwordField: userPassword
+      scanUsername: tec
       scanPassword: password
       type: JSON
     tokenExtraction: 
