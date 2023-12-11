@@ -19,6 +19,15 @@ app:
     tokenAuthorization: 
       type: HEADER
       value: Authorization
+    loggedInIndicator: Login efetuado com sucesso
+    loggedOutIndicator: Logout efetuado com sucesso
+    testPath:
+      type: HEADER
+      path: /user
+      success: ".*200.*"
+      requestMethod: GET
+      requestHeaders:
+        Content-Type: "application/json"
 
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
