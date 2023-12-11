@@ -3,9 +3,12 @@ const express = require('express')
 const mongoose = require('mongoose')
 const swagger = require('swagger-ui-express')
 const swaggerFile = require('./api/swagger_output.json')
+const cors = require('cors')
 
 // Definições do app
 const app = express()
+app.disable('x-powered-by')
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
