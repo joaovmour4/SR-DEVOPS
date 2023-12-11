@@ -9,10 +9,11 @@ app:
   authentication: 
     usernamePassword:
       loginPath: /login
-      usernameField: userName
-      passwordField: userPassword
+      usernameField: "userName"
+      passwordField: "userPassword"
       scanUsername: "admin"
       scanPassword: "password"
+      type: application/json
     tokenExtraction: 
       type: TOKEN_PATH
       value: user.jwtToken.token
