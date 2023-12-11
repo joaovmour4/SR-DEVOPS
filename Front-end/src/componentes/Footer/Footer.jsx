@@ -18,10 +18,10 @@ export default function Footer(){
                     </a>
                 </div>
                 <div className="bg-cor-quatro flex flex-wrap justify-between p-2 md:p-4">
-                    <picture class="informacao">
+                    <picture>
                         <img src={informacao} alt="imagem informação"/>
                     </picture>
-                    <picture class="brasil">
+                    <picture>
                         <img src={brasil} alt="imagem da logo do brasil"/>
                     </picture>
                 </div>

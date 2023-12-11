@@ -2,7 +2,7 @@ import ListaUsuarios from '../componentes/ListaUsusarios/ListaUsuarios'
 
 export default function ListUser (){
     return(
-        <main>  
+        <main className='min-h-screen'>  
             <ListaUsuarios/>
         </main>
     );

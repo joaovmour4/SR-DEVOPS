@@ -21,19 +21,20 @@ export default function ControleUsuario() {
   //   }
   // }, [usuarioEncontrado]);
 
+  useEffect(() => {
+    console.log(usuarioEncontrado)
+  },[usuarioEncontrado])
+
   console.log(user)
 
-  const handleBuscarUsuario = () => {
+  const handleBuscarUsuario = async () => {
     // Suponha que você tenha o token armazenado em algum lugar, como em uma variável chamada authToken
-    const authToken = user.jwtToken.token
-  
-    axios.get(`http://localhost:3000/user`, {
+    await axios.get(`http://localhost:3000/user`, {
       headers: {
-        Authorization: `Bearer ${authToken}`,
+        Authorization: `Bearer ${user.jwtToken.token}`,
       },
     })
     .then(response => {
-      console.log(response.data.message)
       setUsuarioEncontrado(response.data.message.find(user => user.userName === idUsuario));
       setMostrarInputBusca(false);
       setMostrarBotoes(true);
@@ -44,25 +45,29 @@ export default function ControleUsuario() {
     });
   };
 
-  // const handleAlterarDados = () => {
-  //   axios.put(`http://localhost:3000/user/${usuarioEncontrado.userId}`, {
-  //     userName: novoNome,
-  //     userPassword: novaSenha,
-  //     userEmail: novoEmail,
-  //   })
-  //     .then(response => {
-  //       console.log('Dados do usuário atualizados com sucesso!');
-  //       setEdicaoAtiva(false);
-  //       setUsuarioEncontrado({
-  //         ...usuarioEncontrado,
-  //         userName: novoNome,
-  //         userEmail: novoEmail,
-  //       });
-  //     })
-  //     .catch(error => {
-  //       console.error('Erro ao atualizar os dados do usuário:', error);
-  //     });
-  // };
+  const handleAlterarDados = async () => {
+    await axios.put(`http://localhost:3000/user/${usuarioEncontrado._id}`, {
+      userName: novoNome,
+      userPassword: novaSenha,
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
+      .then(response => {
+        console.log('Dados do usuário atualizados com sucesso!');
+        setEdicaoAtiva(false);
+        setUsuarioEncontrado({
+          ...usuarioEncontrado,
+          userName: novoNome,
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar os dados do usuário:', error);
+      });
+  };
+
+
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -117,16 +122,9 @@ export default function ControleUsuario() {
               value={novaSenha}
               onChange={(e) => setNovaSenha(e.target.value)}
             />
-            <input
-              type="text"
-              className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Novo Email"
-              value={novoEmail}
-              onChange={(e) => setNovoEmail(e.target.value)}
-            />
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              // onClick={handleAlterarDados}
+              onClick={handleAlterarDados}
             >
               Confirmar
             </button>

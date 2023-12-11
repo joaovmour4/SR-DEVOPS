@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "react-modal";
 
 const PurchaseHistoryModal = ({ isOpen, closeModal, purchaseHistory }) => {
+
   return (
     <Modal
       isOpen={isOpen}
@@ -26,7 +27,7 @@ const PurchaseHistoryModal = ({ isOpen, closeModal, purchaseHistory }) => {
       <h2 className="text-center">Histórico de Compras</h2>
       <ul>
         {purchaseHistory.map((purchase, index) => (
-          <li key={index}>{/* Renderize as informações da compra aqui */}</li>
+          <li key={index}><p>{purchase._id}</p></li>
         ))}
       </ul>
     </Modal>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../../Context/AuthContext';
 
 const AlunoCard = ({ userName, userEmail, _id }) => (
   <div className="border-2 border-gray-300 rounded-md p-4 m-4 shadow-md">
@@ -15,12 +16,17 @@ const AlunoCard = ({ userName, userEmail, _id }) => (
 
 const ListaUsuarios = () => {
   const [alunos, setAlunos] = useState([]);
+  const { user } = useContext(AuthContext)
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/user');
+        const response = await axios.get('http://localhost:3000/user', {
+          headers: {
+            Authorization: `Bearer ${user.jwtToken.token}`,
+          }
+        });
         // Filtrar usuários excluindo o usuário adm
         const usuariosExcluindoAdmin = response.data.message.filter(user => user.userName !== 'admin');
         setAlunos(usuariosExcluindoAdmin);
@@ -28,7 +34,6 @@ const ListaUsuarios = () => {
         console.error('Erro ao obter dados dos alunos:', error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -38,24 +43,27 @@ const ListaUsuarios = () => {
   );
 
   return (
-    <div className='h-screen'>
+    <div>
       {/* Buscador */}
-      <div className="text-center my-4">
-        <input
-          type="text"
-          placeholder="Pesquisar Usuário"
-          className="border-2 border-gray-300 rounded-md p-2"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-      {/* Lista de usuários */}
-      <div className="flex justify-between flex-wrap">
-        {filteredAlunos.map((aluno) => (
-          <AlunoCard key={aluno._id} {...aluno} />
-        ))}
-      </div>
+      {alunos && (
+        <>
+          <div className="text-center my-4">
+          <input
+            type="text"
+            placeholder="Pesquisar Usuário"
+            className="border-2 border-gray-300 rounded-md p-2"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          </div>
+            {/* Lista de usuários */}
+            <div className="flex justify-between flex-wrap h-screen">
+              {filteredAlunos.map((aluno) => (
+                <AlunoCard key={aluno._id} {...aluno} />
+              ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

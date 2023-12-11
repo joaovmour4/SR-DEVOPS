@@ -34,9 +34,9 @@ export default function App() {
           <Route path="/listuser" element={<ListUser/>}/>
           <Route path="/listpratos" element={<ListPratos/>}/>
         </Routes>
-        <Footer />
       </AuthProvider>
       </>
+      <Footer/>
     </BrowserRouter>
   );
 }

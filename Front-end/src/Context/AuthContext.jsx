@@ -14,12 +14,12 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const loadingStoreData = async () => {
             const storeToken = localStorage.getItem('token')
-            const storeUser = user
+            const storeUser = localStorage.getItem('userName')
     
             if (storeToken) {
                 const data = jwtDecode(storeToken)
                 if (data) {
-                    setUser(data)
+                    setUser(JSON.parse(storeUser))
                 } else {
                     Navigate('/login')
                 }
@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
           const { userName , _id, jwtToken, userCargo } = user
     
           setUser(user)
+          localStorage.setItem("userName", JSON.stringify(user));
           localStorage.setItem("token", jwtToken.token);
           console.log(user)
     

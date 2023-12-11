@@ -23,16 +23,17 @@ const User = () => {
       setUserName(user.userName);
     }
   }, [signed, roleUser, user]);
-
+  
+  console.log(user.userName)
   const openModal = async () => {
     try {
-      const response = await axios.get('/user/purchases', {
+      const response = await axios.get(`http://localhost:3000/user/purchases`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-
-      setPurchaseHistory(response.data);
+      console.log(`resposta fetch:`, response.data);
+      setPurchaseHistory(response.data.message);
       setIsModalOpen(true);
     } catch (error) {
       console.error('Erro ao obter o histórico de compras:', error);
