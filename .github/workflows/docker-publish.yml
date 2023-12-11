@@ -80,7 +80,6 @@ jobs:
         uses: stackhawk/hawkscan-action@v2.1.2
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
-          # environmentVariables: HAWK_SCAN_USERNAME HAWK_APPLICATION_ID HAWK_SCAN_PASSWORD
         env:
           HAWK_SCAN_USERNAME: ${{ secrets.HAWK_SCAN_USERNAME }}
           HAWK_APPLICATION_ID: ${{ secrets.HAWK_APPLICATION_ID }}
