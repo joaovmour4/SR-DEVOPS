@@ -10,10 +10,10 @@ app:
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
   openApiConf:
-    # path: /doc # OR...
-    filePath: ./Back-end/api/swagger_output.json
-  autoPolicy: true
-  autoInputVectors: true
+    path: /doc # OR...
+    # filePath: ./Back-end/api/swagger_output.json
+  # autoPolicy: true
+  # autoInputVectors: true
   # Configuration Docs: https://docs.stackhawk.com/hawkscan/configuration/
 
 # -- If Authenticated Scanning is needed, add here --
