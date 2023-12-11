@@ -13,7 +13,7 @@ app:
       passwordField: "userPassword"
       scanUsername: "admin"
       scanPassword: "password"
-      type: application/json
+      type: JSON
     tokenExtraction: 
       type: TOKEN_PATH
       value: user.jwtToken.token
