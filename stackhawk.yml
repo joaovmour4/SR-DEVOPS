@@ -11,8 +11,8 @@ app:
       loginPath: /login
       usernameField: "userName"
       passwordField: "userPassword"
-      scanUsername: admin
-      scanPassword: password
+      scanUsername: ${SCAN_USERNAME:admin}
+      scanPassword: ${SCAN_PASSWORD:password}
       type: JSON
     tokenExtraction: 
       type: TOKEN_PATH
