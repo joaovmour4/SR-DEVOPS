@@ -81,9 +81,9 @@ jobs:
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
         env:
-          HAWK_SCAN_USERNAME: ${{ secrets.HAWK_SCAN_USERNAME }}
+          # HAWK_SCAN_USERNAME: ${{ secrets.HAWK_SCAN_USERNAME }}
           HAWK_APPLICATION_ID: ${{ secrets.HAWK_APPLICATION_ID }}
-          HAWK_SCAN_PASSWORD: ${{ secrets.HAWK_SCAN_PASSWORD }}
+          # HAWK_SCAN_PASSWORD: ${{ secrets.HAWK_SCAN_PASSWORD }}
         
   deploy-production:
     name: Deploy to production
