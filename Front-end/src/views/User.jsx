@@ -6,10 +6,14 @@ import PurchaseHistoryModal from "../componentes/PurchaseHistoryModal/PurchaseHi
 import { Navigate } from "react-router-dom";
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
+import Modal from 'react-modal';
+
+// Defina o elemento raiz do aplicativo para o Modal
+Modal.setAppElement('#root'); // Substitua '#root' pelo seletor correto do elemento raiz
 
 const User = () => {
   const { signed, user } = useContext(AuthContext);
-  
+
   const [userName, setUserName] = useState('');
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,20 +27,26 @@ const User = () => {
       setUserName(user.userName);
     }
   }, [signed, roleUser, user]);
-  
-  console.log(user.userName)
+
   const openModal = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/user/purchases`, {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token não encontrado.');
+        return;
+      }
+  
+      const response = await axios.get('http://localhost:3000/user/purchases', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      console.log(`resposta fetch:`, response.data);
+  
+      console.log('Resposta da requisição:', response.data);
       setPurchaseHistory(response.data.message);
       setIsModalOpen(true);
     } catch (error) {
-      console.error('Erro ao obter o histórico de compras:', error);
+      console.error('Erro ao obter o histórico de compras:', error.response);
     }
   };
 

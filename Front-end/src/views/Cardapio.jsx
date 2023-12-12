@@ -103,9 +103,15 @@ export default function Cardapio() {
       </main>
 
       {blocoClicado && (
-        <div className="fixed inset-0 flex items-center justify-center">
-          <div className="absolute inset-0 bg-gray-800 opacity-75" onClick={handleCloseModal}></div>
-          <div className="relative bg-white p-8 rounded-lg text-center md:w-96 lg:w-96 md:mx-auto lg:mx-auto mt-8 z-10">
+  <div className="fixed inset-0 flex items-center justify-center">
+    <div className="absolute inset-0 bg-gray-800 opacity-75" onClick={handleCloseModal}></div>
+    <div
+      className="relative bg-white p-8 rounded-lg text-center md:w-96 lg:w-96 md:mx-auto lg:mx-auto mt-8 z-10"
+      style={{
+        maxWidth: '350px',
+        width: '100%',
+      }}
+    >
             <h2 className="text-center text-xl font-bold mb-4">{blocoClicado}</h2>
             <p className="text-left">PRATO: {cardapioData?.[blocoClicado]?.PRATO}</p>
             <p className="text-left">VEGETARIANO: {cardapioData?.[blocoClicado]?.VEGETARIANO}</p>

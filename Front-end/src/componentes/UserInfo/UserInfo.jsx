@@ -1,31 +1,78 @@
-  import React, { useContext } from "react";
-  import { AuthContext } from "../../Context/AuthContext";
+import React, { useContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import { AuthContext } from '../../Context/AuthContext';
 
-  const UserInfo = ({ userName, userRole, userSubsidio}) => {
-    const { logout } = useContext(AuthContext)
-    
-    console.log(userRole)
-    return (
-      <div className="h-80 flex flex-col items-center bg-gray-300 p-4 mb-8">
-        <div className="w-100 h-100 rounded-full bg-white mb-2 overflow-hidden">
+const UserInfo = () => {
+  const { logout, user } = useContext(AuthContext);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [seed, setSeed] = useState('');
+  const [expanded, setExpanded] = useState(false);
 
+  useEffect(() => {
+    if (user?.userName === 'Snuggles') {
+      setSeed('Snuggles');
+    } else if (user?.userName === 'Ramon') {
+      setSeed('Loki');
+    } else if (user?.userCargo === 'admin') {
+      setSeed('Chloe');
+    } else {
+      setSeed(user?.userName || '');
+    }
+  }, [user]);
 
-        </div>
-        <div className="w-full text-center">
-          <div className="w-full text-center">
-            <p className="w-80 p-2 rounded mb-2 mx-auto">{`Nome do Usuário: ${userName || 'Nome Indisponível'}`}</p>
-            <p>Cargo: {userRole}</p>
-            <p>{`Subsidio: ${userSubsidio || 'Subsidio Não Encontrado'}`}</p>
-            <button
-              onClick={() => logout()}
-              className="bg-green-700 hover:bg-green-500 text-white rounded-xl p-2 cursor-pointer min-w-[70px] mt-4"
-            >
-              Sair
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`);
+        setAvatarUrl(response.config.url);
+      } catch (error) {
+        console.error('Erro ao obter avatar:', error);
+      }
+    };
+
+    fetchData();
+  }, [seed]);
+
+  const handleSeedChange = (event) => {
+    setSeed(event.target.value);
   };
 
-  export default UserInfo;
+  const handleExpandToggle = () => {
+    setExpanded((prevExpanded) => !prevExpanded);
+  };
+
+  return (
+    <div className="flex flex-col items-center bg-gray-300 p-4 mb-8">
+      <div className="w-32 h-32 rounded-full bg-white mb-2 overflow-hidden">
+        <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+      </div>
+      <div className="w-full text-center">
+        <p className="text-xl font-bold mb-2">{user?.userName || 'Nome Indisponível'}</p>
+        {expanded && (
+          <div className="flex flex-col items-center mb-2">
+            <p>ID: {user?._id || 'ID Não Encontrado'}</p>
+            <p>Subsídio: {user?.userSubsidio || 'Subsídio Não Encontrado'}</p>
+            <p>Email: {user?.userEmail || 'Email Não Encontrado'}</p>
+          </div>
+        )}
+        <div className="flex flex-col items-center">
+          <button
+            onClick={handleExpandToggle}
+            className="text-blue-500 focus:outline-none mt-2"
+          >
+            {/* Ícone de seta removido */}
+            {expanded ? 'Recolher' : 'Expandir'}
+          </button>
+          <button
+            onClick={() => logout()}
+            className={`bg-green-700 hover:bg-green-500 text-white rounded-xl p-2 cursor-pointer mt-2`}
+          >
+            Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserInfo;
