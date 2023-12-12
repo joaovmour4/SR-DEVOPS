@@ -10,12 +10,9 @@ const AlunoCard = ({ userName, userEmail, _id }) => {
 
   const handleOpenModal = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/purchase`, {
+      const response = await axios.get(`http://localhost:3000/purchase/${userName}?userId=${_id}`, {
         headers: {
           Authorization: `Bearer ${user.jwtToken.token}`,
-        },
-        params: {
-          userId: _id, // Passa o ID do usuário associado ao botão
         },
       });
 
@@ -50,7 +47,7 @@ const AlunoCard = ({ userName, userEmail, _id }) => {
             </div>
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={() => handleOpenModal(_id)}
+              onClick={handleOpenModal}
             >
               NF
             </button>

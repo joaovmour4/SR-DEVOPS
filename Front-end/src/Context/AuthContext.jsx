@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         if (storeToken) {
           const data = jwtDecode(storeToken);
           if (data) {
-            setUser({ ...JSON.parse(storeUser), ...data }); // Adicione os dados do token ao usuário
+            setUser({ ...JSON.parse(storeUser), ...data }); 
           } else {
             navigate('/login');
           }
@@ -27,29 +27,31 @@ export const AuthProvider = ({ children }) => {
       loadingStoreData();
     }, [navigate]);
 
-  const login = async ({ nameUser, passowrdUser }) => {
-    try {
-      const response = await axios.post('http://localhost:3000/login', {
-        userName: nameUser,
-        userPassword: passowrdUser,
-      });
-
-      const { user, message } = response.data;
-
-      const { userName, _id, jwtToken, userCargo, userSubsidio, userEmail } = user;
-
-      setUser(user);
-      localStorage.setItem('userName', JSON.stringify(user));
-      localStorage.setItem('token', jwtToken.token);
-      console.log(user);
-
-      setTimeout(() => {
-        navigate('/user');
-      });
-    } catch (error) {
-      console.error('Erro no login:', error);
-    }
-  };
+    const login = async ({ nameUser, passowrdUser }) => {
+      try {
+        const response = await axios.post('http://localhost:3000/login', {
+          userName: nameUser,
+          userPassword: passowrdUser,
+        });
+    
+        const { user, message } = response.data;
+    
+        const { userName, _id, jwtToken, userCargo, userSubsidio, userEmail } = user;
+    
+        setUser(user);
+        localStorage.setItem('userName', JSON.stringify(user));
+        localStorage.setItem('token', jwtToken.token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken.token}`;
+    
+        console.log(user);
+    
+        setTimeout(() => {
+          navigate('/user');
+        });
+      } catch (error) {
+        console.error('Erro no login:', error);
+      }
+    };
 
   const logout = () => {
     localStorage.clear();
