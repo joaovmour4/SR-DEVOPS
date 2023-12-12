@@ -11,17 +11,18 @@ app:
       loginPath: /login
       usernameField: userName
       passwordField: userPassword
-      scanUsername: tec
+      scanUsername: admin
       scanPassword: password
       type: JSON
     tokenExtraction: 
       type: TOKEN_PATH
       value: user.jwtToken.token
+      tokenType: Bearer
     tokenAuthorization: 
       type: HEADER
       value: Authorization
-    loggedInIndicator: Login efetuado com sucesso
-    loggedOutIndicator: Logout efetuado com sucesso
+    loggedInIndicator: .*
+    loggedOutIndicator: .*
     testPath:
       type: HEADER
       path: /user

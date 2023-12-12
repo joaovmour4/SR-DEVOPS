@@ -72,6 +72,9 @@ jobs:
       - name: create env file
         run: |
           touch ./Back-end/.env
+          echo DB_USER: ${{ secrets.DB_USER }} >> ./Back-end/.env
+          echo DB_PASSWORD: ${{ secrets.DB_PASSWORD }} >> ./Back-end/.env
+          echo JWT_SECRET: ${{ secrets.JWT_SECRET }} >> ./Back-end/.env
 
       - name: start containers
         run: docker-compose -f ./Back-end/docker-compose.yml up -d --build

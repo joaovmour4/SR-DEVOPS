@@ -4,9 +4,18 @@ const mongoose = require('mongoose')
 const swagger = require('swagger-ui-express')
 const swaggerFile = require('./api/swagger_output.json')
 const cors = require('cors')
+const helmet = require('helmet')
 
 // Definições do app
 const app = express()
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'"],
+        },
+    })
+)
 app.disable('x-powered-by')
 app.use(cors())
 app.use(express.json())
