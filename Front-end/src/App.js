@@ -10,7 +10,7 @@ import Login from './views/Login';
 import Pagamento from './views/Pagamento';
 import User from './views/User';
 import ControlheUsuario from './views/ControlheUsuario';
-import AdicionarPratos from './views/AdicionarPratos'
+import AdicionarPratos from './views/AdicionarPratos';
 import ListUser from './views/ListUser';
 import ListPratos from './views/ListPratos'
 import { AuthProvider } from './Context/AuthContext';
