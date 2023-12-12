@@ -62,7 +62,7 @@ const User = () => {
             <AdminButtons
               handleSearchUser={handleSearchUser}
               handleUpdatePratos={handleUpdatePratos}
-              listaUsuarios={[]}  // lista de usuários
+              listaUsuarios={[]} 
             />
           ) : (
             <UserButtons openModal={openModal} />
