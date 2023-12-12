@@ -17,10 +17,10 @@ app:
     tokenExtraction: 
       type: TOKEN_PATH
       value: user.jwtToken.token
-      tokenType: Bearer
     tokenAuthorization: 
       type: HEADER
       value: Authorization
+      tokenType: Bearer
     loggedInIndicator: .*
     loggedOutIndicator: .*
     testPath:
