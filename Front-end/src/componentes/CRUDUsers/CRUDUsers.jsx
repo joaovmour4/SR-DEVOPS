@@ -3,6 +3,67 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import { AuthContext } from '../../Context/AuthContext';
 
+const CRUDAddUsers = ({ closeModal, refreshUsers }) => {
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+
+  const handleAddUser = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/user", {
+        userName: userName,
+        userEmail: userEmail,
+        userPassword: userPassword,
+      });
+
+      console.log('Novo usuário criado com sucesso!');
+      closeModal();
+      refreshUsers(); // Chame a função para atualizar a tabela de usuários
+    } catch (error) {
+      console.error('Erro ao criar novo usuário:', error);
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="text-2xl font-semibold mb-4">Novo Usuário</h2>
+      <label className="block mb-2">
+        Nome:
+        <input
+          type="text"
+          className="border p-2 w-full"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+      </label>
+      <label className="block mb-2">
+        Email:
+        <input
+          type="text"
+          className="border p-2 w-full"
+          value={userEmail}
+          onChange={(e) => setUserEmail(e.target.value)}
+        />
+      </label>
+      <label className="block mb-2">
+        Senha:
+        <input
+          type="password"
+          className="border p-2 w-full"
+          value={userPassword}
+          onChange={(e) => setUserPassword(e.target.value)}
+        />
+      </label>
+      <button
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4"
+        onClick={handleAddUser}
+      >
+        Criar Usuário
+      </button>
+    </div>
+  );
+};
+
 const CRUDUser = () => {
   const authContext = useContext(AuthContext);
   const [users, setUsers] = useState([]);
@@ -16,6 +77,7 @@ const CRUDUser = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
+  const [isAddUserModalOpen, setAddUserModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -141,6 +203,9 @@ const CRUDUser = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+
+      {/* <CRUDAddUsers/> */}
+
       {/* Tabela de usuários */}
       <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-3/5">
         {users.length > 0 ? (
