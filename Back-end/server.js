@@ -27,7 +27,6 @@ app.use(cors(corsOptions));
 // )
 app.use(helmet())
 app.disable('x-powered-by')
-app.set('X-Content-Type-Options', 'nosniff')
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
