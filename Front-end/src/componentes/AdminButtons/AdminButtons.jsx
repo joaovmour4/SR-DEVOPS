@@ -11,11 +11,11 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
             className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8 min-w-[265px]"
             onClick={abrirModal}
           >
-            LISTA USUÁRIOS
+            GERENCIAR USUÁRIOS
           </button>
         </Link>
       </div>
-      <div className="mb-4">  
+      {/* <div className="mb-4">  
         <Link to="/controlheusuario">
           <button
             className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]"
@@ -24,7 +24,7 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
             GERENCIAR USUÁRIOS
           </button>
         </Link>
-      </div>
+      </div> */}
       <div className="mb-4">
       <Link to="/listpratos">
           <button

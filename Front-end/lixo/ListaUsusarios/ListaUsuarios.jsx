@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
-import { AuthContext } from '../../Context/AuthContext';
+import { AuthContext } from '../../src/Context/AuthContext';
 
 const AlunoCard = ({ userName, userEmail, _id }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
