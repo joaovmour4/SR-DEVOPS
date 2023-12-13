@@ -60,10 +60,9 @@ module.exports = class userController{
             // #swagger.tags = ['Autenticação']
             const {userName, userPassword} = req.body
 
-            if(await fieldVerify(userName))
-                return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
+            const newUserName = await fieldVerify(userName)
 
-            const userBD = await userSchema.findOne({userName:userName})
+            const userBD = await userSchema.findOne({userName:newUserName})
             if(!userBD)
                 return res.status(401).json({message: 'Usuário não encontrado.'})
 

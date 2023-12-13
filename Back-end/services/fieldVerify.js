@@ -1,8 +1,6 @@
 async function fieldVerify(field){
     try{
-        if(field.match(/[^a-zA-Z0-9]/g))
-            return true
-        return false
+        return field.replace(/[^a-zA-Z0-9]/g, "")
     }catch(err){
         return err
     }
