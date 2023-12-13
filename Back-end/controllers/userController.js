@@ -64,7 +64,7 @@ module.exports = class userController{
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
 
             const userBD = await userSchema.findOne({userName:userName})
-            if(userBD.length === 0)
+            if(!userBD)
                 return res.status(401).json({message: 'Usuário não encontrado.'})
 
             const compare = await passwordCompare(userPassword, userBD.userPassword)
