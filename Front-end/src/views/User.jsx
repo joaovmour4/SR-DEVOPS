@@ -8,8 +8,7 @@ import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
 import Modal from 'react-modal';
 
-// Defina o elemento raiz do aplicativo para o Modal
-Modal.setAppElement('#root'); // Substitua '#root' pelo seletor correto do elemento raiz
+Modal.setAppElement('#root'); 
 
 const User = () => {
   const { signed, user } = useContext(AuthContext);
