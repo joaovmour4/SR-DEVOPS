@@ -6,8 +6,17 @@ const swaggerFile = require('./api/swagger_output.json')
 const cors = require('cors')
 const helmet = require('helmet')
 
+// Configurando CORS
+const corsOptions = {
+    origin: true,
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+};
+
+
 // Definições do app
 const app = express()
+app.use(cors(corsOptions));
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
@@ -17,7 +26,6 @@ app.use(
     })
 )
 app.disable('x-powered-by')
-app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
