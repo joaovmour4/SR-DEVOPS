@@ -6,18 +6,18 @@ const swaggerFile = require('./api/swagger_output.json')
 const cors = require('cors')
 const helmet = require('helmet')
 
+// Configurando CORS
+const corsOptions = {
+    origin: true,
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+};
+
+
 // Definições do app
 const app = express()
-app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            defaultSrc: ["'self'"],
-            scriptSrc: ["'self'"],
-        },
-    })
-)
-app.disable('x-powered-by')
-app.use(cors())
+app.use(cors(corsOptions));
+app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
@@ -29,6 +29,9 @@ const pratoRoutes = require('./routes/pratoRoutes')
 // Configurando os middlewares
 app.use('/', userRoutes, purchaseRoutes, pratoRoutes)
 app.use('/doc', swagger.serve, swagger.setup(swaggerFile))
+app.use('*', (req, res)=>{
+    return res.status(400).json({message: 'A rota requisitada não existe'})
+})
 
 mongoose.set('strictQuery', false)
 

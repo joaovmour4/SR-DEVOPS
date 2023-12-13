@@ -4,6 +4,7 @@ const purchaseSchema = require('../schemas/purchaseSchema')
 const passwordHash = require('../services/passwordHash')
 const passwordCompare = require('../services/passwordCompare')
 const jwtAuth = require('../services/jwtAuth')
+const fieldVerify = require('../services/fieldVerify')
 
 module.exports = class userController{
     static async newUser(req, res){
@@ -11,6 +12,9 @@ module.exports = class userController{
             // #swagger.tags = ['Usuário']
 
             const {userName, userEmail, userPassword} = req.body
+            
+            if(await fieldVerify(userName))
+                return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
 
             const userData = {
                 _id: new ObjectId(),
@@ -56,8 +60,11 @@ module.exports = class userController{
             // #swagger.tags = ['Autenticação']
             const {userName, userPassword} = req.body
 
+            if(await fieldVerify(userName))
+                return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
+
             const userBD = await userSchema.findOne({userName:userName})
-            if(userBD.length === 0)
+            if(!userBD)
                 return res.status(401).json({message: 'Usuário não encontrado.'})
 
             const compare = await passwordCompare(userPassword, userBD.userPassword)
@@ -128,6 +135,9 @@ module.exports = class userController{
             const {id} = req.params
 
             const {userName, userPassword} = req.body
+
+            if(await fieldVerify(userName))
+                return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
 
             const userNewData = {
                 userName: userName,

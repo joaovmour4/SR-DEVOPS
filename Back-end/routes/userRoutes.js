@@ -2,10 +2,6 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/userController')
 const verifyJWT = require('../services/verifyJWT')
-const purchaseController = require('../controllers/purchaseController')
-
-const cors = require('cors');
-
 
 router.post('/user', userController.newUser)
 router.get('/user', verifyJWT, userController.getUsers)
