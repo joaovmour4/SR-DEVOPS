@@ -33,7 +33,7 @@ module.exports = class userController{
                 userCargo: 'user'
             }
 
-            if(await userSchema.findOne({userName:userData.userNameStr}))
+            if(await userSchema.findOne({userName:userNameStr}))
                 return res.status(400).json({message: 'O nome de usuário já existe.'})
             const createdUser = await userSchema.create(userData)
 
