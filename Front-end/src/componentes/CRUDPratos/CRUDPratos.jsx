@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import CRUDAddPrato from '../CRUDAddPratos/CRUDAddPratos';
+import { AuthContext } from '../../Context/AuthContext';
 
 const CRUDPrato = ({ closeModal, refreshPratos }) => {
   const [pratos, setPratos] = useState([]);
@@ -17,13 +18,13 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
 
   const fetchPratos = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/prato');
-      setPratos(response.data);
+      const { data } = await axios.get('http://localhost:3000/prato');
+      setPratos(data);
     } catch (error) {
       console.error('Erro ao obter pratos:', error);
     }
   };
-
+    
   useEffect(() => {
     fetchPratos();
   }, [deletePratoId, isDeleteModalOpen, editPratoId, isEditModalOpen]);
@@ -33,9 +34,9 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
       const response = await axios.put(
         `http://localhost:3000/prato/${editPratoId}`,
         {
-          tipo: editedTipo,
           nome: editedNome,
           acompanhamento: editedAcompanhamento,
+          tipo: editedTipo,
         }
       );
   
@@ -46,9 +47,9 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         if (prato._id === editPratoId) {
           return {
             ...prato,
-            tipo: editedTipo,
             nome: editedNome,
             acompanhamento: editedAcompanhamento,
+            tipo: editedTipo,
           };
         }
         return prato;

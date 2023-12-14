@@ -6,7 +6,7 @@ const CRUDAddPratos = () => {
   const { user } = useContext(AuthContext);
   const [prato, setPrato] = useState({
     nome: '',
-    descricao: '',
+    // descricao: '',
     tipo: '',
   });
 
@@ -30,7 +30,7 @@ const CRUDAddPratos = () => {
 
       setPrato({
         nome: '',
-        descricao: '',
+        // descricao: '',
         tipo: '',
       });
     } catch (error) {

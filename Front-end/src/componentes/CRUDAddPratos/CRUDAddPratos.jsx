@@ -19,28 +19,36 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
 
   const handleEnviar = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/prato', prato, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.jwtToken.token}`,  
+      const response = await axios.post(
+        'http://localhost:3000/prato',
+        {
+          nome: prato.nome,
+          descricao: prato.descricao,
+          tipo: prato.tipo,
         },
-      });
-
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.jwtToken.token}`,
+          },
+        }
+      );
+  
       console.log(response.data);
-
+  
       setPrato({
         nome: '',
         descricao: '',
         tipo: '',
       });
-
+  
       closeModal();
       refreshPratos();
     } catch (error) {
       console.error('Erro ao enviar prato:', error);
     }
   };
-
+  
   return (
     <div style={{ width: '100%' }}>
       <h2 className="text-2xl font-semibold mb-4">CRIAR PRATO</h2>
