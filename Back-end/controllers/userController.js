@@ -14,23 +14,26 @@ module.exports = class userController{
             // #swagger.tags = ['Usuário']
 
             const {userName, userEmail, userPassword} = req.body
+            const userNameStr = String(userName)
+            const userEmailStr = String(userEmail)
+            const userPasswordStr = String(userPassword)
             
-            if(await fieldVerify(userName))
+            if(await fieldVerify(userNameStr))
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
                 
-            if(!await fieldVerify(userPassword))
+            if(!await fieldVerify(userPasswordStr))
                 return res.status(400).json({message: "A senha deve conter caracteres especiais"})
 
             const userData = {
                 _id: new ObjectId(),
-                userName:String(userName),
-                userEmail: String(userEmail),
-                userPassword: await passwordHash(userPassword),
+                userName:userNameStr,
+                userEmail: userEmailStr,
+                userPassword: await passwordHash(userPasswordStr),
                 userSubsidio: false,
                 userCargo: 'user'
             }
 
-            if(await userSchema.findOne({userName:userData.userName}))
+            if(await userSchema.findOne({userName:userData.userNameStr}))
                 return res.status(400).json({message: 'O nome de usuário já existe.'})
             const createdUser = await userSchema.create(userData)
 
