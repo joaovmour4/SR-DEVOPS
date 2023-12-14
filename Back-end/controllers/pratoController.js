@@ -54,4 +54,64 @@ module.exports = class pratoController{
             return res.status(400).json({message:error.message})
         }
     }
+
+    static async modifyPrato(req, res){
+        try{
+            /* 
+            #swagger.tags = ['Prato']
+            #swagger.security = [{
+            "bearerAuth": []
+            }] */
+
+            if(res.user.userCargo === 'user'){
+                return res.status(401).json({message: 'Unauthorized.'})
+            }
+                
+            const pratoId = String(req.params.id)
+
+
+            const {prato, pratoType} = req.body
+
+            if(await pratoSchema.findOne({prato: String(prato)}))
+                return res.status(400).json({message: 'Este prato já existe.'})
+
+            const pratoNewData = {
+                prato: prato,
+                pratoType: pratoType
+            }
+            const updatePrato = await pratoSchema.findByIdAndUpdate(String(pratoId), pratoNewData)
+
+            if(updatePrato)
+                return res.status(200).json({message: 'Dados do prato atualizados com sucesso.', updatePrato})
+            else
+                return res.status(400).json({message: 'Não houve alterações nos dados'})
+            
+        }   
+        catch(error){
+            return res.status(400).json({message: error.message})
+        }
+    }
+
+    static async deletePrato(req, res){
+        try{
+            /* 
+            #swagger.tags = ['Prato']
+            #swagger.security = [{
+            "bearerAuth": []
+            }] */
+
+            if(res.user.userCargo === 'user')
+                return res.status(401).json({message: 'Unauthorized.'})
+
+            const {id} = req.params
+
+            const deletedPrato = await pratoSchema.findByIdAndRemove(String(id))
+
+            if(deletedPrato)
+                return res.status(200).json({message: "Prato removido com sucesso.", deletedPrato})
+            return res.status(400).json({message: 'O prato não foi encontrado.'})
+        }catch(err){
+            return res.status(500).json({message: err.message})
+        }
+    }
 }
