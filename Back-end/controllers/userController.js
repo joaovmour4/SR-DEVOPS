@@ -1,8 +1,8 @@
 const { ObjectId } = require('mongodb')
 const userSchema = require('../schemas/userSchema')
 const purchaseSchema = require('../schemas/purchaseSchema')
-const passwordHash = require('../services/passwordHash')
-const passwordCompare = require('../services/passwordCompare')
+const cryptojs = require('../services/cryptojs')
+const cryptojsCompare = require('../services/cryptojsCompare')
 const jwtAuth = require('../services/jwtAuth')
 const fieldVerify = require('../services/fieldVerify')
 const fieldReplace = require('../services/fieldReplace')
@@ -28,7 +28,7 @@ module.exports = class userController{
                 _id: new ObjectId(),
                 userName:userNameStr,
                 userEmail: userEmailStr,
-                userPassword: await passwordHash(userPasswordStr),
+                userPassword: await cryptojs(userPasswordStr),
                 userSubsidio: false,
                 userCargo: 'user'
             }
@@ -74,7 +74,7 @@ module.exports = class userController{
             if(!userBD)
                 return res.status(401).json({message: 'Usuário não encontrado.'})
 
-            const compare = await passwordCompare(userPassword, userBD.userPassword)
+            const compare = await cryptojsCompare(userPassword, userBD.userPassword)
 
 
             if(compare){
