@@ -1,7 +1,11 @@
 const swaggerAutogen = require('swagger-autogen')({openapi: '3.0.0'})
 
 const outputFile = './swagger_output.json'
-const endpointsFiles = ['../routes/userRoutes.js', '../routes/purchaseRoutes.js', '../routes/pratoRoutes.js']
+const endpointsFiles = [
+  '../routes/userRoutes.js', 
+  '../routes/purchaseRoutes.js', 
+  '../routes/pratoRoutes.js',
+  '../routes/menuRoutes.js']
 
 const doc = {
     info: {

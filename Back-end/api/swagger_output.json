@@ -48,7 +48,7 @@
       },
       "get": {
         "tags": [
-          "Usuário"
+          "Admin"
         ],
         "description": "",
         "parameters": [
@@ -76,12 +76,63 @@
             "bearerAuth": []
           }
         ]
+      },
+      "put": {
+        "tags": [
+          "Usuário"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "example": "any"
+                  },
+                  "userEmail": {
+                    "example": "any"
+                  },
+                  "userPassword": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/user/{id}": {
       "put": {
         "tags": [
-          "Usuário"
+          "Admin"
         ],
         "description": "",
         "parameters": [
@@ -126,7 +177,13 @@
                   "userName": {
                     "example": "any"
                   },
+                  "userEmail": {
+                    "example": "any"
+                  },
                   "userPassword": {
+                    "example": "any"
+                  },
+                  "userSubsidio": {
                     "example": "any"
                   }
                 }
@@ -137,7 +194,7 @@
       },
       "delete": {
         "tags": [
-          "Usuário"
+          "Admin"
         ],
         "description": "",
         "parameters": [
@@ -442,6 +499,65 @@
             "bearerAuth": []
           }
         ]
+      }
+    },
+    "/menu": {
+      "post": {
+        "tags": [
+          "Cardápio"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diaSemana": {
+                    "example": "any"
+                  },
+                  "pratoComum": {
+                    "example": "any"
+                  },
+                  "pratoVegetariano": {
+                    "example": "any"
+                  },
+                  "acompanhamentos": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },

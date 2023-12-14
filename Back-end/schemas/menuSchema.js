@@ -5,9 +5,9 @@ const Schema = mongoose.Schema
 const menuSchema = new Schema({
   _id: String,
   diaSemana: String,
-  prato: String,
-  vegetariano: String,
-  acompanhamento: Array
+  pratoComum: String,
+  pratoVegetariano: String,
+  acompanhamentos: Array
 });
 
 const Menu = mongoose.model('Menu', menuSchema)
