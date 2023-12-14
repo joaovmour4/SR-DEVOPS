@@ -7,7 +7,7 @@ const AdicionarPratos = () => {
   const isAdmin = user && user.userCargo === 'admin';
 
   return (
-    <div className='h-screen'>
+    <div className='h-full'>
       {isAdmin ? <CRUDPratos /> : null}
     </div>
   );

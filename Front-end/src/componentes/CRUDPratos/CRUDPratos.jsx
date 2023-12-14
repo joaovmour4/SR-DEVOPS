@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react'; 
 import axios from 'axios';
 import Modal from 'react-modal';
 import CRUDAddPrato from '../CRUDAddPratos/CRUDAddPratos';
@@ -16,15 +16,22 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isAddPratoModalOpen, setAddPratoModalOpen] = useState(false);
 
+  const authContext = useContext(AuthContext);
+
   const fetchPratos = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3000/prato');
-      setPratos(data);
+      const response = await axios.get('http://localhost:3000/prato', {
+        headers: {
+          Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+        },
+      });
+  
+      setPratos(response.data.message);
     } catch (error) {
-      console.error('Erro ao obter pratos:', error);
+      console.error('Erro ao obter os pratos:', error);
     }
   };
-    
+  
   useEffect(() => {
     fetchPratos();
   }, [deletePratoId, isDeleteModalOpen, editPratoId, isEditModalOpen]);
@@ -120,8 +127,8 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
               {pratos.map((prato) => (
                 <tr key={prato._id}>
                   <td className="border p-2">{prato._id}</td>
-                  <td className="border p-2">{prato.tipo}</td>
-                  <td className="border p-2">{prato.nome}</td>
+                  <td className="border p-2">{prato.pratoType}</td>
+                  <td className="border p-2">{prato.prato}</td>
                   <td className="border p-2">{prato.acompanhamento}</td>
                   <td className="border p-2 flex">
                     <button
@@ -192,7 +199,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
               borderRadius: '8px',
               maxWidth: '450px',
               maxHeight: '450px',
-              width: '65%',  // Ajuste para 65%
+              width: '65%',  
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
               position: 'absolute',
               top: '50%',
@@ -203,7 +210,6 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         >
           <div className="p-4">
             <h2 className="text-2xl font-semibold mb-2">Editar Prato</h2>
-            {/* ... (restante do código) */}
           </div>
         </Modal>
       )}
