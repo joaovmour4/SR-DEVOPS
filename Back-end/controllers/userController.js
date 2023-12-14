@@ -47,7 +47,7 @@ module.exports = class userController{
     static async getUsers(req, res){
         try{
             /* 
-            #swagger.tags = ['Usuário']
+            #swagger.tags = ['Admin']
             #swagger.security = [{
             "bearerAuth": []
             }] */
@@ -98,7 +98,7 @@ module.exports = class userController{
     static async deleteUser(req, res){
         try{
             /* 
-            #swagger.tags = ['Usuário']
+            #swagger.tags = ['Admin']
             #swagger.security = [{
             "bearerAuth": []
             }] */
@@ -123,10 +123,10 @@ module.exports = class userController{
         }
     }
 
-    static async updateUser(req, res){
+    static async modifyAnyUser(req, res){
         try{
             /* 
-            #swagger.tags = ['Usuário']
+            #swagger.tags = ['Admin']
             #swagger.security = [{
             "bearerAuth": []
             }] */
@@ -135,19 +135,53 @@ module.exports = class userController{
                 return res.status(401).json({message: 'Unauthorized.'})
             }
                 
+            const userId = String(req.params.id)
 
-            const {id} = req.params
 
-            const {userName, userPassword} = req.body
+            const {userName, userEmail, userPassword, userSubsidio} = req.body
 
             if(await fieldVerify(userName))
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
 
             const userNewData = {
                 userName: userName,
+                userEmail: userEmail,
+                userPassword: await passwordHash(userPassword),
+                userSubsidio: userSubsidio
+            }
+            const updateUser = await userSchema.updateOne({_id:userId}, userNewData)
+
+            if(updateUser.modifiedCount !== 0){
+                return res.status(200).json({message: 'Dados do usuário atualizados com sucesso.', updateUser})
+            }else{
+                return res.status(400).json({message: 'Não houve alterações nos dados', updateUser})
+            }
+        }   
+        catch(error){
+            return res.status(400).json({message: error.message})
+        }
+    }
+
+    static async modifyCurrentUser(req, res){
+        try{
+            /* 
+            #swagger.tags = ['Usuário']
+            #swagger.security = [{
+            "bearerAuth": []
+            }] */
+
+                
+            const {userName, userEmail, userPassword} = req.body
+
+            if(await fieldVerify(userName))
+                return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
+
+            const userNewData = {
+                userName: userName,
+                userEmail: userEmail,
                 userPassword: await passwordHash(userPassword)
             }
-            const updateUser = await userSchema.updateOne({_id:id}, userNewData)
+            const updateUser = await userSchema.updateOne({_id:res.user._id}, userNewData)
 
             if(updateUser.modifiedCount !== 0){
                 return res.status(200).json({message: 'Dados do usuário atualizados com sucesso.', updateUser})

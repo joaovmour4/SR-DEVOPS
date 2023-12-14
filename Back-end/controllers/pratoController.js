@@ -14,21 +14,17 @@ module.exports = class pratoController{
             if(res.user.userCargo !== 'admin')
                 return res.status(401).json({message: 'Unauthorized'})
             
-            const {prato, pratoType} = req.body
-
-            if(await fieldVerify(userName))
-                return res.status(400).json({message: "O nome de prato não pode conter caracteres especiais."})
+            const prato = String(req.body.prato)
+            const pratoType = String(req.body.pratoType)
 
             if(await pratoSchema.findOne({prato:prato}))
                 return res.status(400).json({message: 'O prato já existe.'})
 
-            const pratoDoc = {
+            const newPrato = await pratoSchema.create({
                 _id: new ObjectId(),
                 prato: prato,
                 pratoType: pratoType
-            }
-
-            const newPrato = await pratoSchema.create(pratoDoc)
+            })
             if(!newPrato)
                 return res.status(400).json({message: 'Não foi possível inserir o prato.'})
             
