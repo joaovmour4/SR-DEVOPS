@@ -6,6 +6,7 @@ const passwordCompare = require('../services/passwordCompare')
 const jwtAuth = require('../services/jwtAuth')
 const fieldVerify = require('../services/fieldVerify')
 const fieldReplace = require('../services/fieldReplace')
+const sanitize = require('mongo-sanitize')
 
 module.exports = class userController{
     static async newUser(req, res){
@@ -16,16 +17,13 @@ module.exports = class userController{
             
             if(await fieldVerify(userName))
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
-            else{
-                var userNameVerified = userName
-            }
                 
             if(!await fieldVerify(userPassword))
                 return res.status(400).json({message: "A senha deve conter caracteres especiais"})
 
             const userData = {
                 _id: new ObjectId(),
-                userName:userNameVerified,
+                userName:sanitize(userName),
                 userEmail: userEmail,
                 userPassword: await passwordHash(userPassword),
                 userSubsidio: false,
@@ -67,9 +65,9 @@ module.exports = class userController{
             // #swagger.tags = ['Autenticação']
             const {userName, userPassword} = req.body
 
-            const newUserName = await fieldReplace(userName)
+            const sanUserName = sanitize(userName)
 
-            const userBD = await userSchema.findOne({userName:newUserName})
+            const userBD = await userSchema.findOne({userName:sanUserName})
             if(!userBD)
                 return res.status(401).json({message: 'Usuário não encontrado.'})
 
@@ -80,10 +78,7 @@ module.exports = class userController{
                 const jwtToken = await jwtAuth(userBD)
                 return res.status(200).json({
                     message: 'Login efetuado com sucesso.',
-                    user: { 
-                    userName: userBD.userName,
-                    _id: userBD._id,
-                    userCargo: userBD.userCargo,
+                    user: {
                     jwtToken: jwtToken
                 }})
             }else{

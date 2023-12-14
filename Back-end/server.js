@@ -8,7 +8,6 @@ const helmet = require('helmet')
 
 // Configurando CORS
 const corsOptions = {
-    origin: true,
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type']
 };
