@@ -5,10 +5,11 @@ import { AuthContext } from '../Context/AuthContext';
 const AdicionarPratos = () => {
   const { user } = useContext(AuthContext);
   const isAdmin = user && user.userCargo === 'admin';
+  const isTec = user && user.userCargo === 'tec';
 
   return (
     <div className='h-full'>
-      {isAdmin ? <CRUDPratos /> : null}
+      {isAdmin || isTec ? <CRUDPratos /> : null}
     </div>
   );
 };

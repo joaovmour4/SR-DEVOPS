@@ -81,23 +81,30 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     setDeleteModalOpen(true);
   };
 
-  const confirmDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:3000/prato/${deletePratoId}`);
-      setDeletePratoId(null);
-      setDeleteModalOpen(false);
-      console.log('Prato deletado com sucesso!');
-      const updatedPratos = pratos.filter((prato) => prato._id !== deletePratoId);
-      setPratos(updatedPratos);
-    } catch (error) {
-      console.error('Erro ao deletar prato:', error);
-    }
-  };
+const confirmDelete = async () => {
+  try {
+    // Get the current deletePratoId before setting it to null
+    const currentDeletePratoId = deletePratoId;
 
-  const cancelDelete = () => {
+    await axios.delete(`http://localhost:3000/prato/${currentDeletePratoId}`);
+    
     setDeletePratoId(null);
     setDeleteModalOpen(false);
-  };
+    console.log(`Prato com ID ${currentDeletePratoId} deletado com sucesso!`);
+
+    // Update pratos by filtering out the deleted prato using the currentDeletePratoId
+    const updatedPratos = pratos.filter((prato) => prato._id !== currentDeletePratoId);
+    setPratos(updatedPratos);
+  } catch (error) {
+    console.error('Erro ao deletar prato:', error);
+  }
+};
+
+const cancelDelete = () => {
+  setDeletePratoId(null);
+  setDeleteModalOpen(false);
+};
+
 
   return (
     <div className="flex flex-col items-center mt-8">

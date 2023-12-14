@@ -7,6 +7,7 @@ const CRUDAddUsers = ({ closeModal, refreshUsers }) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  
 
   const handleAddUser = async () => {
     try {
@@ -78,6 +79,9 @@ const CRUDUser = () => {
   const [userEmail, setUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
   const [isAddUserModalOpen, setAddUserModalOpen] = useState(false);
+
+  const isAdmin = authContext.user && authContext.user.userCargo === 'admin';
+  const isTec = authContext.user && authContext.user.userCargo === 'tec';
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -206,8 +210,8 @@ const CRUDUser = () => {
 
       {/* <CRUDAddUsers/> */}
 
-      {/* Tabela de usuários */}
-      <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-3/5">
+       {/* Tabela de usuários */}
+       <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-3/5">
         {users.length > 0 ? (
           <table className="w-full border-collapse">
             <thead>
@@ -223,24 +227,30 @@ const CRUDUser = () => {
                   <td className="border p-2">{user._id}</td>
                   <td className="border p-2">{user.userName}</td>
                   <td className="border p-2 flex">
-                    <button
-                      className="mx-1 px-2 py-1 bg-blue-500 text-white rounded-md"
-                      onClick={() => handleEdit(user._id)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="mx-1 px-2 py-1 bg-red-500 text-white rounded-md"
-                      onClick={() => handleDelete(user._id)}
-                    >
-                      Deletar
-                    </button>
-                    <button
-                      className="mx-1 px-2 py-1 bg-green-500 text-white rounded-md"
-                      onClick={() => handleViewHistory(user._id)}
-                    >
-                      Histórico
-                    </button>
+                    {isAdmin && (
+                      <>
+                        <button
+                          className="mx-1 px-2 py-1 bg-blue-500 text-white rounded-md"
+                          onClick={() => handleEdit(user._id)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="mx-1 px-2 py-1 bg-red-500 text-white rounded-md"
+                          onClick={() => handleDelete(user._id)}
+                        >
+                          Deletar
+                        </button>
+                      </>
+                    )}
+                    {(isAdmin || isTec) && (
+                      <button
+                        className="mx-1 px-2 py-1 bg-green-500 text-white rounded-md"
+                        onClick={() => handleViewHistory(user._id)}
+                      >
+                        Histórico
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

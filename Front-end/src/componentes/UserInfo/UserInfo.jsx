@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthContext';
 
-const UserInfo = () => {
+const UserInfo = ({ userName, userEmail, userRole, userSubsidio, authContext }) => {
   const { logout, user } = useContext(AuthContext);
   const [avatarUrl, setAvatarUrl] = useState('');
   const [seed, setSeed] = useState('');
@@ -47,12 +47,15 @@ const UserInfo = () => {
         <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
       </div>
       <div className="w-full text-center">
-        <p className="text-xl font-bold mb-2">{user?.userName || 'Nome Indisponível'}</p>
+        <p className="text-xl font-bold mb-2">{userName || 'Nome Indisponível'}</p>
         {expanded && (
           <div className="flex flex-col items-center mb-2">
             <p>ID: {user?._id || 'ID Não Encontrado'}</p>
-            <p>Subsídio: {user?.userSubsidio || 'Subsídio Não Encontrado'}</p>
-            <p>Email: {user?.userEmail || 'Email Não Encontrado'}</p>
+            {/* Using userSubsidio from props */}
+            {userSubsidio && <p>Usuário possui subsídio</p>}
+            {!userSubsidio && <p>Usuário não possui subsídio</p>}
+            {/* Using authContext.user.userEmail from authContext */}
+            <p>Email: {authContext?.user?.userEmail || 'Email Não Encontrado'}</p>
           </div>
         )}
         <div className="flex flex-col items-center">
@@ -60,7 +63,6 @@ const UserInfo = () => {
             onClick={handleExpandToggle}
             className="text-blue-500 focus:outline-none mt-2"
           >
-            {/* Ícone de seta removido */}
             {expanded ? 'Recolher' : 'Expandir'}
           </button>
           <button

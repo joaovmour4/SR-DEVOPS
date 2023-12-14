@@ -29,7 +29,7 @@ const Login = () => {
 
   return (
     <>
-      <main className="container flex flex-col justify-center items-center flex-grow min-h-screen w-full mx-auto">
+       <main className="container flex flex-col justify-center items-center flex-grow min-h-screen w-full mx-auto">
         {!signed ? (
           <div className="aluno flex flex-col items-center gap-4">
             <form className="form_aluno text-center" onSubmit={handleSubmit}>
@@ -62,9 +62,9 @@ const Login = () => {
                   CADASTRO VISITANTE
                 </Link>
               </div>
-            </form>
+              </form>
           </div>
-        ) : <div>Você já esta logado <Link to={"/user"}>Ir para User</Link></div>}
+        ) : <div>Você já está logado <Link to={"/user"}>Ir para User</Link></div>}
       </main>
     </>
   );
