@@ -30,7 +30,7 @@ module.exports = class userController{
                 userCargo: 'user'
             }
 
-            if(await userSchema.findOne({userName:sanitize(userData.userName)}))
+            if(await userSchema.findOne({userName:userData.userName.toString()}))
                 return res.status(400).json({message: 'O nome de usuário já existe.'})
             const createdUser = await userSchema.create(userData)
 
