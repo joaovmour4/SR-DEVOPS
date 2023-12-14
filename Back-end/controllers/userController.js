@@ -23,14 +23,14 @@ module.exports = class userController{
 
             const userData = {
                 _id: new ObjectId(),
-                userName:sanitize(userName),
+                userName:userName,
                 userEmail: userEmail,
                 userPassword: await passwordHash(userPassword),
                 userSubsidio: false,
                 userCargo: 'user'
             }
 
-            if(await userSchema.findOne({userName:userData.userName}))
+            if(await userSchema.findOne({userName:sanitize(userData.userName)}))
                 return res.status(400).json({message: 'O nome de usuário já existe.'})
             const createdUser = await userSchema.create(userData)
 
