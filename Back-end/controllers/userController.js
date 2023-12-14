@@ -1,8 +1,6 @@
 const { ObjectId } = require('mongodb')
 const userSchema = require('../schemas/userSchema')
 const purchaseSchema = require('../schemas/purchaseSchema')
-// const passwordHash = require('../services/passwordHash')
-// const passwordCompare = require('../services/passwordCompare')
 const cryptojs = require('../services/cryptojs')
 const cryptojsCompare = require('../services/cryptojsCompare')
 const jwtAuth = require('../services/jwtAuth')
