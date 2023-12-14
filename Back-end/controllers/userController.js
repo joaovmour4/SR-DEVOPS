@@ -175,6 +175,9 @@ module.exports = class userController{
 
             if(await fieldVerify(userName))
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
+            
+            if(await userSchema.findOne({userName:String(userName)}) && userName !== res.user.userName)
+                return res.status(400).json({message: 'O nome de usuário já existe.'})
 
             const userNewData = {
                 userName: userName,
