@@ -14,15 +14,18 @@ module.exports = class userController{
 
             const {userName, userEmail, userPassword} = req.body
             
-            if(await fieldReplace(userName))
+            if(await fieldVerify(userName))
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
-
+            else{
+                var userNameVerified = userName
+            }
+                
             if(!await fieldVerify(userPassword))
                 return res.status(400).json({message: "A senha deve conter caracteres especiais"})
 
             const userData = {
                 _id: new ObjectId(),
-                userName:userName,
+                userName:userNameVerified,
                 userEmail: userEmail,
                 userPassword: await passwordHash(userPassword),
                 userSubsidio: false,
@@ -64,7 +67,7 @@ module.exports = class userController{
             // #swagger.tags = ['Autenticação']
             const {userName, userPassword} = req.body
 
-            const newUserName = await fieldVerify(userName)
+            const newUserName = await fieldReplace(userName)
 
             const userBD = await userSchema.findOne({userName:newUserName})
             if(!userBD)
