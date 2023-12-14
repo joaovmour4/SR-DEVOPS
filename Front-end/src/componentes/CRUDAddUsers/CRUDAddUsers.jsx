@@ -26,7 +26,7 @@ const CRUDAddUsers = ({ refreshUsers }) => {
 
       console.log('Novo usuário criado com sucesso!');
       closeModal();
-      refreshUsers(); // Chame a função para atualizar a tabela de usuários
+      refreshUsers();
     } catch (error) {
       console.error('Erro ao criar novo usuário:', error);
     }

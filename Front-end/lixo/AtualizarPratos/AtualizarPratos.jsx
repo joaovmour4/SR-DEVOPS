@@ -2,11 +2,11 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthContext';
 
-const AtualizarPratos = () => {
+const CRUDAddPratos = () => {
   const { user } = useContext(AuthContext);
   const [prato, setPrato] = useState({
     nome: '',
-    // descricao: '',
+    descricao: '',
     tipo: '',
   });
 
@@ -20,12 +20,11 @@ const AtualizarPratos = () => {
   const handleEnviar = async () => {
     try {
       const response = await axios.post('http://localhost:3000/prato', prato, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.jwtToken.token}`,  
-          },
-        }
-      );
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.jwtToken.token}`,  
+        },
+      });
 
       console.log(response.data);
 
@@ -79,4 +78,4 @@ const AtualizarPratos = () => {
   );
 };
 
-export default AtualizarPratos;
+export default CRUDAddPratos;

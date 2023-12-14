@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import AtualizarPratos from '../componentes/AtualizarPratos/AtualizarPratos';
+import CRUDPratos from '../componentes/CRUDPratos/CRUDPratos';
 import { AuthContext } from '../Context/AuthContext';
 
 const AdicionarPratos = () => {
@@ -7,8 +7,8 @@ const AdicionarPratos = () => {
   const isAdmin = user && user.userCargo === 'admin';
 
   return (
-    <div>
-      {isAdmin ? <AtualizarPratos /> : null}
+    <div className='h-screen'>
+      {isAdmin ? <CRUDPratos /> : null}
     </div>
   );
 };
