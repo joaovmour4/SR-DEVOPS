@@ -5,6 +5,7 @@ const passwordHash = require('../services/passwordHash')
 const passwordCompare = require('../services/passwordCompare')
 const jwtAuth = require('../services/jwtAuth')
 const fieldVerify = require('../services/fieldVerify')
+const fieldReplace = require('../services/fieldReplace')
 
 module.exports = class userController{
     static async newUser(req, res){
@@ -13,8 +14,11 @@ module.exports = class userController{
 
             const {userName, userEmail, userPassword} = req.body
             
-            if(await fieldVerify(userName))
+            if(await fieldReplace(userName))
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
+
+            if(!await fieldVerify(userPassword))
+                return res.status(400).json({message: "A senha deve conter caracteres especiais"})
 
             const userData = {
                 _id: new ObjectId(),

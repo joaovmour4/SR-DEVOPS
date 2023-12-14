@@ -30,7 +30,7 @@ const pratoRoutes = require('./routes/pratoRoutes')
 app.use('/', userRoutes, purchaseRoutes, pratoRoutes)
 app.use('/doc', swagger.serve, swagger.setup(swaggerFile))
 app.use('*', (req, res)=>{
-    return res.status(400).json({message: 'A rota requisitada não existe'})
+    return res.status(404).json({message: 'A rota requisitada não existe'})
 })
 
 mongoose.set('strictQuery', false)
