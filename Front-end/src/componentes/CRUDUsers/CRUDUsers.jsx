@@ -80,6 +80,7 @@ const CRUDUser = () => {
   const [userEmail, setUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
   const [isAddUserModalOpen, setAddUserModalOpen] = useState(false);
+  const [userSubsidio, setUserSubsidio] = useState('');
 
   const isAdmin = authContext.user && authContext.user.userCargo === 'admin';
   const isTec = authContext.user && authContext.user.userCargo === 'tec';
@@ -88,12 +89,12 @@ const CRUDUser = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-  
+
     doc.text('Histórico de Compras', 20, 10);
-  
+
     purchaseHistory.forEach((purchase, index) => {
       const startY = 20 + index * 60;
-  
+
       // Textos em negrito e caixa alta
       doc.setFont('bold');
       doc.setFontSize(12);
@@ -101,25 +102,25 @@ const CRUDUser = () => {
       doc.text(`ID do Usuário: ${purchase.userId.toUpperCase()}`, 20, startY + 10);
       doc.text(`Quantidade: ${purchase.quantity}`, 20, startY + 20);
       doc.text(`Valor: ${purchase.value}`, 20, startY + 30);
-  
+
       // Formatação da data
       const formattedDate = new Date(purchase.purchaseDate).toLocaleString();
       doc.text(`Data da Compra: ${formattedDate}`, 20, startY + 40);
-  
+
       // Linha separadora
       doc.setLineWidth(0.5);
       doc.line(20, startY + 50, 190, startY + 50);
-  
+
       // Nova linha para a próxima compra
       doc.text('', 20, startY + 60);
-  
+
       // Resetar estilo para o próximo item
       doc.setFont('normal');
     });
-  
+
     doc.save('historico_compras.pdf');
   };
-  
+
 
 
   useEffect(() => {
@@ -142,13 +143,25 @@ const CRUDUser = () => {
 
   const handleEditUser = async () => {
     try {
+      console.log("editUserId:", editUserId);
+      console.log("editedUserName:", editedUserName);
+      console.log("userEmail:", userEmail);
+      console.log("userPassword:", newUserPassword);
+      console.log("userSubsidioValue:", userSubsidio)
+
+      // Verifica se o checkbox está marcado
+      const userSubsidioValue = userSubsidio ? true : false;
+
+      const userData = {
+        userName: editedUserName,
+        userEmail: userEmail,
+        userSubsidio: userSubsidioValue,
+        userPassword: newUserPassword,
+      };
+
       const response = await axios.put(
         `http://localhost:3000/user/${editUserId}`,
-        {
-          userName: editedUserName,
-          userEmail: userEmail,
-          userPassword: newUserPassword,
-        },
+        userData,
         {
           headers: {
             Authorization: `Bearer ${authContext.user.jwtToken.token}`,
@@ -159,17 +172,20 @@ const CRUDUser = () => {
       console.log('Dados do usuário atualizados com sucesso!');
       setEditUserId(null);
       setEditModalOpen(false);
+
       const updatedUsers = users.map((user) => {
         if (user._id === editUserId) {
-          return { ...user, userName: editedUserName };
+          return { ...user, userName: editedUserName, userSubsidio: userSubsidioValue };
         }
         return user;
       });
+
       setUsers(updatedUsers);
     } catch (error) {
       console.error('Erro ao atualizar os dados do usuário:', error);
     }
   };
+
 
   const handleEdit = (userId) => {
     setEditUserId(userId);
@@ -195,8 +211,6 @@ const CRUDUser = () => {
 
       if (response.data.message) {
         const purchases = response.data.message;
-
-        // Filter purchases based on the current user's ID
         const userPurchases = purchases.filter((purchase) => purchase.userId === userId);
 
         if (userPurchases.length > 0) {
@@ -265,6 +279,9 @@ const CRUDUser = () => {
               <tr>
                 <th className="border p-2">ID</th>
                 <th className="border p-2">Nome</th>
+                <th className="border p-2">Subsídio</th>
+                <th className="border p-2">Cargo</th>
+                <th className="border p-2">E-mail</th>
                 <th className="border p-2">Ações</th>
               </tr>
             </thead>
@@ -273,6 +290,9 @@ const CRUDUser = () => {
                 <tr key={user._id}>
                   <td className="border p-2">{user._id}</td>
                   <td className="border p-2">{user.userName}</td>
+                  <td className="border p-2">{user.subsidio ? 'Sim' : 'Não'}</td>
+                  <td className="border p-2">{user.userCargo}</td>
+                  <td className="border p-2">{user.userEmail}</td>
                   <td className="border p-2 flex">
                     {isAdmin && (
                       <>
@@ -425,6 +445,7 @@ const CRUDUser = () => {
               maxWidth: '450px',
               maxHeight: '450px',
               width: '100vh',
+              height: '100vh',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
               position: 'absolute',
               top: '50%',
@@ -462,6 +483,18 @@ const CRUDUser = () => {
                 onChange={(e) => setNewUserPassword(e.target.value)}
               />
             </label>
+            <label className="block mb-4">
+              Subsídio:
+              <select
+                className="border p-2 w-full"
+                value={userSubsidio ? 'Sim' : 'Não'}
+                onChange={(e) => setUserSubsidio(e.target.value === 'Sim' ? true : false)}
+              >
+                <option value="">Selecione</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </label>
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4"
               onClick={handleEditUser}
@@ -471,7 +504,7 @@ const CRUDUser = () => {
           </div>
         </Modal>
       )}
-      
+
     </div>
   );
 };
