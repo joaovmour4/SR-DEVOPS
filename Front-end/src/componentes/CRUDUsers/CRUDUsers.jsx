@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
+import jsPDF from 'jspdf';
 import { AuthContext } from '../../Context/AuthContext';
 
 const CRUDAddUsers = ({ closeModal, refreshUsers }) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  
+
 
   const handleAddUser = async () => {
     try {
@@ -83,6 +84,44 @@ const CRUDUser = () => {
   const isAdmin = authContext.user && authContext.user.userCargo === 'admin';
   const isTec = authContext.user && authContext.user.userCargo === 'tec';
 
+  const [purchaseHistory, setPurchaseHistory] = useState([]);
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+  
+    doc.text('Histórico de Compras', 20, 10);
+  
+    purchaseHistory.forEach((purchase, index) => {
+      const startY = 20 + index * 60;
+  
+      // Textos em negrito e caixa alta
+      doc.setFont('bold');
+      doc.setFontSize(12);
+      doc.text(`ID da Compra: ${purchase._id.toUpperCase()}`, 20, startY);
+      doc.text(`ID do Usuário: ${purchase.userId.toUpperCase()}`, 20, startY + 10);
+      doc.text(`Quantidade: ${purchase.quantity}`, 20, startY + 20);
+      doc.text(`Valor: ${purchase.value}`, 20, startY + 30);
+  
+      // Formatação da data
+      const formattedDate = new Date(purchase.purchaseDate).toLocaleString();
+      doc.text(`Data da Compra: ${formattedDate}`, 20, startY + 40);
+  
+      // Linha separadora
+      doc.setLineWidth(0.5);
+      doc.line(20, startY + 50, 190, startY + 50);
+  
+      // Nova linha para a próxima compra
+      doc.text('', 20, startY + 60);
+  
+      // Resetar estilo para o próximo item
+      doc.setFont('normal');
+    });
+  
+    doc.save('historico_compras.pdf');
+  };
+  
+
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -148,7 +187,7 @@ const CRUDUser = () => {
 
   const handleViewHistory = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:3000/purchase/${userId}`, {
+      const response = await axios.get(`http://localhost:3000/purchase`, {
         headers: {
           Authorization: `Bearer ${authContext.user.jwtToken.token}`,
         },
@@ -156,7 +195,12 @@ const CRUDUser = () => {
 
       if (response.data.message) {
         const purchases = response.data.message;
-        if (purchases.length > 0) {
+
+        // Filter purchases based on the current user's ID
+        const userPurchases = purchases.filter((purchase) => purchase.userId === userId);
+
+        if (userPurchases.length > 0) {
+          setPurchaseHistory(userPurchases);
           setViewHistoryUserId(userId);
           setHistoryModalOpen(true);
         } else {
@@ -169,6 +213,9 @@ const CRUDUser = () => {
       console.error('Erro ao obter dados da compra:', error);
     }
   };
+
+
+
 
   const confirmDelete = async () => {
     try {
@@ -210,8 +257,8 @@ const CRUDUser = () => {
 
       {/* <CRUDAddUsers/> */}
 
-       {/* Tabela de usuários */}
-       <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-3/5">
+      {/* Tabela de usuários */}
+      <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-3/5">
         {users.length > 0 ? (
           <table className="w-full border-collapse">
             <thead>
@@ -230,13 +277,13 @@ const CRUDUser = () => {
                     {isAdmin && (
                       <>
                         <button
-                          className="mx-1 px-2 py-1 bg-blue-500 text-white rounded-md"
+                          className="mx-1 flex-1 px-2 py-1 bg-blue-500 text-white rounded-md"
                           onClick={() => handleEdit(user._id)}
                         >
                           Editar
                         </button>
                         <button
-                          className="mx-1 px-2 py-1 bg-red-500 text-white rounded-md"
+                          className="mx-1 flex-1 px-2 py-1 bg-red-500 text-white rounded-md"
                           onClick={() => handleDelete(user._id)}
                         >
                           Deletar
@@ -245,11 +292,12 @@ const CRUDUser = () => {
                     )}
                     {(isAdmin || isTec) && (
                       <button
-                        className="mx-1 px-2 py-1 bg-green-500 text-white rounded-md"
+                        className="mx-1 px-2 py-1 flex-1 bg-green-500 text-white rounded-md"
                         onClick={() => handleViewHistory(user._id)}
                       >
                         Histórico
                       </button>
+
                     )}
                   </td>
                 </tr>
@@ -307,6 +355,8 @@ const CRUDUser = () => {
               borderRadius: '8px',
               maxWidth: '400px',
               width: '100%',
+              maxHeight: '100vh',
+              height: '100vh',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
               position: 'absolute',
               top: '50%',
@@ -317,17 +367,37 @@ const CRUDUser = () => {
         >
           <div className="p-4">
             <h2 className="text-2xl font-semibold mb-4">Histórico de Compras</h2>
-            {/* Lógica para exibir o histórico de compras */}
-            <p>Exibição do histórico de compras aqui...</p>
+            {purchaseHistory.length > 0 ? (
+              <div>
+                {purchaseHistory.map((purchase) => (
+                  <div key={purchase._id} className="mb-4">
+                    <p>ID da Compra: {purchase._id}</p>
+                    <p>ID do Usuário: {purchase.userId}</p>
+                    <p>Quantidade: {purchase.quantity}</p>
+                    <p>Valor: {purchase.value}</p>
+                    <p>Data da Compra: {purchase.purchaseDate}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>Nenhuma compra encontrada.</p>
+            )}
             <button
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4"
+              className="flex-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 mr-2"
               onClick={closeModal}
             >
               Fechar
             </button>
+            <button
+              className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 ml-2"
+              onClick={generatePDF}
+            >
+              Gerar PDF
+            </button>
           </div>
         </Modal>
       )}
+
 
       {/* Modal de edição de usuário */}
       {editModalOpen && (
@@ -393,14 +463,15 @@ const CRUDUser = () => {
               />
             </label>
             <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4"
-                onClick={handleEditUser}
-                >
-                CONFIRMAR
-             </button>
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4"
+              onClick={handleEditUser}
+            >
+              CONFIRMAR
+            </button>
           </div>
         </Modal>
       )}
+      
     </div>
   );
 };

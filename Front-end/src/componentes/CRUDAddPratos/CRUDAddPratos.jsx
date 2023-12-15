@@ -5,9 +5,12 @@ import { AuthContext } from '../../Context/AuthContext';
 const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
   const { user } = useContext(AuthContext);
   const [prato, setPrato] = useState({
-    nome: '',
-    descricao: '',
-    tipo: '',
+    nomePrato: '', // Nome do prato comum
+    tipoPrato: '', // Tipo do prato (comum ou vegetariano)
+    acompanhamentoPrato: '', // Acompanhamento do prato comum
+    nomePratoVegetariano: '', // Nome do prato vegetariano
+    tipoPratoVegetariano: '', // Tipo do prato (comum ou vegetariano) para vegetariano
+    acompanhamentoPratoVegetariano: '', // Acompanhamento do prato vegetariano
   });
 
   const handleChange = (campo, valor) => {
@@ -20,11 +23,14 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
   const handleEnviar = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:3000/prato',
+        'http://localhost:3000/prato/post',
         {
-          nome: prato.nome,
-          descricao: prato.descricao,
-          tipo: prato.tipo,
+          nomePrato: prato.nomePrato,
+          tipoPrato: prato.tipoPrato,
+          acompanhamentoPrato: prato.acompanhamentoPrato,
+          nomePratoVegetariano: prato.nomePratoVegetariano,
+          tipoPratoVegetariano: prato.tipoPratoVegetariano,
+          acompanhamentoPratoVegetariano: prato.acompanhamentoPratoVegetariano,
         },
         {
           headers: {
@@ -33,72 +39,107 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
           },
         }
       );
-  
+
       console.log(response.data);
-  
+
       setPrato({
-        nome: '',
-        descricao: '',
-        tipo: '',
+        nomePrato: '',
+        tipoPrato: '',
+        acompanhamentoPrato: '',
+        nomePratoVegetariano: '',
+        tipoPratoVegetariano: '',
+        acompanhamentoPratoVegetariano: '',
       });
-  
-      closeModal();
+
+      const closeModal = () => {
+        console.log('Modal fechado');
+      };
       refreshPratos();
     } catch (error) {
       console.error('Erro ao enviar prato:', error);
     }
   };
-  
+
   return (
     <div style={{ width: '100%' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <button
+          className="text-2xl font-bold"
+          onClick={closeModal}
+        >
+          X
+        </button>
+      </div>
       <h2 className="text-2xl font-semibold mb-4">CRIAR PRATO</h2>
       <label className="block mb-2">
-        NOME DO PRATO:
+        NOME DO PRATO COMUM:
         <input
           type="text"
           className="border p-2 w-full"
-          value={prato.nome}
-          onChange={(e) => handleChange('nome', e.target.value)}
+          value={prato.nomePrato}
+          onChange={(e) => handleChange('nomePrato', e.target.value)}
         />
       </label>
+      {/* <label className="block mb-2">
+        TIPO DO PRATO COMUM:
+        <select
+          value={prato.tipoPrato}
+          onChange={(e) => handleChange('tipoPrato', e.target.value)}
+          className="border p-2 w-full"
+        >
+          <option value="">Selecione o tipo</option>
+          <option value="COMUM">Comum</option>
+          <option value="VEGETARIANO">Vegetariano</option>
+        </select>
+      </label> */}
       <label className="block mb-2">
-        DESCRIÇÃO DO PRATO:
-        <textarea
+        ACOMPANHAMENTO DO PRATO COMUM:
+        <input
           type="text"
-          className="border p-2 w-full h-32 resize-none"
-          value={prato.descricao}
-          onChange={(e) => handleChange('descricao', e.target.value)}
+          className="border p-2 w-full"
+          value={prato.acompanhamentoPrato}
+          onChange={(e) => handleChange('acompanhamentoPrato', e.target.value)}
         />
       </label>
+
+      <label className="block mb-2">
+        NOME DO PRATO VEGETARIANO:
+        <input
+          type="text"
+          className="border p-2 w-full"
+          value={prato.nomePratoVegetariano}
+          onChange={(e) => handleChange('nomePratoVegetariano', e.target.value)}
+        />
+      </label>
+      {/* <label className="block mb-2">
+        TIPO DO PRATO VEGETARIANO:
+        <select
+          value={prato.tipoPratoVegetariano}
+          onChange={(e) => handleChange('tipoPratoVegetariano', e.target.value)}
+          className="border p-2 w-full"
+        >
+          <option value="">Selecione o tipo</option>
+          <option value="COMUM">Comum</option>
+          <option value="VEGETARIANO">Vegetariano</option>
+        </select>
+      </label> */}
+      <label className="block mb-2">
+        ACOMPANHAMENTO DO PRATO VEGETARIANO:
+        <input
+          type="text"
+          className="border p-2 w-full"
+          value={prato.acompanhamentoPratoVegetariano}
+          onChange={(e) => handleChange('acompanhamentoPratoVegetariano', e.target.value)}
+        />
+      </label>
+
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-        <div style={{ flex: '1', marginRight: '4%' }}>
-          <label className="block mb-2">
-            <span className="sr-only">Tipo do Prato:</span>
-            <select
-              value={prato.tipo}
-              onChange={(e) => handleChange('tipo', e.target.value)}
-              className="border p-2 w-full flex text-center"
-            >
-              <option value="">TIPO</option>
-              <option value="COMUM">COMUM</option>
-              <option value="VEGETARIANO">VEGETARIANO</option>
-            </select>
-          </label>
-        </div>
         <div style={{ flex: '1', marginRight: '4%' }}>
           <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline w-full"
             onClick={handleEnviar}
           >
             CADASTRAR
-          </button>
-        </div>
-        <div style={{ flex: '1' }}>
-          <button
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline w-full"
-            onClick={closeModal}
-          >
-            VOLTAR
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'; 
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import CRUDAddPrato from '../CRUDAddPratos/CRUDAddPratos';
@@ -25,13 +25,13 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
           Authorization: `Bearer ${authContext.user.jwtToken.token}`,
         },
       });
-  
+
       setPratos(response.data.message);
     } catch (error) {
       console.error('Erro ao obter os pratos:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchPratos();
   }, [deletePratoId, isDeleteModalOpen, editPratoId, isEditModalOpen]);
@@ -46,7 +46,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
           tipo: editedTipo,
         }
       );
-  
+
       console.log('Dados do prato atualizados com sucesso!');
       setEditPratoId(null);
       setEditModalOpen(false);
@@ -81,29 +81,27 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     setDeleteModalOpen(true);
   };
 
-const confirmDelete = async () => {
-  try {
-    // Get the current deletePratoId before setting it to null
-    const currentDeletePratoId = deletePratoId;
+  const confirmDelete = async () => {
+    try {
+      const currentDeletePratoId = deletePratoId;
+      await axios.delete(`http://localhost:3000/prato/${currentDeletePratoId}`);
 
-    await axios.delete(`http://localhost:3000/prato/${currentDeletePratoId}`);
-    
+      setDeletePratoId(null);
+      setDeleteModalOpen(false);
+      console.log(`Prato com ID ${currentDeletePratoId} deletado com sucesso!`);
+
+      const updatedPratos = pratos.filter((prato) => prato._id !== currentDeletePratoId);
+      setPratos(updatedPratos);
+    } catch (error) {
+      console.error('Erro ao deletar prato:', error);
+    }
+  };
+
+
+  const cancelDelete = () => {
     setDeletePratoId(null);
     setDeleteModalOpen(false);
-    console.log(`Prato com ID ${currentDeletePratoId} deletado com sucesso!`);
-
-    // Update pratos by filtering out the deleted prato using the currentDeletePratoId
-    const updatedPratos = pratos.filter((prato) => prato._id !== currentDeletePratoId);
-    setPratos(updatedPratos);
-  } catch (error) {
-    console.error('Erro ao deletar prato:', error);
-  }
-};
-
-const cancelDelete = () => {
-  setDeletePratoId(null);
-  setDeleteModalOpen(false);
-};
+  };
 
 
   return (
@@ -117,8 +115,15 @@ const cancelDelete = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
+      {/* Botão para adicionar prato */}
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4 mb-4"
+        onClick={() => setAddPratoModalOpen(true)}
+      >
+        Adicionar Prato
+      </button>
       {/* Tabela de pratos */}
-      <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-full">
+      <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-4/5 mx-4">
         {pratos.length > 0 ? (
           <table className="w-full border-collapse">
             <thead>
@@ -133,24 +138,31 @@ const cancelDelete = () => {
             <tbody>
               {pratos.map((prato) => (
                 <tr key={prato._id}>
-                  <td className="border p-2">{prato._id}</td>
+                  <td className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">{prato._id}</td>
                   <td className="border p-2">{prato.pratoType}</td>
-                  <td className="border p-2">{prato.prato}</td>
-                  <td className="border p-2">{prato.acompanhamento}</td>
-                  <td className="border p-2 flex">
-                    <button
-                      className="mx-1 px-2 py-1 bg-blue-500 text-white rounded-md"
-                      onClick={() => handleEdit(prato._id)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="mx-1 px-2 py-1 bg-red-500 text-white rounded-md"
-                      onClick={() => handleDelete(prato._id)}
-                    >
-                      Deletar
-                    </button>
+                  <td className="border p-2 hidden sm:table-cell md:table-cell lg:table-cell xl:table-cell">
+                    <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
+                      {prato.prato}
+                    </div>
                   </td>
+                  <td className="border p-2">{prato.acompanhamento}</td>
+                  <td className="border p-2">
+                    <div className="flex items-center">
+                      <button
+                        className="flex-1 px-2 py-1 bg-blue-500 text-white rounded-md mr-1"
+                        onClick={() => handleEdit(prato._id)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="flex-1 px-2 py-1 bg-red-500 text-white rounded-md ml-1"
+                        onClick={() => handleDelete(prato._id)}
+                      >
+                        Deletar
+                      </button>
+                    </div>
+                  </td>
+
                 </tr>
               ))}
             </tbody>
@@ -159,6 +171,7 @@ const cancelDelete = () => {
           <p>Nenhum prato encontrado.</p>
         )}
       </div>
+
 
       {/* Modal de confirmação de exclusão */}
       {isDeleteModalOpen && (
@@ -206,7 +219,7 @@ const cancelDelete = () => {
               borderRadius: '8px',
               maxWidth: '450px',
               maxHeight: '450px',
-              width: '65%',  
+              width: '65%',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
               position: 'absolute',
               top: '50%',
@@ -244,8 +257,9 @@ const cancelDelete = () => {
               backgroundColor: '#fff',
               padding: '20px',
               borderRadius: '8px',
-              maxWidth: '65%', 
-              maxHeight: '450px',
+              maxWidth: '65%',
+              maxHeight: '100vh',
+              height: '450px',
               width: '100vh',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
               position: 'absolute',
@@ -258,14 +272,6 @@ const cancelDelete = () => {
           <CRUDAddPrato closeModal={closeModal} refreshPratos={fetchPratos} />
         </Modal>
       )}
-
-      {/* Botão para adicionar prato */}
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4"
-        onClick={() => setAddPratoModalOpen(true)}
-      >
-        Adicionar Prato
-      </button>
     </div>
   );
 };
