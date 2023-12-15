@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb")
 const pratoSchema = require("../schemas/pratoSchema")
-const fieldVerify = require("../services/fieldVerify")
+const fieldCharVerify = require("../services/fieldCharVerify")
 
 module.exports = class pratoController{
     static async newPrato(req, res){
@@ -17,8 +17,11 @@ module.exports = class pratoController{
             const prato = String(req.body.prato)
             const pratoType = String(req.body.pratoType)
 
+            if(await fieldCharVerify(prato) || await fieldCharVerify(pratoType))
+                return res.status(401).json({message: "O nome do prato não pode conter caracteres especiais"})
+
             if(await pratoSchema.findOne({prato:prato}))
-                return res.status(400).json({message: 'O prato já existe.'})
+                return res.status(401).json({message: 'O prato já existe.'})
 
             const newPrato = await pratoSchema.create({
                 _id: new ObjectId(),
@@ -72,8 +75,11 @@ module.exports = class pratoController{
 
             const {prato, pratoType} = req.body
 
+            if(await fieldCharVerify(prato) || await fieldCharVerify(pratoType))
+                return res.status(401).json({message: "O nome do prato não pode conter caracteres especiais"})
+
             if(await pratoSchema.findOne({prato: String(prato)}))
-                return res.status(400).json({message: 'Este prato já existe.'})
+                return res.status(401).json({message: 'Este prato já existe.'})
 
             const pratoNewData = {
                 prato: prato,

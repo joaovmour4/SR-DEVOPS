@@ -146,7 +146,7 @@ module.exports = class userController{
             const userNewData = {
                 userName: userName,
                 userEmail: userEmail,
-                userPassword: await passwordHash(userPassword),
+                userPassword: await cryptojs(userPassword),
                 userSubsidio: userSubsidio
             }
             const updateUser = await userSchema.updateOne({_id:userId}, userNewData)
@@ -177,12 +177,12 @@ module.exports = class userController{
                 return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
             
             if(await userSchema.findOne({userName:String(userName)}) && userName !== res.user.userName)
-                return res.status(400).json({message: 'O nome de usuário já existe.'})
+                return res.status(401).json({message: 'O nome de usuário já existe.'})
 
             const userNewData = {
                 userName: userName,
                 userEmail: userEmail,
-                userPassword: await passwordHash(userPassword)
+                userPassword: await cryptojs(userPassword)
             }
             const updateUser = await userSchema.updateOne({_id:res.user._id}, userNewData)
 
