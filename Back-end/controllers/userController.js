@@ -146,7 +146,7 @@ module.exports = class userController{
             const userNewData = {
                 userName: userName,
                 userEmail: userEmail,
-                userPassword: await passwordHash(userPassword),
+                userPassword: await cryptojs(userPassword),
                 userSubsidio: userSubsidio
             }
             const updateUser = await userSchema.updateOne({_id:userId}, userNewData)
@@ -182,7 +182,7 @@ module.exports = class userController{
             const userNewData = {
                 userName: userName,
                 userEmail: userEmail,
-                userPassword: await passwordHash(userPassword)
+                userPassword: await cryptojs(userPassword)
             }
             const updateUser = await userSchema.updateOne({_id:res.user._id}, userNewData)
 
