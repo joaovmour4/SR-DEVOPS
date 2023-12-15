@@ -4,5 +4,6 @@ const verifyJWT = require('../services/verifyJWT')
 const menuController = require('../controllers/menuController')
 
 router.post('/menu', verifyJWT, menuController.newMenu)
+router.get('/menu/:diaSemana', menuController.getMenu)
 
 module.exports = router
