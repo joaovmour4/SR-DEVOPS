@@ -44,4 +44,23 @@ module.exports = class{
             return res.status(500).json({message: err.message})
         }
     }
+
+    static async getMenu(req, res){
+        try{
+            /* 
+            #swagger.tags = ['Cardápio']
+            }] */
+
+            const {diaSemana} = req.params
+            if(await fieldCharVerify(diaSemana))
+                return res.status(401).json({message: "Os campos não podem conter caracteres especiais"})
+
+            const menu = await menuSchema.findOne({diaSemana:String(diaSemana)})
+            if(menu){
+                return res.status(200).json({menu})
+            }
+        }catch(err){
+            
+        }
+    }
 }

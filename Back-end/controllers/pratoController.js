@@ -46,7 +46,7 @@ module.exports = class pratoController{
             "bearerAuth": []
             }] */
 
-            if(res.user.userCargo !== 'admin')
+            if(res.user.userCargo === 'user')
                 return res.status(401).json({message: 'Unauthorized'})
             
             const pratos = await pratoSchema.find()
