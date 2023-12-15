@@ -15,16 +15,13 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
           </button>
         </Link>
       </div>
-      {/* <div className="mb-4">  
-        <Link to="/controlheusuario">
-          <button
-            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]"
-            onClick={abrirModal}
-          >
-            GERENCIAR USUÁRIOS
+      <div className="mb-4">
+        <Link to="/adicionarpratos">
+          <button className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]">
+            CRIAR INGREDIENTES
           </button>
         </Link>
-      </div> */}
+      </div>
       <div className="mb-4">
       <Link to="/listpratos">
           <button
@@ -35,16 +32,6 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
           </button>
         </Link>
       </div>
-      <div className="mb-10">
-        <Link to="/adicionarpratos">
-          <button className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700  mb-10 min-w-[265px]">
-            CRIAR INGREDIENTES
-          </button>
-        </Link>
-        
-      </div>
-
-      {/* Modal de Gerenciamento de Usuários */}
       <Modal
         isOpen={isOpen}
         onRequestClose={fecharModal}
