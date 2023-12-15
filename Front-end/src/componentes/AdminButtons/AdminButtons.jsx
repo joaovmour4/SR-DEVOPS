@@ -31,14 +31,14 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
             className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]"
             onClick={abrirModal}
           >
-            VISUALIZAR PRATOS E CARDÁPIO
+            MONTAR PRATOS DO CARDÁPIO
           </button>
         </Link>
       </div>
       <div className="mb-10">
         <Link to="/adicionarpratos">
           <button className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700  mb-10 min-w-[265px]">
-            ATUALIZAR PRATOS
+            CRIAR INGREDIENTES
           </button>
         </Link>
         
