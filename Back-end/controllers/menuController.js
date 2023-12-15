@@ -1,5 +1,6 @@
 const menuSchema = require('../schemas/menuSchema')
 const { ObjectId } = require("mongodb")
+const fieldCharVerify = require("../services/fieldCharVerify")
 
 module.exports = class{
     static async newMenu(req, res){
@@ -17,6 +18,9 @@ module.exports = class{
             const pratoComum = String(req.body.pratoComum)
             const pratoVegetariano = String(req.body.pratoVegetariano)
             const acompanhamentos = req.body.acompanhamentos.replace(/[\[\]\s]/g, "").split(',')
+
+            if(await fieldCharVerify(diaSemana) || await fieldCharVerify(pratoComum) || await fieldCharVerify(pratoVegetariano))
+                return res.status(401).json({message: "Os campos não podem conter caracteres especiais"})
 
             if(await menuSchema.findOne({diaSemana: diaSemana}))
                 return res.status(400).json({message: 'Já existe um cadastro para este dia.'})
