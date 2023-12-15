@@ -140,14 +140,20 @@ module.exports = class userController{
 
             const {userName, userEmail, userPassword, userSubsidio} = req.body
 
-            if(await fieldVerify(userName))
-                return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
+            if(userName)
+                if(await fieldVerify(userName))
+                    return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
 
+            const user = await userSchema.findById(userId)
+
+            if(!user)
+                return res.status(400).json({message: "Usuário não encontrado."})
+            
             const userNewData = {
-                userName: userName,
-                userEmail: userEmail,
-                userPassword: await cryptojs(userPassword),
-                userSubsidio: userSubsidio
+                userName: userName ? userName:user.userName,
+                userEmail: userEmail ? userEmail:user.userEmail,
+                userPassword: userPassword ? await cryptojs(userPassword):user.userPassword,
+                userSubsidio: userSubsidio ? userSubsidio:user.userSubsidio
             }
             const updateUser = await userSchema.updateOne({_id:userId}, userNewData)
 
@@ -173,16 +179,19 @@ module.exports = class userController{
                 
             const {userName, userEmail, userPassword} = req.body
 
-            if(await fieldVerify(userName))
-                return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
+            if(userName)
+                if(await fieldVerify(userName))
+                    return res.status(400).json({message: "O nome de usuário não pode conter caracteres especiais."})
             
             if(await userSchema.findOne({userName:String(userName)}) && userName !== res.user.userName)
                 return res.status(401).json({message: 'O nome de usuário já existe.'})
 
+            const user = await userSchema.findById(res.user._id)
+
             const userNewData = {
-                userName: userName,
-                userEmail: userEmail,
-                userPassword: await cryptojs(userPassword)
+                userName: userName ? userName:user.userName,
+                userEmail: userEmail ? userEmail:user.userEmail,
+                userPassword: userPassword ? await cryptojs(userPassword):user.userPassword,
             }
             const updateUser = await userSchema.updateOne({_id:res.user._id}, userNewData)
 
