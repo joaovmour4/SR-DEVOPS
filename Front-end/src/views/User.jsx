@@ -52,6 +52,7 @@ const User = () => {
       setUserData({
         name: userName,
         email: userEmail,
+        subsídio: userSubsidio,
         password: '',
       });
   
