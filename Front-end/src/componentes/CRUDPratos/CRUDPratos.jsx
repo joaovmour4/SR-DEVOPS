@@ -74,7 +74,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
             },
           });
 
-          const pratoData = response.data; // Assumindo que a resposta contém dados do prato
+          const pratoData = response.data;
           setNewPrato({
             nomePrato: pratoData.prato,
             tipoPrato: pratoData.pratoType,
@@ -97,22 +97,26 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
       const response = await axios.put(
         `http://localhost:3000/prato/${editPratoId}`,
         {
-          nome: editedNome,
-          acompanhamento: editedAcompanhamento,
-          tipo: editedTipo,
+          prato: editedNome,
+          pratoType: editedTipo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          },
         }
       );
-
+  
       console.log('Dados do prato atualizados com sucesso!');
       setEditPratoId(null);
       setEditModalOpen(false);
+      
       const updatedPratos = pratos.map((prato) => {
         if (prato._id === editPratoId) {
           return {
             ...prato,
-            nome: editedNome,
-            acompanhamento: editedAcompanhamento,
-            tipo: editedTipo,
+            prato: editedNome,
+            pratoType: editedTipo,
           };
         }
         return prato;
@@ -247,49 +251,88 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
 
       {/* Modal de edição de prato */}
       {isEditModalOpen && (
-        <Modal
-          isOpen={isEditModalOpen}
-          onRequestClose={() => setEditModalOpen(false)}
-          contentLabel="Editar Prato"
-          ariaHideApp={false}
-          style={{
-            overlay: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-            content: {
-              backgroundColor: '#fff',
-              padding: '20px',
-              borderRadius: '8px',
-              maxWidth: '450px',
-              maxHeight: '450px',
-              width: '65%',
-              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            },
-          }}
-        >
-          <div className="p-4">
-            <h2 className="text-2xl font-semibold mb-2">Editar Prato</h2>
-            {/* Adicione os campos de edição aqui */}
+  <Modal
+    isOpen={isEditModalOpen}
+    onRequestClose={() => setEditModalOpen(false)}
+    contentLabel="Editar Prato"
+    ariaHideApp={false}
+    style={{
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      content: {
+        backgroundColor: '#fff',
+        padding: '20px',
+        borderRadius: '8px',
+        maxWidth: '450px',
+        maxHeight: '450px',
+        width: '65%',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    }}
+  >
+    <div className="p-4 w-full">
+      <h2 className="text-2xl font-semibold mb-2">Editar Prato</h2>
+      {/* Formulário de edição do prato */}
+      <div className="w-full">
+        <div className="flex justify-end mb-10">
+          <button
+            className="text-2xl font-bold"
+            onClick={() => setEditModalOpen(false)}
+          >
+            X
+          </button>
+        </div>
+        <h2 className="text-2xl font-semibold mb-4">EDITAR PRATO</h2>
+        <label className="block mb-2">
+          NOME DO PRATO:
+          <input
+            type="text"
+            className="border p-2 w-full"
+            value={editedNome}
+            onChange={(e) => setEditedNome(e.target.value)}
+          />
+        </label>
+        <label className="block mb-2">
+          TIPO DO PRATO:
+          <select
+            value={editedTipo}
+            onChange={(e) => setEditedTipo(e.target.value)}
+            className="border p-2 w-full"
+          >
+            <option value="">Selecione o tipo</option>
+            <option value="comum">Comum</option>
+            <option value="vegetariano">Vegetariano</option>
+            <option value="acompanhamento">Acompanhamento</option>
+          </select>
+        </label>
+
+        <div className="flex justify-between mt-4">
+          <div className="flex-1 mr-4">
             <button
-              className="mx-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
               onClick={handleEditPrato}
             >
-              Salvar
+              SALVAR
             </button>
           </div>
-        </Modal>
+        </div>
+      </div>
+    </div>
+  </Modal>
+
       )}
 
       {/* Modal de adição de prato */}

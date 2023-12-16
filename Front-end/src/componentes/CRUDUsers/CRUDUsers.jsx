@@ -80,7 +80,8 @@ const CRUDUser = () => {
   const [userEmail, setUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
   const [isAddUserModalOpen, setAddUserModalOpen] = useState(false);
-  const [userSubsidio, setUserSubsidio] = useState('');
+  const [userSubsidio, setUserSubsidio] = useState(false);
+
 
   const isAdmin = authContext.user && authContext.user.userCargo === 'admin';
   const isTec = authContext.user && authContext.user.userCargo === 'tec';
@@ -132,7 +133,12 @@ const CRUDUser = () => {
           },
         });
 
-        setUsers(response.data.message);
+        const usersWithBooleanSubsidio = response.data.message.map((user) => ({
+          ...user,
+          userSubsidio: user.userSubsidio ? 'Sim' : 'Não',
+        }));
+
+        setUsers(usersWithBooleanSubsidio);
       } catch (error) {
         console.error('Erro ao obter usuários:', error);
       }
@@ -149,8 +155,7 @@ const CRUDUser = () => {
       console.log("userPassword:", newUserPassword);
       console.log("userSubsidioValue:", userSubsidio)
 
-      // Verifica se o checkbox está marcado
-      const userSubsidioValue = userSubsidio ? true : false;
+      const userSubsidioValue = userSubsidio === 'Sim';
 
       const userData = {
         userName: editedUserName,
@@ -219,6 +224,7 @@ const CRUDUser = () => {
           setHistoryModalOpen(true);
         } else {
           console.warn('O usuário não possui compras.');
+          alert('O usuário não possui compras.');
         }
       } else {
         console.error('Resposta da compra não contém a propriedade "message".', response.data);
@@ -487,14 +493,16 @@ const CRUDUser = () => {
               Subsídio:
               <select
                 className="border p-2 w-full"
-                value={userSubsidio ? 'Sim' : 'Não'}
-                onChange={(e) => setUserSubsidio(e.target.value === 'Sim' ? true : false)}
+                value={userSubsidio}
+                onChange={(e) => setUserSubsidio(e.target.value === 'Sim')}
               >
-                <option value="">Selecione</option>
-                <option value="Sim">Sim</option>
-                <option value="Não">Não</option>
+                <option value={true}>Sim</option>
+                <option value={false}>Não</option>
               </select>
+
+
             </label>
+
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4"
               onClick={handleEditUser}
