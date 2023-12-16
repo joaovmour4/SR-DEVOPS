@@ -1,218 +1,201 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../../Context/AuthContext';
 
 const ListaPratos = () => {
-  const [pratos, setPratos] = useState([]);
-  const [testeModal,setModal] = useState(false);
-
-  const [pratoComum, setPratoComum] = useState('');
-  const [pratoVegetariano, setPratoVegetariano] = useState('');
-  const [acompanhamento, setAcompanhamento] = useState([]);
+  const authContext = useContext(AuthContext);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [pratosComum, setPratosComum] = useState([]);
+  const [pratosVegetariano, setPratosVegetariano] = useState([]);
+  const [pratosAcompanhamento, setPratosAcompanhamento] = useState([]);
+  const [selectedAcompanhamentoOptions, setSelectedAcompanhamentoOptions] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPratos = async () => {
       try {
         const response = await axios.get('http://localhost:3000/prato', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          },
         });
-        setPratos(response.data.message);
+        const pratos = response.data.message;
+
+        const comum = pratos.filter((prato) => prato.pratoType === 'comum');
+        const vegetariano = pratos.filter((prato) => prato.pratoType === 'vegetariano');
+        const acompanhamento = pratos.filter((prato) => prato.pratoType === 'acompanhamento');
+
+        setPratosComum(comum);
+        setPratosVegetariano(vegetariano);
+        setPratosAcompanhamento(acompanhamento);
       } catch (error) {
-        console.error('Erro ao obter dados dos pratos:', error);
+        console.error('Erro ao obter pratos:', error);
       }
     };
 
-    fetchData();
-  }, []);
-
-  function handleAdd(prato) {
-    if (prato.pratoType === 'comum') {
-      setPratoComum(prato.prato)
-    } else if (prato.pratoType === 'vegetariano') {
-      setPratoVegetariano(prato.prato)
-    } else if (prato.pratoType === 'acompanhamento') {
-      setAcompanhamento((prevPratos) => [...prevPratos, prato.prato]);
-    } else {
-      console.log('Erro');
-    }
-  }
-
-  function cancelarPrato(){
-    setPratoComum('')
-    setPratoVegetariano('')
-    setAcompanhamento([])
-  }
-
-  async function enviarPrato(day){
-    const acompanhamentoNew = acompanhamento.join(',')
-    await axios.post('http://localhost:3000/menu', {
-        diaSemana: day,
-        pratoComum,
-        pratoVegetariano,
-        acompanhamentos: acompanhamentoNew
-    }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-    }).then((response) => {
-      console.log(response.data)
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
+    fetchPratos();
+  }, [authContext.user.jwtToken.token]);
 
   useEffect(() => {
-    console.log(`pratoComum` + pratoComum)
-    console.log(`pratoVegetariano` + pratoVegetariano)
-    console.log(`acompanhamento` + acompanhamento.map((prato) => prato.prato))
-  },[pratoComum,pratoVegetariano,acompanhamento])
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/user', {
+          headers: {
+            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          },
+        });
+      } catch (error) {
+        console.error('Erro ao obter usuários:', error);
+      }
+    };
+
+    fetchUsers();
+  }, [authContext.user.jwtToken.token]);
+
+  // const options = [
+  //   { id: 'option1', label: 'Option 1' },
+  //   { id: 'option2', label: 'Option 2' },
+  //   { id: 'option3', label: 'Option 3' },
+  // ];
+
+  // Função de manipulação de checkbox para os pratos do tipo acompanhamento
+  const handleCheckboxChangeAcompanhamento = (value) => {
+    const isSelected = selectedAcompanhamentoOptions.includes(value);
+    if (isSelected) {
+      setSelectedAcompanhamentoOptions(selectedAcompanhamentoOptions.filter((option) => option !== value));
+    } else {
+      setSelectedAcompanhamentoOptions([...selectedAcompanhamentoOptions, value]);
+    }
+  };
+
+  const handleCheckboxChange = (value) => {
+    const isSelected = selectedOptions.includes(value);
+    if (isSelected) {
+      setSelectedOptions(selectedOptions.filter((option) => option !== value));
+    } else {
+      setSelectedOptions([...selectedOptions, value]);
+    }
+  };
+
+  const openModal = (day) => {
+    setShowModal(true);
+    setSelectedDay(day);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedDay(null);
+  };
+
+  const enviar = () => {
+    console.log('Opções selecionadas:', selectedOptions);
+    console.log('Dia selecionado:', selectedDay);
+    closeModal();
+  };
 
   return (
-    <div className="text-center">
-      <h1 className="text-2xl font-bold mb-8 mt-8">CARRINHO DE COMPRAS</h1>
-      <div className="flex flex-wrap space-y-4">
-        <div
-            className="bg-gray-100 p-4 rounded-md text-center mx-auto w-full max-w-[80%] md:max-w-md"
-        >
-            <div className="text-lg font-semibold">Segunda</div>
-            {pratos.map((prato,index) => (
-              <div key={index}>
-                  <p><strong>Prato:</strong> {prato.prato}</p>
-                  <p><strong>Prato:</strong> {prato.pratoType}</p>
-                  <button onClick={() => handleAdd(prato)} className='bg-green-300 px-8 py-2 rounded-md text-white font-bold'>Adicionar</button>
-              </div>
-            ))}
-           <div className='flex flex-col'>
-            <button className='mt-2' onClick={() => setModal(true)}>Ver prato</button>
-            <button onClick={() => enviarPrato('segunda')} className='w-full py-2 rounded-md mt-3 bg-blue-300 mx-auto'>Enviar prato</button>
-           </div>
+    <div>
+      {selectedDay && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 cursor-pointer" onClick={closeModal}>
+          {/* Conteúdo da div clicável */}
+          <div className="text-white p-4 bg-gray-800 rounded-lg">
+            {/* Clique para selecionar opções para {selectedDay} */}
+          </div>
         </div>
-        {pratoComum.length > 0 || pratoVegetariano.length > 0 || acompanhamento.length > 0  ? (
-          <button onClick={() => cancelarPrato()} className='bg-red-300 px-8 py-2 w-[45%] mx-auto rounded-md text-white font-bold'>Cancelar</button>
-        ): null}
-        <div
-            className="bg-gray-100 p-4 rounded-md text-center mx-auto w-full max-w-[80%] md:max-w-md"
-        >
-            <div className="text-lg font-semibold">Terça</div>
-            {pratos.map((prato,index) => (
-              <div key={index}>
-                  <p><strong>Prato:</strong> {prato.prato}</p>
-                  <p><strong>Prato:</strong> {prato.pratoType}</p>
-                  <button onClick={() => handleAdd(prato)} className='bg-green-300 px-8 py-2 rounded-md text-white font-bold'>Adicionar</button>
-              </div>
-            ))}
-           <div className='flex flex-col'>
-            <button className='mt-2' onClick={() => setModal(true)}>Ver prato</button>
-            <button onClick={() => enviarPrato('terca')} className='w-full py-2 rounded-md mt-3 bg-blue-300 mx-auto'>Enviar prato</button>
-           </div>
-        </div>
-        {pratoComum.length > 0 || pratoVegetariano.length > 0 || acompanhamento.length > 0  ? (
-          <button onClick={() => cancelarPrato()} className='bg-red-300 px-8 py-2 w-[45%] mx-auto rounded-md text-white font-bold'>Cancelar</button>
-        ): null}
-        <div
-            className="bg-gray-100 p-4 rounded-md text-center mx-auto w-full max-w-[80%] md:max-w-md"
-        >
-            <div className="text-lg font-semibold">Quarta</div>
-            {pratos.map((prato,index) => (
-              <div key={index}>
-                  <p><strong>Prato:</strong> {prato.prato}</p>
-                  <p><strong>Prato:</strong> {prato.pratoType}</p>
-                  <button onClick={() => handleAdd(prato)} className='bg-green-300 px-8 py-2 rounded-md text-white font-bold'>Adicionar</button>
-              </div>
-            ))}
-           <div className='flex flex-col'>
-            <button className='mt-2' onClick={() => setModal(true)}>Ver prato</button>
-            <button onClick={() => enviarPrato('quarta')} className='w-full py-2 rounded-md mt-3 bg-blue-300 mx-auto'>Enviar prato</button>
-           </div>
-        </div>
-        {pratoComum.length > 0 || pratoVegetariano.length > 0 || acompanhamento.length > 0  ? (
-          <button onClick={() => cancelarPrato()} className='bg-red-300 px-8 py-2 w-[45%] mx-auto rounded-md text-white font-bold'>Cancelar</button>
-        ): null}
-        <div
-            className="bg-gray-100 p-4 rounded-md text-center mx-auto w-full max-w-[80%] md:max-w-md"
-        >
-            <div className="text-lg font-semibold">Quinta</div>
-            {pratos.map((prato,index) => (
-              <div key={index}>
-                  <p><strong>Prato:</strong> {prato.prato}</p>
-                  <p><strong>Prato:</strong> {prato.pratoType}</p>
-                  <button onClick={() => handleAdd(prato)} className='bg-green-300 px-8 py-2 rounded-md text-white font-bold'>Adicionar</button>
-              </div>
-            ))}
-           <div className='flex flex-col'>
-            <button className='mt-2' onClick={() => setModal(true)}>Ver prato</button>
-            <button onClick={() => enviarPrato('quinta')} className='w-full py-2 rounded-md mt-3 bg-blue-300 mx-auto'>Enviar prato</button>
-           </div>
-        </div>
-        {pratoComum.length > 0 || pratoVegetariano.length > 0 || acompanhamento.length > 0  ? (
-          <button onClick={() => cancelarPrato()} className='bg-red-300 px-8 py-2 w-[45%] mx-auto rounded-md text-white font-bold'>Cancelar</button>
-        ): null}
-        <div
-            className="bg-gray-100 p-4 rounded-md text-center mx-auto w-full max-w-[80%] md:max-w-md"
-        >
-            <div className="text-lg font-semibold">Sexta</div>
-            {pratos.map((prato,index) => (
-              <div key={index}>
-                  <p><strong>Prato:</strong> {prato.prato}</p>
-                  <p><strong>Prato:</strong> {prato.pratoType}</p>
-                  <button onClick={() => handleAdd(prato)} className='bg-green-300 px-8 py-2 rounded-md text-white font-bold'>Adicionar</button>
-              </div>
-            ))}
-           <div className='flex flex-col'>
-            <button className='mt-2' onClick={() => setModal(true)}>Ver prato</button>
-            <button onClick={() => enviarPrato('sexta')} className='w-full py-2 rounded-md mt-3 bg-blue-300 mx-auto'>Enviar prato</button>
-           </div>
-        </div>
-        {pratoComum.length > 0 || pratoVegetariano.length > 0 || acompanhamento.length > 0  ? (
-          <button onClick={() => cancelarPrato()} className='bg-red-300 px-8 py-2 w-[45%] mx-auto rounded-md text-white font-bold'>Cancelar</button>
-        ): null}
-        <div
-            className="bg-gray-100 p-4 rounded-md text-center mx-auto w-full max-w-[80%] md:max-w-md"
-        >
-            <div className="text-lg font-semibold">Sabado</div>
-            {pratos.map((prato,index) => (
-              <div key={index}>
-                  <p><strong>Prato:</strong> {prato.prato}</p>
-                  <p><strong>Prato:</strong> {prato.pratoType}</p>
-                  <button onClick={() => handleAdd(prato)} className='bg-green-300 px-8 py-2 rounded-md text-white font-bold'>Adicionar</button>
-              </div>
-            ))}
-           <div className='flex flex-col'>
-            <button className='mt-2' onClick={() => setModal(true)}>Ver prato</button>
-            <button onClick={() => enviarPrato('sabado')} className='w-full py-2 rounded-md mt-3 bg-blue-300 mx-auto'>Enviar prato</button>
-           </div>
-        </div>
-        {pratoComum.length > 0 || pratoVegetariano.length > 0 || acompanhamento.length > 0  ? (
-          <button onClick={() => cancelarPrato()} className='bg-red-300 px-8 py-2 w-[45%] mx-auto rounded-md text-white font-bold'>Cancelar</button>
-        ): null}
+      )}
+
+      {/* Renderização das divs clicáveis */}
+      <div className="flex justify-center mt-8">
+        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((day) => (
+          <div key={day} onClick={() => openModal(day)} className="cursor-pointer p-4 border m-2 rounded-lg bg-blue-500 text-white">
+            {day}
+          </div>
+        ))}
       </div>
-      {testeModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-md">
-              {pratoComum && (
-              <div>
-                <p><strong>Prato Comum:</strong> {pratoComum}</p>
-              </div>
-            )}
-            {pratoVegetariano && (
-              <div>
-                <p><strong>Prato Vegetariano:</strong> {pratoVegetariano}</p>
-              </div>
-            )}
-            {acompanhamento && acompanhamento.map((prato,index) => (
-              <div key={index}>
-                <p><strong>Acompanhamento</strong> {prato.prato}</p>
-              </div>
-            ))}
-            {pratoComum.length === 0 && pratoVegetariano.length === 0 && acompanhamento.length === 0 && (
-              <p>Não há Itens nesse pratos</p>
-            )}
-            <button
-              className="bg-red-500 text-white py-2 px-4 rounded-md mt-2"
-              onClick={() => setModal(false)}
-            >
+
+
+
+
+
+
+
+
+      {showModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+            width: '350px',
+            height: '450px',
+          }}
+        >
+
+
+          <h1 className='text-center font-bold uppercase mb-8'>{selectedDay}</h1>
+
+          {/* 1ª ComboBox - Pratos do Tipo Comum */}
+          <div className="select-container">
+            <label htmlFor="comumSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Comum:</label>
+            <select id="comumSelect" className="p-1 border rounded">
+              {pratosComum.map((prato) => (
+                <option key={prato._id} value={prato._id}>
+                  {prato.prato}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 2ª ComboBox - Pratos do Tipo Vegetariano */}
+          <div className="select-container">
+            <label htmlFor="vegetarianoSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Vegetariano:</label>
+            <select id="vegetarianoSelect" className="p-1 border rounded">
+              {pratosVegetariano.map((prato) => (
+                <option key={prato._id} value={prato._id}>
+                  {prato.prato}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 3ª Lista de Checkbox - Pratos do Tipo Acompanhamento */}
+          <div className="select-container">
+            <label className="text-sm font-bold uppercase mb-1">Pratos do Tipo Acompanhamento:</label>
+            <div className="grid grid-cols-3 gap-4">
+              {pratosAcompanhamento.map((prato) => (
+                <div key={prato._id} className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    id={`acompanhamentoCheckbox-${prato._id}`}
+                    value={prato._id}
+                    checked={selectedAcompanhamentoOptions.includes(prato._id)}
+                    onChange={() => handleCheckboxChangeAcompanhamento(prato._id)}
+                    className="mr-2 appearance-none rounded focus:outline-none p-2 border-2 border-gray-300 checked:bg-blue-500 checked:border-blue-500"
+                  />
+                  <label htmlFor={`acompanhamentoCheckbox-${prato._id}`} className="text-sm">{prato.prato}</label>
+                </div>
+              ))}
+            </div>
+            <p className="mt-2 text-sm text-gray-700">
+              {selectedAcompanhamentoOptions.length} pratos de acompanhamento selecionados
+            </p>
+          </div>
+
+
+          {/* Botões abaixo das seleções */}
+          <div className="flex justify-between mt-4">
+            <button onClick={enviar} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" style={{ width: '40%' }}>
+              Enviar
+            </button>
+            <button onClick={closeModal} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded" style={{ width: '40%' }}>
               Fechar
             </button>
           </div>

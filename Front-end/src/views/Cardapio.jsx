@@ -49,7 +49,6 @@ export default function Cardapio() {
   };
 
   const handleCompraClick = () => {
-    // Lógica para ação de compra
     console.log('Clicou em Comprar');
   };
 
@@ -112,11 +111,11 @@ export default function Cardapio() {
           <div
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
             onClick={() => {
-              lidarComCliqueNoBloco('sexta')
+              lidarComCliqueNoBloco('SEXTA')
               atualizarCardapio('sexta');
             }}
           >
-            <h2 className="text-center text-lg font-bold mb-2">Sexta</h2>
+            <h2 className="text-center text-lg font-bold mb-2">SEXTA</h2>
           </div>
           <div
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
@@ -144,9 +143,9 @@ export default function Cardapio() {
             <p className="text-left">VEGETARIANO: {cardapioData.pratoVegetariano}</p>
             <p className="text-left">ACOMPANHAMENTO: {cardapioData.acompanhamentos}</p>
             <div className="flex justify-center mt-6">
-              <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mr-2" onClick={handleCompraClick}>
+              {/* <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mr-2" onClick={handleCompraClick}>
                 Comprar
-              </button>
+              </button> */}
               <button className="bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded" onClick={handleCloseModal}>
                 Fechar
               </button>

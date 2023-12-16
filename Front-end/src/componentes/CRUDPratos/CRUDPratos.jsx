@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
-import CRUDAddPrato from '../CRUDAddPratos/CRUDAddPratos';
+import CRUDAddPratos from '../CRUDAddPratos/CRUDAddPratos';
 import { AuthContext } from '../../Context/AuthContext';
+
+Modal.setAppElement('#root');
 
 const CRUDPrato = ({ closeModal, refreshPratos }) => {
   const [pratos, setPratos] = useState([]);
@@ -15,8 +17,38 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isAddPratoModalOpen, setAddPratoModalOpen] = useState(false);
-
   const authContext = useContext(AuthContext);
+
+  const [newPrato, setNewPrato] = useState({ nomePrato: '', tipoPrato: null });
+
+  const handleAddPrato = async () => {
+    try {
+      if (!newPrato.tipoPrato) {
+        console.error('Selecione um tipo de prato antes de adicionar.');
+        return;
+      }
+
+      const response = await axios.post(
+        'http://localhost:3000/prato',
+        {
+          prato: newPrato.nomePrato,
+          pratoType: newPrato.tipoPrato,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          },
+        }
+      );
+
+      console.log('Prato adicionado com sucesso!');
+      closeModal();
+      setEditPratoId(null);
+      refreshPratos();
+    } catch (error) {
+      console.error('Erro ao adicionar o prato:', error);
+    }
+  };
 
   const fetchPratos = async () => {
     try {
@@ -33,8 +65,32 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
   };
 
   useEffect(() => {
+    const fetchPrato = async () => {
+      if (editPratoId) {
+        try {
+          const response = await axios.get(`http://localhost:3000/prato/${editPratoId}`, {
+            headers: {
+              Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+            },
+          });
+
+          const pratoData = response.data; // Assumindo que a resposta contém dados do prato
+          setNewPrato({
+            nomePrato: pratoData.prato,
+            tipoPrato: pratoData.pratoType,
+          });
+        } catch (error) {
+          console.error('Erro ao obter detalhes do prato:', error);
+        }
+      }
+    };
+
+    fetchPrato();
+  }, [editPratoId, authContext.user.jwtToken.token]);
+
+  useEffect(() => {
     fetchPratos();
-  }, [deletePratoId, isDeleteModalOpen, editPratoId, isEditModalOpen]);
+  }, [editPratoId, authContext.user.jwtToken.token]);
 
   const handleEditPrato = async () => {
     try {
@@ -97,12 +153,10 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     }
   };
 
-
   const cancelDelete = () => {
     setDeletePratoId(null);
     setDeleteModalOpen(false);
   };
-
 
   return (
     <div className="flex flex-col items-center mt-8">
@@ -122,6 +176,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
       >
         Adicionar Prato
       </button>
+
       {/* Tabela de pratos */}
       <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-4/5 mx-4">
         {pratos.length > 0 ? (
@@ -131,7 +186,6 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
                 <th className="border p-2">ID</th>
                 <th className="border p-2">Tipo</th>
                 <th className="border p-2">Nome</th>
-                <th className="border p-2">Acompanhamento</th>
                 <th className="border p-2">Ações</th>
               </tr>
             </thead>
@@ -145,7 +199,6 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
                       {prato.prato}
                     </div>
                   </td>
-                  <td className="border p-2">{prato.acompanhamento}</td>
                   <td className="border p-2">
                     <div className="flex items-center">
                       <button
@@ -162,7 +215,6 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
                       </button>
                     </div>
                   </td>
-
                 </tr>
               ))}
             </tbody>
@@ -171,7 +223,6 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
           <p>Nenhum prato encontrado.</p>
         )}
       </div>
-
 
       {/* Modal de confirmação de exclusão */}
       {isDeleteModalOpen && (
@@ -230,6 +281,13 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         >
           <div className="p-4">
             <h2 className="text-2xl font-semibold mb-2">Editar Prato</h2>
+            {/* Adicione os campos de edição aqui */}
+            <button
+              className="mx-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+              onClick={handleEditPrato}
+            >
+              Salvar
+            </button>
           </div>
         </Modal>
       )}
@@ -269,7 +327,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
             },
           }}
         >
-          <CRUDAddPrato closeModal={closeModal} refreshPratos={fetchPratos} />
+          <CRUDAddPratos closeModal={() => setAddPratoModalOpen(false)} refreshPratos={fetchPratos} />
         </Modal>
       )}
     </div>

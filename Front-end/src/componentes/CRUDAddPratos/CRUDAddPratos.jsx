@@ -5,12 +5,8 @@ import { AuthContext } from '../../Context/AuthContext';
 const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
   const { user } = useContext(AuthContext);
   const [prato, setPrato] = useState({
-    nomePrato: '', // Nome do prato comum
-    tipoPrato: '', // Tipo do prato (comum ou vegetariano)
-    acompanhamentoPrato: '', // Acompanhamento do prato comum
-    nomePratoVegetariano: '', // Nome do prato vegetariano
-    tipoPratoVegetariano: '', // Tipo do prato (comum ou vegetariano) para vegetariano
-    acompanhamentoPratoVegetariano: '', // Acompanhamento do prato vegetariano
+    nomePrato: '',
+    tipoPrato: '',
   });
 
   const handleChange = (campo, valor) => {
@@ -23,14 +19,10 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
   const handleEnviar = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:3000/prato/post',
+        'http://localhost:3000/prato',
         {
-          nomePrato: prato.nomePrato,
-          tipoPrato: prato.tipoPrato,
-          acompanhamentoPrato: prato.acompanhamentoPrato,
-          nomePratoVegetariano: prato.nomePratoVegetariano,
-          tipoPratoVegetariano: prato.tipoPratoVegetariano,
-          acompanhamentoPratoVegetariano: prato.acompanhamentoPratoVegetariano,
+          prato: prato.nomePrato,
+          pratoType: prato.tipoPrato,
         },
         {
           headers: {
@@ -45,19 +37,17 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
       setPrato({
         nomePrato: '',
         tipoPrato: '',
-        acompanhamentoPrato: '',
-        nomePratoVegetariano: '',
-        tipoPratoVegetariano: '',
-        acompanhamentoPratoVegetariano: '',
       });
 
-      const closeModal = () => {
-        console.log('Modal fechado');
-      };
+      closeModal();
       refreshPratos();
     } catch (error) {
       console.error('Erro ao enviar prato:', error);
     }
+  };
+
+  const handleFecharModal = () => {
+    closeModal();
   };
 
   return (
@@ -65,14 +55,14 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
         <button
           className="text-2xl font-bold"
-          onClick={closeModal}
+          onClick={handleFecharModal}
         >
           X
         </button>
       </div>
       <h2 className="text-2xl font-semibold mb-4">CRIAR PRATO</h2>
       <label className="block mb-2">
-        NOME DO PRATO COMUM:
+        NOME DO PRATO:
         <input
           type="text"
           className="border p-2 w-full"
@@ -80,57 +70,18 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
           onChange={(e) => handleChange('nomePrato', e.target.value)}
         />
       </label>
-      {/* <label className="block mb-2">
-        TIPO DO PRATO COMUM:
+      <label className="block mb-2">
+        TIPO DO PRATO:
         <select
           value={prato.tipoPrato}
           onChange={(e) => handleChange('tipoPrato', e.target.value)}
           className="border p-2 w-full"
         >
           <option value="">Selecione o tipo</option>
-          <option value="COMUM">Comum</option>
-          <option value="VEGETARIANO">Vegetariano</option>
+          <option value="comum">Comum</option>
+          <option value="vegetariano">Vegetariano</option>
+          <option value="acompanhamento">Acompanhamento</option>
         </select>
-      </label> */}
-      <label className="block mb-2">
-        ACOMPANHAMENTO DO PRATO COMUM:
-        <input
-          type="text"
-          className="border p-2 w-full"
-          value={prato.acompanhamentoPrato}
-          onChange={(e) => handleChange('acompanhamentoPrato', e.target.value)}
-        />
-      </label>
-
-      <label className="block mb-2">
-        NOME DO PRATO VEGETARIANO:
-        <input
-          type="text"
-          className="border p-2 w-full"
-          value={prato.nomePratoVegetariano}
-          onChange={(e) => handleChange('nomePratoVegetariano', e.target.value)}
-        />
-      </label>
-      {/* <label className="block mb-2">
-        TIPO DO PRATO VEGETARIANO:
-        <select
-          value={prato.tipoPratoVegetariano}
-          onChange={(e) => handleChange('tipoPratoVegetariano', e.target.value)}
-          className="border p-2 w-full"
-        >
-          <option value="">Selecione o tipo</option>
-          <option value="COMUM">Comum</option>
-          <option value="VEGETARIANO">Vegetariano</option>
-        </select>
-      </label> */}
-      <label className="block mb-2">
-        ACOMPANHAMENTO DO PRATO VEGETARIANO:
-        <input
-          type="text"
-          className="border p-2 w-full"
-          value={prato.acompanhamentoPratoVegetariano}
-          onChange={(e) => handleChange('acompanhamentoPratoVegetariano', e.target.value)}
-        />
       </label>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
