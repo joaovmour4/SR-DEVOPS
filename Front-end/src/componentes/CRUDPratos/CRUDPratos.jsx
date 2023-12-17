@@ -106,11 +106,11 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
           },
         }
       );
-  
+
       console.log('Dados do prato atualizados com sucesso!');
       setEditPratoId(null);
       setEditModalOpen(false);
-      
+
       const updatedPratos = pratos.map((prato) => {
         if (prato._id === editPratoId) {
           return {
@@ -162,6 +162,11 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     setDeleteModalOpen(false);
   };
 
+
+  const filteredPratos = pratos.filter(prato => {
+    return prato.prato.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   return (
     <div className="flex flex-col items-center mt-8">
       {/* Barra de busca */}
@@ -183,7 +188,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
 
       {/* Tabela de pratos */}
       <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-4/5 mx-4">
-        {pratos.length > 0 ? (
+        {filteredPratos.length > 0 ? (
           <table className="w-full border-collapse">
             <thead>
               <tr>
@@ -194,7 +199,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
               </tr>
             </thead>
             <tbody>
-              {pratos.map((prato) => (
+              {filteredPratos.map((prato) => (
                 <tr key={prato._id}>
                   <td className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">{prato._id}</td>
                   <td className="border p-2">{prato.pratoType}</td>
@@ -251,87 +256,87 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
 
       {/* Modal de edição de prato */}
       {isEditModalOpen && (
-  <Modal
-    isOpen={isEditModalOpen}
-    onRequestClose={() => setEditModalOpen(false)}
-    contentLabel="Editar Prato"
-    ariaHideApp={false}
-    style={{
-      overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      content: {
-        backgroundColor: '#fff',
-        padding: '20px',
-        borderRadius: '8px',
-        maxWidth: '450px',
-        maxHeight: '450px',
-        width: '65%',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-      },
-    }}
-  >
-    <div className="p-4 w-full">
-      <h2 className="text-2xl font-semibold mb-2">Editar Prato</h2>
-      {/* Formulário de edição do prato */}
-      <div className="w-full">
-        <div className="flex justify-end mb-10">
-          <button
-            className="text-2xl font-bold"
-            onClick={() => setEditModalOpen(false)}
-          >
-            X
-          </button>
-        </div>
-        <h2 className="text-2xl font-semibold mb-4">EDITAR PRATO</h2>
-        <label className="block mb-2">
-          NOME DO PRATO:
-          <input
-            type="text"
-            className="border p-2 w-full"
-            value={editedNome}
-            onChange={(e) => setEditedNome(e.target.value)}
-          />
-        </label>
-        <label className="block mb-2">
-          TIPO DO PRATO:
-          <select
-            value={editedTipo}
-            onChange={(e) => setEditedTipo(e.target.value)}
-            className="border p-2 w-full"
-          >
-            <option value="">Selecione o tipo</option>
-            <option value="comum">Comum</option>
-            <option value="vegetariano">Vegetariano</option>
-            <option value="acompanhamento">Acompanhamento</option>
-          </select>
-        </label>
+        <Modal
+          isOpen={isEditModalOpen}
+          onRequestClose={() => setEditModalOpen(false)}
+          contentLabel="Editar Prato"
+          ariaHideApp={false}
+          style={{
+            overlay: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+            content: {
+              backgroundColor: '#fff',
+              padding: '20px',
+              borderRadius: '8px',
+              maxWidth: '450px',
+              maxHeight: '450px',
+              width: '65%',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            },
+          }}
+        >
+          <div className="p-4 w-full">
+            <h2 className="text-2xl font-semibold mb-2">Editar Prato</h2>
+            {/* Formulário de edição do prato */}
+            <div className="w-full">
+              <div className="flex justify-end mb-10">
+                <button
+                  className="text-2xl font-bold"
+                  onClick={() => setEditModalOpen(false)}
+                >
+                  X
+                </button>
+              </div>
+              <h2 className="text-2xl font-semibold mb-4">EDITAR PRATO</h2>
+              <label className="block mb-2">
+                NOME DO PRATO:
+                <input
+                  type="text"
+                  className="border p-2 w-full"
+                  value={editedNome}
+                  onChange={(e) => setEditedNome(e.target.value)}
+                />
+              </label>
+              <label className="block mb-2">
+                TIPO DO PRATO:
+                <select
+                  value={editedTipo}
+                  onChange={(e) => setEditedTipo(e.target.value)}
+                  className="border p-2 w-full"
+                >
+                  <option value="">Selecione o tipo</option>
+                  <option value="comum">Comum</option>
+                  <option value="vegetariano">Vegetariano</option>
+                  <option value="acompanhamento">Acompanhamento</option>
+                </select>
+              </label>
 
-        <div className="flex justify-between mt-4">
-          <div className="flex-1 mr-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-              onClick={handleEditPrato}
-            >
-              SALVAR
-            </button>
+              <div className="flex justify-between mt-4">
+                <div className="flex-1 mr-4">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                    onClick={handleEditPrato}
+                  >
+                    SALVAR
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </Modal>
+        </Modal>
 
       )}
 

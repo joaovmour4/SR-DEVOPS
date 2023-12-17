@@ -96,7 +96,6 @@ const CRUDUser = () => {
     purchaseHistory.forEach((purchase, index) => {
       const startY = 20 + index * 60;
 
-      // Textos em negrito e caixa alta
       doc.setFont('bold');
       doc.setFontSize(12);
       doc.text(`ID da Compra: ${purchase._id.toUpperCase()}`, 20, startY);
