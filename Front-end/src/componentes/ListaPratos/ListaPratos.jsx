@@ -13,16 +13,35 @@ const ListaPratos = () => {
   const [pratosAcompanhamento, setPratosAcompanhamento] = useState([]);
   const [selectedAcompanhamentoOptions, setSelectedAcompanhamentoOptions] = useState([]);
 
+  //campo de chckboc de acompanhamento
   const CustomOption = ({ innerProps, label, data }) => (
-    <div {...innerProps}>
+    <div className="relative cursor-pointer flex items-center my-2 pl-2">
       <input
         type="checkbox"
         onChange={() => handleCheckboxChangeAcompanhamento(data.value)}
         checked={selectedAcompanhamentoOptions.includes(data.value)}
+        className="absolute opacity-0 cursor-pointer h-6 w-6"
       />
+      <div className="checkmark h-8 w-8 border border-gray-400 rounded flex items-center justify-center mr-2">
+        <svg
+          className="h-5 w-5 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      </div>
       <span>{label}</span>
     </div>
   );
+  
 
   useEffect(() => {
     const fetchPratos = async () => {
@@ -132,20 +151,19 @@ const ListaPratos = () => {
 
       {showModal && (
         <div
-          style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '8px',
-            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-            width: '350px',
-            height: '450px',
-          }}
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+          width: '350px',
+          maxHeight: '80vh',
+          overflowY: 'auto', 
+        }}
         >
           <h1 className='text-center font-bold uppercase mb-8'>{selectedDay}</h1>
 
@@ -174,52 +192,35 @@ const ListaPratos = () => {
           </div>
 
           {/* 3ª Lista de Checkbox - Pratos do Tipo Acompanhamento */}
-          {/* <div className="select-container">
-            <label className="text-sm font-bold uppercase mb-1">Pratos do Tipo Acompanhamento:</label>
-            <select
-              multiple="multiple"
-              className="w-full p-2 border-2 border-gray-300 rounded"
-              value={selectedAcompanhamentoOptions}
-              onChange={(e) => handleSelectChange(e)}
-            >
-              {pratosAcompanhamento.map((prato) => (
-                <option key={prato._id} value={prato._id}>
-                  {prato.prato}
-                </option>
-              ))}
-            </select>
-            <p className="mt-2 text-sm text-gray-700">
-              {selectedAcompanhamentoOptions.length} pratos de acompanhamento selecionados: {JSON.stringify(selectedAcompanhamentoOptions)}
-            </p>
-          </div> */}
           <div className="select-container">
             <label className="text-sm font-bold uppercase mb-1">Pratos do Tipo Acompanhamento:</label>
-            <Select
-              isMulti
-              options={pratosAcompanhamento.map((prato) => ({ value: prato._id, label: prato.prato }))}
-              components={{ Option: CustomOption }}
-              styles={{
-                option: (provided, state) => ({
-                  ...provided,
-                  backgroundColor: state.isSelected ? 'bg-blue-500' : 'bg-white',
-                  color: state.isSelected ? 'text-white' : 'text-gray-700',
-                  padding: '8px',
-                }),
-              }}
-              value={selectedAcompanhamentoOptions.map((value) => ({
-                value,
-                label: pratosAcompanhamento.find((prato) => prato._id === value)?.prato || '',
-              }))}
-              onChange={handleSelectChange}
-            />
-            {/* <p className="mt-2 text-sm text-gray-700">
-              {selectedAcompanhamentoOptions.length} pratos de acompanhamento selecionados: {JSON.stringify(selectedAcompanhamentoOptions)}
-            </p> */}
+            <div className="styled-select">
+              <Select
+                isMulti
+                options={pratosAcompanhamento.map((prato) => ({ value: prato._id, label: prato.prato }))}
+                components={{ Option: CustomOption }}
+                styles={{
+                  option: (provided, state) => ({
+                    ...provided,
+                    backgroundColor: state.isSelected ? 'bg-blue-500' : 'bg-white',
+                    color: state.isSelected ? 'text-white' : 'text-gray-700',
+                    padding: '8px',
+                  }),
+                }}
+                value={selectedAcompanhamentoOptions.map((value) => ({
+                  value,
+                  label: pratosAcompanhamento.find((prato) => prato._id === value)?.prato || '',
+                }))}
+                onChange={handleSelectChange}
+              />
+            </div>
             <p className="mt-2 text-sm text-gray-700">
               {selectedAcompanhamentoOptions.length > 0 ? (
                 <>
                   <span className="font-bold">
-                    {selectedAcompanhamentoOptions.length} prato{selectedAcompanhamentoOptions.length !== 1 && 's'} selecionado{selectedAcompanhamentoOptions.length !== 1 && 's'}:
+                    {selectedAcompanhamentoOptions.length}{' '}
+                    {selectedAcompanhamentoOptions.length === 1 ? 'prato' : 'Acompanhamentos'} selecionado
+                    {selectedAcompanhamentoOptions.length !== 1 && 's'}:
                   </span>{' '}
                   {selectedAcompanhamentoOptions.map((value, index) => (
                     <span key={value}>
@@ -229,10 +230,12 @@ const ListaPratos = () => {
                   ))}
                 </>
               ) : (
-                'Nenhum prato de acompanhamento selecionado.'
+                'Nenhum Acompanhamento Selecionado.'
               )}
             </p>
+
           </div>
+
 
 
           {/* Botões abaixo das seleções */}
