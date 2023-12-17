@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         const { user, message } = response.data;
     
         const { userName, _id, jwtToken, userCargo, userSubsidio, userEmail } = user;
+        
     
         setUser(user);
         localStorage.setItem('userName', JSON.stringify(user));
