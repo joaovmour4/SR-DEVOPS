@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import Select from 'react-select';
 import { AuthContext } from '../../Context/AuthContext';
 
 const ListaPratos = () => {
@@ -11,6 +12,17 @@ const ListaPratos = () => {
   const [pratosVegetariano, setPratosVegetariano] = useState([]);
   const [pratosAcompanhamento, setPratosAcompanhamento] = useState([]);
   const [selectedAcompanhamentoOptions, setSelectedAcompanhamentoOptions] = useState([]);
+
+  const CustomOption = ({ innerProps, label, data }) => (
+    <div {...innerProps}>
+      <input
+        type="checkbox"
+        onChange={() => handleCheckboxChangeAcompanhamento(data.value)}
+        checked={selectedAcompanhamentoOptions.includes(data.value)}
+      />
+      <span>{label}</span>
+    </div>
+  );
 
   useEffect(() => {
     const fetchPratos = async () => {
@@ -53,11 +65,6 @@ const ListaPratos = () => {
     fetchUsers();
   }, [authContext.user.jwtToken.token]);
 
-  // const options = [
-  //   { id: 'option1', label: 'Option 1' },
-  //   { id: 'option2', label: 'Option 2' },
-  //   { id: 'option3', label: 'Option 3' },
-  // ];
 
   // Função de manipulação de checkbox para os pratos do tipo acompanhamento
   const handleCheckboxChangeAcompanhamento = (value) => {
@@ -69,14 +76,23 @@ const ListaPratos = () => {
     }
   };
 
-  const handleCheckboxChange = (value) => {
-    const isSelected = selectedOptions.includes(value);
-    if (isSelected) {
-      setSelectedOptions(selectedOptions.filter((option) => option !== value));
+  const handleOptionChange = (value, isCheckbox) => {
+    if (isCheckbox) {
+      const isSelected = selectedOptions.includes(value);
+      setSelectedOptions(isSelected ? selectedOptions.filter((option) => option !== value) : [...selectedOptions, value]);
     } else {
-      setSelectedOptions([...selectedOptions, value]);
+      const updatedSelection = selectedAcompanhamentoOptions.includes(value)
+        ? selectedAcompanhamentoOptions.filter((id) => id !== value)
+        : [...selectedAcompanhamentoOptions, value];
+      setSelectedAcompanhamentoOptions(updatedSelection);
     }
   };
+
+  const handleSelectChange = (selectedOptions) => {
+    setSelectedAcompanhamentoOptions(selectedOptions.map(option => option.value));
+  };
+
+
 
   const openModal = (day) => {
     setShowModal(true);
@@ -114,13 +130,6 @@ const ListaPratos = () => {
         ))}
       </div>
 
-
-
-
-
-
-
-
       {showModal && (
         <div
           style={{
@@ -138,8 +147,6 @@ const ListaPratos = () => {
             height: '450px',
           }}
         >
-
-
           <h1 className='text-center font-bold uppercase mb-8'>{selectedDay}</h1>
 
           {/* 1ª ComboBox - Pratos do Tipo Comum */}
@@ -167,25 +174,63 @@ const ListaPratos = () => {
           </div>
 
           {/* 3ª Lista de Checkbox - Pratos do Tipo Acompanhamento */}
+          {/* <div className="select-container">
+            <label className="text-sm font-bold uppercase mb-1">Pratos do Tipo Acompanhamento:</label>
+            <select
+              multiple="multiple"
+              className="w-full p-2 border-2 border-gray-300 rounded"
+              value={selectedAcompanhamentoOptions}
+              onChange={(e) => handleSelectChange(e)}
+            >
+              {pratosAcompanhamento.map((prato) => (
+                <option key={prato._id} value={prato._id}>
+                  {prato.prato}
+                </option>
+              ))}
+            </select>
+            <p className="mt-2 text-sm text-gray-700">
+              {selectedAcompanhamentoOptions.length} pratos de acompanhamento selecionados: {JSON.stringify(selectedAcompanhamentoOptions)}
+            </p>
+          </div> */}
           <div className="select-container">
             <label className="text-sm font-bold uppercase mb-1">Pratos do Tipo Acompanhamento:</label>
-            <div className="grid grid-cols-3 gap-4">
-              {pratosAcompanhamento.map((prato) => (
-                <div key={prato._id} className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    id={`acompanhamentoCheckbox-${prato._id}`}
-                    value={prato._id}
-                    checked={selectedAcompanhamentoOptions.includes(prato._id)}
-                    onChange={() => handleCheckboxChangeAcompanhamento(prato._id)}
-                    className="mr-2 appearance-none rounded focus:outline-none p-2 border-2 border-gray-300 checked:bg-blue-500 checked:border-blue-500"
-                  />
-                  <label htmlFor={`acompanhamentoCheckbox-${prato._id}`} className="text-sm">{prato.prato}</label>
-                </div>
-              ))}
-            </div>
+            <Select
+              isMulti
+              options={pratosAcompanhamento.map((prato) => ({ value: prato._id, label: prato.prato }))}
+              components={{ Option: CustomOption }}
+              styles={{
+                option: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: state.isSelected ? 'bg-blue-500' : 'bg-white',
+                  color: state.isSelected ? 'text-white' : 'text-gray-700',
+                  padding: '8px',
+                }),
+              }}
+              value={selectedAcompanhamentoOptions.map((value) => ({
+                value,
+                label: pratosAcompanhamento.find((prato) => prato._id === value)?.prato || '',
+              }))}
+              onChange={handleSelectChange}
+            />
+            {/* <p className="mt-2 text-sm text-gray-700">
+              {selectedAcompanhamentoOptions.length} pratos de acompanhamento selecionados: {JSON.stringify(selectedAcompanhamentoOptions)}
+            </p> */}
             <p className="mt-2 text-sm text-gray-700">
-              {selectedAcompanhamentoOptions.length} pratos de acompanhamento selecionados
+              {selectedAcompanhamentoOptions.length > 0 ? (
+                <>
+                  <span className="font-bold">
+                    {selectedAcompanhamentoOptions.length} prato{selectedAcompanhamentoOptions.length !== 1 && 's'} selecionado{selectedAcompanhamentoOptions.length !== 1 && 's'}:
+                  </span>{' '}
+                  {selectedAcompanhamentoOptions.map((value, index) => (
+                    <span key={value}>
+                      {pratosAcompanhamento.find((prato) => prato._id === value)?.prato || ''}
+                      {index !== selectedAcompanhamentoOptions.length - 1 && ', '}
+                    </span>
+                  ))}
+                </>
+              ) : (
+                'Nenhum prato de acompanhamento selecionado.'
+              )}
             </p>
           </div>
 
