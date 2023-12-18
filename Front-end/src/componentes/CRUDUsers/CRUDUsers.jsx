@@ -423,18 +423,21 @@ const userData = {
             ) : (
               <p>Nenhuma compra encontrada.</p>
             )}
-            <button
-              className="flex-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 mr-2"
-              onClick={closeModal}
-            >
-              Fechar
-            </button>
-            <button
-              className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 ml-2"
-              onClick={generatePDF}
-            >
-              Gerar PDF
-            </button>
+            <div className='flex '>
+              <button
+                className="flex-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 mr-2"
+                onClick={closeModal}
+              >
+                Fechar
+              </button>
+              <button
+                className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 ml-2"
+                onClick={generatePDF}
+              >
+                Gerar PDF
+              </button>
+            </div>
+            
           </div>
         </Modal>
       )}
