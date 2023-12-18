@@ -196,6 +196,7 @@ const userData = {
       });
 
       setUsers(updatedUsers);
+      window.location.reload();
     } catch (error) {
       console.error('Erro ao atualizar os dados do usuário:', error);
     }
@@ -511,8 +512,9 @@ const userData = {
   onChange={(e) => setTempUserSubsidio(e.target.value === "true" ? true : false)}
 >
   <option value="Selecione" disabled hidden>Selecione</option>
-  <option value="true">Sim</option>
-  <option value="false">Não</option>
+  <option>SELECIONE UM VALOR</option>
+  <option value="true">SIM</option>
+  <option value="false">NÃO</option>
 </select>
 
             </label>
