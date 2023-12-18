@@ -37,20 +37,7 @@ const CardapioData = {
 
 export default function Cardapio() {
   const [blocoClicado, setBlocoClicado] = useState(null);
-  const [cardapioData, setCardapioData] = useState(CardapioData);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://localhost:3000/purchase');
-        setCardapioData(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar pratos:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const [cardapioData, setCardapioData] = useState([]);
 
   const lidarComCliqueNoBloco = (dia) => {
     console.log(`Clicou em ${dia}`);
@@ -62,44 +49,83 @@ export default function Cardapio() {
   };
 
   const handleCompraClick = () => {
-    // Lógica para ação de compra
     console.log('Clicou em Comprar');
   };
 
   const atualizarCardapio = async (dia) => {
+    let newDia = dia.toLowerCase();
     // Verificar se já temos os dados localmente
-    if (!cardapioData[dia]?.PRATO.length) {
-      try {
-        {/* pedi para o jv add uma rota de id=dia como segunda a sabado para pegar o prato certo ou add uma rota purchase/all para pegar todos os pratos de uam só vez */}
-        const response = await axios.get(`https://localhost:3000/purchase/${dia}`);
-        const { prato, vegetariano, acompanhamentos } = response.data;
-        setCardapioData((prevData) => ({
-          ...prevData,
-          [dia]: { PRATO: prato, VEGETARIANO: vegetariano, ACOMPANHAMENTO: acompanhamentos },
-        }));
-      } catch (error) {
-        console.error(`Erro ao buscar pratos para ${dia}:`, error);
-      }
+    try {
+      const response = await axios.get(`http://localhost:3000/menu/${newDia}`);
+      setCardapioData(response.data.menu)
+    } catch (error) {
+      console.error(`Erro ao buscar pratos para ${dia}:`, error);
     }
-  };
+};
+
+  useEffect(() => {
+    console.log('CardapioData:', cardapioData);
+  }, [cardapioData]);
 
   return (
     <div className='min-h-screen'>
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 font-serif p-4 md:mx-40">
         <CarouselCardapio />
 
-        {Object.keys(cardapioData).map((dia) => (
           <div
-            key={dia}
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
             onClick={() => {
-              lidarComCliqueNoBloco(dia);
-              atualizarCardapio(dia);
+              lidarComCliqueNoBloco('seila6')
+              atualizarCardapio('seila6');
             }}
           >
-            <h2 className="text-center text-lg font-bold mb-2">{dia}</h2>
+            <h2 className="text-center text-lg font-bold mb-2">Segunda</h2>
           </div>
-        ))}
+          <div
+            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+            onClick={() => {
+              lidarComCliqueNoBloco('terca')
+              atualizarCardapio('terca');
+            }}
+          >
+            <h2 className="text-center text-lg font-bold mb-2">Terça</h2>
+          </div>
+          <div
+            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+            onClick={() => {
+              lidarComCliqueNoBloco('quarta')
+              atualizarCardapio('quarta');
+            }}
+          >
+            <h2 className="text-center text-lg font-bold mb-2">Quarta</h2>
+          </div>
+          <div
+            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+            onClick={() => {
+              lidarComCliqueNoBloco('quinta')
+              atualizarCardapio('quinta');
+            }}
+          >
+            <h2 className="text-center text-lg font-bold mb-2">Quinta</h2>
+          </div>
+          <div
+            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+            onClick={() => {
+              lidarComCliqueNoBloco('SEXTA')
+              atualizarCardapio('sexta');
+            }}
+          >
+            <h2 className="text-center text-lg font-bold mb-2">SEXTA</h2>
+          </div>
+          <div
+            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+            onClick={() => {
+              lidarComCliqueNoBloco('sabado')
+              atualizarCardapio('sabado');
+            }}
+          >
+            <h2 className="text-center text-lg font-bold mb-2">Sabado</h2>
+          </div>
       </main>
 
       {blocoClicado && (
@@ -113,18 +139,13 @@ export default function Cardapio() {
       }}
     >
             <h2 className="text-center text-xl font-bold mb-4">{blocoClicado}</h2>
-            <p className="text-left">PRATO: {cardapioData?.[blocoClicado]?.PRATO}</p>
-            <p className="text-left">VEGETARIANO: {cardapioData?.[blocoClicado]?.VEGETARIANO}</p>
-            <p className="text-left">ACOMPNHAMENTO: {cardapioData?.[blocoClicado]?.ACOMPANHAMENTO}</p>
-            <ul className="text-left">
-              {cardapioData?.[blocoClicado]?.ACOMPANHAMENTO?.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
+            <p className="text-left">PRATO: {cardapioData.pratoComum}</p>
+            <p className="text-left">VEGETARIANO: {cardapioData.pratoVegetariano}</p>
+            <p className="text-left">ACOMPANHAMENTO: {cardapioData.acompanhamentos}</p>
             <div className="flex justify-center mt-6">
-              <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mr-2" onClick={handleCompraClick}>
+              {/* <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mr-2" onClick={handleCompraClick}>
                 Comprar
-              </button>
+              </button> */}
               <button className="bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded" onClick={handleCloseModal}>
                 Fechar
               </button>

@@ -2,21 +2,23 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthContext';
 
-const UserInfo = ({ userName, userEmail, userRole, userSubsidio, authContext }) => {
+const UserInfo = () => {
   const { logout, user } = useContext(AuthContext);
   const [avatarUrl, setAvatarUrl] = useState('');
   const [seed, setSeed] = useState('');
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    if (user?.userName === 'Snuggles') {
-      setSeed('Snuggles');
-    } else if (user?.userName === 'Ramon') {
-      setSeed('Loki');
-    } else if (user?.userCargo === 'admin') {
-      setSeed('Chloe');
-    } else {
-      setSeed(user?.userName || '');
+    if (user && user.userName) {
+      if (user.userName === 'Snuggles') {
+        setSeed('Snuggles');
+      } else if (user.userName === 'Ramon') {
+        setSeed('Loki');
+      } else if (user.userCargo === 'admin') {
+        setSeed('Chloe');
+      } else {
+        setSeed(user.userName);
+      }
     }
   }, [user]);
 
@@ -29,13 +31,10 @@ const UserInfo = ({ userName, userEmail, userRole, userSubsidio, authContext }) 
         console.error('Erro ao obter avatar:', error);
       }
     };
-
+  
     fetchData();
-  }, [seed]);
-
-  const handleSeedChange = (event) => {
-    setSeed(event.target.value);
-  };
+    console.log('User email:', user?.userEmail); 
+  }, [seed, user]);
 
   const handleExpandToggle = () => {
     setExpanded((prevExpanded) => !prevExpanded);
@@ -47,15 +46,12 @@ const UserInfo = ({ userName, userEmail, userRole, userSubsidio, authContext }) 
         <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
       </div>
       <div className="w-full text-center">
-        <p className="text-xl font-bold mb-2">{userName || 'Nome Indisponível'}</p>
+        <p className="text-xl font-bold mb-2">{user?.userName || 'Nome Indisponível'}</p>
         {expanded && (
           <div className="flex flex-col items-center mb-2">
             <p>ID: {user?._id || 'ID Não Encontrado'}</p>
-            {/* Using userSubsidio from props */}
-            {userSubsidio && <p>Usuário possui subsídio</p>}
-            {!userSubsidio && <p>Usuário não possui subsídio</p>}
-            {/* Using authContext.user.userEmail from authContext */}
-            <p>Email: {authContext?.user?.userEmail || 'Email Não Encontrado'}</p>
+            <p>Subsídio: {user?.userSubsidio ? 'Sim' : 'Não'}</p>
+            <p>Email: {user?.userEmail || 'Email Não Localizado'}</p>
           </div>
         )}
         <div className="flex flex-col items-center">
