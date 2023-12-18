@@ -211,13 +211,13 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
                   <td className="border p-2">
                     <div className="flex items-center">
                       <button
-                        className="flex-1 px-2 py-1 bg-blue-500 text-white rounded-md mr-1"
+                        className="flex-1 px-2 py-1 bg-green-500 hover:bg-green-700 text-white rounded-md mr-1"
                         onClick={() => handleEdit(prato._id)}
                       >
                         Editar
                       </button>
                       <button
-                        className="flex-1 px-2 py-1 bg-red-500 text-white rounded-md ml-1"
+                        className="flex-1 px-2 py-1 bg-red-500 hover:bg-red-700 text-white rounded-md ml-1"
                         onClick={() => handleDelete(prato._id)}
                       >
                         Deletar
