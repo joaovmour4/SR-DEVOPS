@@ -10,6 +10,7 @@
     "avatar-initials": "^6.0.0",
     "axios": "^1.6.2",
     "card-react": "^1.2.7",
+    "extended-bigheads": "^0.0.9",
     "jspdf": "^2.5.1",
     "jwt-decode": "^4.0.0",
     "mercadopago": "^2.0.5",
