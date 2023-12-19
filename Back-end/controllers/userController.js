@@ -63,6 +63,22 @@ module.exports = class userController{
         }
     }
 
+    static async getSelfUser(req, res){
+        try{
+            /* 
+            #swagger.tags = ['Usuário']
+            #swagger.security = [{
+            "bearerAuth": []
+            }] */
+            
+            const selfUser = await userSchema.findById(res.user._id)
+            return res.status(200).json({message: selfUser})
+        }
+        catch(error){
+            return res.status(400).json({message: error.message})
+        }
+    }
+
     static async login(req, res){
         try{
             // #swagger.tags = ['Autenticação']
