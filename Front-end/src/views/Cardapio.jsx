@@ -128,7 +128,7 @@ export default function Cardapio() {
               atualizarCardapio('segunda');
             }}
           >
-            <h2 className="text-center text-lg font-bold mb-2">Segunda</h2>
+            <h2 className="text-center text-lg font-bold mb-2">SEGUNDA</h2>
           </div>
           <div
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
@@ -137,7 +137,7 @@ export default function Cardapio() {
               atualizarCardapio('terca');
             }}
           >
-            <h2 className="text-center text-lg font-bold mb-2">Terça</h2>
+            <h2 className="text-center text-lg font-bold mb-2">TERÇA</h2>
           </div>
           <div
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
@@ -146,7 +146,7 @@ export default function Cardapio() {
               atualizarCardapio('quarta');
             }}
           >
-            <h2 className="text-center text-lg font-bold mb-2">Quarta</h2>
+            <h2 className="text-center text-lg font-bold mb-2">QUARTA</h2>
           </div>
           <div
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
@@ -155,12 +155,12 @@ export default function Cardapio() {
               atualizarCardapio('quinta');
             }}
           >
-            <h2 className="text-center text-lg font-bold mb-2">Quinta</h2>
+            <h2 className="text-center text-lg font-bold mb-2">QUINTA</h2>
           </div>
           <div
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
             onClick={() => {
-              lidarComCliqueNoBloco('SEXTA')
+              lidarComCliqueNoBloco('sexta')
               atualizarCardapio('sexta');
             }}
           >
@@ -173,7 +173,7 @@ export default function Cardapio() {
               atualizarCardapio('sabado');
             }}
           >
-            <h2 className="text-center text-lg font-bold mb-2">Sabado</h2>
+            <h2 className="text-center text-lg font-bold mb-2">SÁBADO</h2>
           </div>
       </main>
 

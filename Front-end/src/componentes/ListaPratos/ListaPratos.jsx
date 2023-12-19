@@ -6,13 +6,15 @@ import { AuthContext } from '../../Context/AuthContext';
 const ListaPratos = () => {
   const authContext = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  //const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
   const [pratosComum, setPratosComum] = useState([]);
   const [pratosVegetariano, setPratosVegetariano] = useState([]);
   const [pratosAcompanhamento, setPratosAcompanhamento] = useState([]);
   const [selectedAcompanhamentoOptions, setSelectedAcompanhamentoOptions] = useState([]);
   const [menuData, setMenuData] = useState([]);
+  const [selectedPratoComum, setSelectedPratoComum] = useState(null);
+  const [selectedPratoVegetariano, setSelectedPratoVegetariano] = useState(null);
 
   // campo de chckboc de acompanhamento
   const CustomOption = ({ innerProps, label, data }) => (
@@ -45,26 +47,27 @@ const ListaPratos = () => {
           Authorization: `Bearer ${authContext.user.jwtToken.token}`,
         },
       });
-  
+
       const menuData = response.data.message;
-  
-      // Fornecer valores padrão apenas para exibição, mantendo valores reais (inclusive null) para PUT
       const pratoComumDisplay = menuData.pratoComum || 'Nenhum prato comum';
       const pratoVegetarianoDisplay = menuData.pratoVegetariano || 'Nenhum prato vegetariano';
       const acompanhamentosDisplay = menuData.acompanhamentos || [];
-  
+
       setMenuData({
         ...menuData,
         pratoComumDisplay,
         pratoVegetarianoDisplay,
         acompanhamentosDisplay,
       });
-    } catch (error) {
+
+    setSelectedPratoComum(menuData.pratoComum);
+    setSelectedPratoVegetariano(menuData.pratoVegetariano);
+  } catch (error) {
       console.error('Erro ao obter menu:', error);
     }
   };
-  
-  
+
+
 
   useEffect(() => {
     const fetchPratos = async () => {
@@ -93,19 +96,29 @@ const ListaPratos = () => {
 
   const enviar = async () => {
     try {
-      const pratoComumValue = selectedOptions[0] ? selectedOptions[0] : 'any';
-      const pratoVegetarianoValue = selectedOptions[1] ? selectedOptions[1] : 'any';
+      // Obtém os valores selecionados das caixas de seleção
+      const pratoComumValue = selectedPratoComum || 'any';
+      const pratoVegetarianoValue = selectedPratoVegetariano || 'any';
   
-      const acompanhamentosValue = JSON.stringify(
-        selectedAcompanhamentoOptions.map((value) =>
-          pratosAcompanhamento.find((prato) => prato._id === value)?.prato || 'any'
-        )
+      // Obtém os valores selecionados dos checkboxes de acompanhamento
+      const acompanhamentosValue = selectedAcompanhamentoOptions.map((value) =>
+        pratosAcompanhamento.find((prato) => prato._id === value)?.prato || 'any'
       );
   
+      // Convertendo o dia da semana para minúsculas
+      const lowerCaseDay = selectedDay.toLowerCase();
+  
+      console.log('Dados a serem enviados:');
+      console.log('Dia da semana:', lowerCaseDay);
+      console.log('Prato Comum:', pratoComumValue);
+      console.log('Prato Vegetariano:', pratoVegetarianoValue);
+      console.log('Acompanhamentos:', acompanhamentosValue);
+  
+      // Enviar os dados no formato correto
       const response = await axios.put(
-        `http://localhost:3000/menu/${selectedDay}`,
+        `http://localhost:3000/menu/${lowerCaseDay}`,
         {
-          diaSemana: selectedDay,
+          diaSemana: lowerCaseDay,
           pratoComum: pratoComumValue,
           pratoVegetariano: pratoVegetarianoValue,
           acompanhamentos: acompanhamentosValue,
@@ -113,6 +126,7 @@ const ListaPratos = () => {
         {
           headers: {
             Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -125,6 +139,10 @@ const ListaPratos = () => {
     }
   };
   
+  
+
+
+
 
   const handleCheckboxChangeAcompanhamento = (value) => {
     const isSelected = selectedAcompanhamentoOptions.includes(value);
@@ -135,28 +153,28 @@ const ListaPratos = () => {
     }
   };
 
-  const handleOptionChange = (value, isCheckbox) => {
-    if (isCheckbox) {
-      const isSelected = selectedOptions.includes(value);
-      setSelectedOptions(
-        isSelected
-          ? selectedOptions.filter((option) => option !== value)
-          : [...selectedOptions, value]
-      );
-    } else {
-      const updatedSelection = selectedAcompanhamentoOptions.includes(value)
-        ? selectedAcompanhamentoOptions.filter((id) => id !== value)
-        : [...selectedAcompanhamentoOptions, value];
-      setSelectedAcompanhamentoOptions(updatedSelection);
-    }
-  };
+  // const handleOptionChange = (value, isCheckbox) => {
+  //   if (isCheckbox) {
+  //     const isSelected = selectedOptions.includes(value);
+  //     setSelectedOptions(
+  //       isSelected
+  //         ? selectedOptions.filter((option) => option !== value)
+  //         : [...selectedOptions, value]
+  //     );
+  //   } else {
+  //     const updatedSelection = selectedAcompanhamentoOptions.includes(value)
+  //       ? selectedAcompanhamentoOptions.filter((id) => id !== value)
+  //       : [...selectedAcompanhamentoOptions, value];
+  //     setSelectedAcompanhamentoOptions(updatedSelection);
+  //   }
+  // };
 
   const handleSelectChange = (selectedOptions) => {
     setSelectedAcompanhamentoOptions(selectedOptions.map((option) => option.value));
   };
 
   const openModal = async (day) => {
-    await fetchMenu(day); 
+    await fetchMenu(day);
     setShowModal(true);
     setSelectedDay(day);
   };
@@ -195,45 +213,56 @@ const ListaPratos = () => {
 
       {showModal && (
         <div
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-          width: '350px',
-          maxHeight: '80vh',
-          overflowY: 'auto', 
-        }}
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+            width: '350px',
+            maxHeight: '80vh',
+            overflowY: 'auto',
+          }}
         >
           <h1 className='text-center font-bold uppercase mb-8'>{selectedDay}</h1>
 
           {/* 1ª ComboBox - Pratos do Tipo Comum */}
-          <div className="select-container">
-            <label htmlFor="comumSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Comum:</label>
-            <select id="comumSelect" className="p-1 border rounded">
-              {pratosComum.map((prato) => (
-                <option key={prato._id} value={prato._id}>
-                  {prato.prato}
-                </option>
-              ))}
-            </select>
-          </div>
+<div className="select-container">
+  <label htmlFor="comumSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Comum:</label>
+  <select
+    id="comumSelect"
+    className="p-1 border rounded"
+    value={selectedPratoComum || 'any'}
+    onChange={(e) => setSelectedPratoComum(e.target.value)}
+  >
+    {pratosComum.map((prato) => (
+      <option key={prato._id} value={prato._id}>
+        {prato.prato}
+      </option>
+    ))}
+  </select>
+</div>
 
-          {/* 2ª ComboBox - Pratos do Tipo Vegetariano */}
-          <div className="select-container">
-            <label htmlFor="vegetarianoSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Vegetariano:</label>
-            <select id="vegetarianoSelect" className="p-1 border rounded">
-              {pratosVegetariano.map((prato) => (
-                <option key={prato._id} value={prato._id}>
-                  {prato.prato}
-                </option>
-              ))}
-            </select>
-          </div>
+{/* 2ª ComboBox - Pratos do Tipo Vegetariano */}
+<div className="select-container">
+  <label htmlFor="vegetarianoSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Vegetariano:</label>
+  <select
+    id="vegetarianoSelect"
+    className="p-1 border rounded"
+    value={selectedPratoVegetariano || 'any'}
+    onChange={(e) => setSelectedPratoVegetariano(e.target.value)}
+  >
+    {pratosVegetariano.map((prato) => (
+      <option key={prato._id} value={prato._id}>
+        {prato.prato}
+      </option>
+    ))}
+  </select>
+</div>
+
 
           {/* 3ª Lista de Checkbox - Pratos do Tipo Acompanhamento */}
           <div className="select-container">

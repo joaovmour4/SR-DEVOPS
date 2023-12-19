@@ -124,6 +124,35 @@ const UserInfo = () => {
         className="w-32 h-32 rounded-full mb-2 overflow-hidden"
       />
     );
+  } else if (user?.userName === 'any') {
+    // Se o usuário for "any", usar propriedades específicas
+    bigHeadComponent = (
+      <BigHead
+        backgroundColor="green"
+        backgroundShape="circle"
+        accessory="none"
+        body="chest"
+        circleColor="blue"
+        clothing="vneck"
+        clothingColor="black"
+        eyebrows="concerned"
+        eyes="squint"
+        faceMask={false}
+        faceMaskColor="white"
+        facialHair="none"
+        graphic="none"
+        hair="balding"
+        hairColor="blue"
+        hat="none2"
+        hatColor="white"
+        lashes={false}
+        lipColor="pink"
+        mask
+        mouth="tongue"
+        skinTone="light"
+        className="w-32 h-32 rounded-full mb-2 overflow-hidden"
+      />
+    );
   } else {
     // Caso contrário, gerar um BigHead aleatório para qualquer outro usuário
     bigHeadComponent = (
@@ -167,10 +196,10 @@ const UserInfo = () => {
         <p className="text-xl font-bold mb-2">{user?.userName || 'Nome Indisponível'}</p>
         {expanded && (
           <div className="flex flex-col items-center mb-2">
-          <p>ID: {userData?._id || 'ID Não Encontrado'}</p>
-          <p>Subsídio: {userData?.userSubsidio ? 'Sim' : 'Não'}</p>
-          <p>Email: {userData?.userEmail || 'Email Não Localizado'}</p>
-        </div>
+            <p>ID: {userData?._id || 'ID Não Encontrado'}</p>
+            <p>Subsídio: {userData?.userSubsidio ? 'Sim' : 'Não'}</p>
+            <p>Email: {userData?.userEmail || 'Email Não Localizado'}</p>
+          </div>
         )}
         <div className="flex flex-col items-center">
           <button
