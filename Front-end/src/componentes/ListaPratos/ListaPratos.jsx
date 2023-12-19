@@ -12,8 +12,9 @@ const ListaPratos = () => {
   const [pratosVegetariano, setPratosVegetariano] = useState([]);
   const [pratosAcompanhamento, setPratosAcompanhamento] = useState([]);
   const [selectedAcompanhamentoOptions, setSelectedAcompanhamentoOptions] = useState([]);
+  const [menuData, setMenuData] = useState([]);
 
-  //campo de chckboc de acompanhamento
+  // campo de chckboc de acompanhamento
   const CustomOption = ({ innerProps, label, data }) => (
     <div className="relative cursor-pointer flex items-center my-2 pl-2">
       <input
@@ -30,18 +31,25 @@ const ListaPratos = () => {
           fill="none"
           stroke="currentColor"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M5 13l4 4L19 7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
         </svg>
       </div>
       <span>{label}</span>
     </div>
   );
-  
+
+  const fetchMenu = async (day) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/menu?diaSemana=${day}`, {
+        headers: {
+          Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+        },
+      });
+      setMenuData(response.data.message);
+    } catch (error) {
+      console.error('Erro ao obter menu:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchPratos = async () => {
@@ -68,22 +76,50 @@ const ListaPratos = () => {
     fetchPratos();
   }, [authContext.user.jwtToken.token]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/user', {
+  const enviar = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/menu/${selectedDay}`,
+        {
+          diaSemana: selectedDay,
+          pratoComum: selectedOptions[0] || 'any',
+          pratoVegetariano: selectedOptions[1] || 'any',
+          acompanhamentos: JSON.stringify(
+            selectedAcompanhamentoOptions.map((value) =>
+              pratosAcompanhamento.find((prato) => prato._id === value)?.prato || 'any'
+            )
+          ),
+        },
+        {
           headers: {
             Authorization: `Bearer ${authContext.user.jwtToken.token}`,
           },
-        });
-      } catch (error) {
-        console.error('Erro ao obter usuários:', error);
-      }
-    };
+        }
+      );
 
-    fetchUsers();
-  }, [authContext.user.jwtToken.token]);
+      console.log('Resposta do servidor:', response.data);
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+    } finally {
+      closeModal();
+    }
+  };
 
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:3000/user', {
+  //         headers: {
+  //           Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+  //         },
+  //       });
+  //     } catch (error) {
+  //       console.error('Erro ao obter usuários:', error);
+  //     }
+  //   };
+
+  //   fetchUsers();
+  // }, [authContext.user.jwtToken.token]);
 
   // Função de manipulação de checkbox para os pratos do tipo acompanhamento
   const handleCheckboxChangeAcompanhamento = (value) => {
@@ -98,7 +134,11 @@ const ListaPratos = () => {
   const handleOptionChange = (value, isCheckbox) => {
     if (isCheckbox) {
       const isSelected = selectedOptions.includes(value);
-      setSelectedOptions(isSelected ? selectedOptions.filter((option) => option !== value) : [...selectedOptions, value]);
+      setSelectedOptions(
+        isSelected
+          ? selectedOptions.filter((option) => option !== value)
+          : [...selectedOptions, value]
+      );
     } else {
       const updatedSelection = selectedAcompanhamentoOptions.includes(value)
         ? selectedAcompanhamentoOptions.filter((id) => id !== value)
@@ -108,25 +148,25 @@ const ListaPratos = () => {
   };
 
   const handleSelectChange = (selectedOptions) => {
-    setSelectedAcompanhamentoOptions(selectedOptions.map(option => option.value));
+    setSelectedAcompanhamentoOptions(selectedOptions.map((option) => option.value));
   };
 
-
-
-  const openModal = (day) => {
+  const openModal = async (day) => {
+    await fetchMenu(day); 
     setShowModal(true);
     setSelectedDay(day);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedDay(null);
-  };
-
-  const enviar = () => {
-    console.log('Opções selecionadas:', selectedOptions);
-    console.log('Dia selecionado:', selectedDay);
-    closeModal();
+  const closeModal = (forceClose = false) => {
+    if (forceClose) {
+      setShowModal(false);
+      setSelectedDay(null);
+    } else if (!forceClose && selectedDay) {
+      return;
+    } else {
+      setShowModal(false);
+      setSelectedDay(null);
+    }
   };
 
   return (
@@ -235,9 +275,6 @@ const ListaPratos = () => {
             </p>
 
           </div>
-
-
-
           {/* Botões abaixo das seleções */}
           <div className="flex justify-between mt-4">
             <button onClick={enviar} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" style={{ width: '40%' }}>
