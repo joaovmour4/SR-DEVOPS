@@ -129,6 +129,27 @@
         }
       }
     },
+    "/user/sef": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/user/{id}": {
       "put": {
         "tags": [
@@ -660,7 +681,7 @@
         }
       }
     },
-    "/menu/{id}": {
+    "/menu/{diaSemana}": {
       "get": {
         "tags": [
           "Cardápio"
@@ -668,7 +689,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "diaSemana",
             "in": "path",
             "required": true,
             "schema": {

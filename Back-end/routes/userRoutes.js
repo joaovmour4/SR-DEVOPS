@@ -4,6 +4,7 @@ const userController = require('../controllers/userController')
 const verifyJWT = require('../services/verifyJWT')
 
 router.post('/user', userController.newUser) // Criação de usuários
+router.get('/user/self', verifyJWT, userController.getSelfUser) // Retorna os dados do usuário logado
 router.get('/user', verifyJWT, userController.getUsers) // Retorna todos os usuários
 router.put('/user', verifyJWT, userController.modifyCurrentUser) // Edita os dados do usuário que está logado
 router.put('/user/:id', verifyJWT, userController.modifyAnyUser) // Edita os dados de um usuário qualquer
