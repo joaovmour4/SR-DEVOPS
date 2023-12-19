@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [userData, setUserData] = useState(null);
   
     useEffect(() => {
       const loadingStoreData = async () => {
@@ -17,7 +18,8 @@ export const AuthProvider = ({ children }) => {
         if (storeToken) {
           const data = jwtDecode(storeToken);
           if (data) {
-            setUser({ ...JSON.parse(storeUser), ...data }); 
+            setUser({ ...JSON.parse(storeUser), ...data });
+            setUserData(await fetchUserDataFromServer(storeToken)); 
           } else {
             navigate('/login');
           }
@@ -26,6 +28,20 @@ export const AuthProvider = ({ children }) => {
   
       loadingStoreData();
     }, [navigate]);
+  
+    const fetchUserDataFromServer = async (token) => {
+      try {
+        const response = await axios.get('http://localhost:3000/user/self', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data.message;
+      } catch (error) {
+        console.error('Erro ao obter dados do usuário do servidor:', error);
+        return null;
+      }
+    };
 
     const login = async ({ nameUser, passowrdUser }) => {
       try {

@@ -37,11 +37,43 @@ const CardapioData = {
 
 export default function Cardapio() {
   const [blocoClicado, setBlocoClicado] = useState(null);
-  const [cardapioData, setCardapioData] = useState([]);
+  const [cardapioData, setCardapioData] = useState({
+    segunda: {
+      pratoComum: '',
+      pratoVegetariano: '',
+      acompanhamentos: []
+    },
+    terca: {
+      pratoComum: '',
+      pratoVegetariano: '',
+      acompanhamentos: []
+    },
+    quarta: {
+      pratoComum: '',
+      pratoVegetariano: '',
+      acompanhamentos: []
+    },
+    quinta: {
+      pratoComum: '',
+      pratoVegetariano: '',
+      acompanhamentos: []
+    },
+    sexta: {
+      pratoComum: '',
+      pratoVegetariano: '',
+      acompanhamentos: []
+    },
+    sabado: {
+      pratoComum: '',
+      pratoVegetariano: '',
+      acompanhamentos: []
+    },
+  });
 
-  const lidarComCliqueNoBloco = (dia) => {
+  const lidarComCliqueNoBloco = async (dia) => {
     console.log(`Clicou em ${dia}`);
     setBlocoClicado(dia);
+    await atualizarCardapio(dia);
   };
 
   const handleCloseModal = () => {
@@ -57,12 +89,29 @@ export default function Cardapio() {
     // Verificar se já temos os dados localmente
     try {
       const response = await axios.get(`http://localhost:3000/menu/${newDia}`);
-      setCardapioData(response.data.menu)
+      if (response.data.message) {
+        const { pratoComum, pratoVegetariano, acompanhamentos } = response.data.message;
+  
+        // Certifique-se de que pratoComum, pratoVegetariano e acompanhamentos são objetos antes de acessar suas propriedades
+        setCardapioData((prevState) => ({
+          ...prevState,
+          [newDia]: {
+            pratoComum: pratoComum ? pratoComum.prato : '',
+            pratoVegetariano: pratoVegetariano ? pratoVegetariano.prato : '',
+            acompanhamentos: Array.isArray(acompanhamentos)
+              ? acompanhamentos.map((item) => (item ? item.prato : ''))
+              : [],
+          },
+        }));
+      } else {
+        console.error(`Dados inválidos para ${dia}:`, response.data);
+      }
     } catch (error) {
       console.error(`Erro ao buscar pratos para ${dia}:`, error);
     }
-};
+  };
 
+  
   useEffect(() => {
     console.log('CardapioData:', cardapioData);
   }, [cardapioData]);
@@ -75,8 +124,8 @@ export default function Cardapio() {
           <div
             className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
             onClick={() => {
-              lidarComCliqueNoBloco('seila6')
-              atualizarCardapio('seila6');
+              lidarComCliqueNoBloco('segunda')
+              atualizarCardapio('segunda');
             }}
           >
             <h2 className="text-center text-lg font-bold mb-2">Segunda</h2>
@@ -139,9 +188,9 @@ export default function Cardapio() {
       }}
     >
             <h2 className="text-center text-xl font-bold mb-4">{blocoClicado}</h2>
-            <p className="text-left">PRATO: {cardapioData.pratoComum}</p>
-            <p className="text-left">VEGETARIANO: {cardapioData.pratoVegetariano}</p>
-            <p className="text-left">ACOMPANHAMENTO: {cardapioData.acompanhamentos}</p>
+            <p className="text-left">PRATO: {cardapioData[blocoClicado.toLowerCase()].pratoComum}</p>
+            <p className="text-left">VEGETARIANO: {cardapioData[blocoClicado.toLowerCase()].pratoVegetariano}</p>
+            <p className="text-left">ACOMPANHAMENTO: {cardapioData[blocoClicado.toLowerCase()].acompanhamentos.join(', ')}</p>
             <div className="flex justify-center mt-6">
               {/* <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mr-2" onClick={handleCompraClick}>
                 Comprar

@@ -45,11 +45,26 @@ const ListaPratos = () => {
           Authorization: `Bearer ${authContext.user.jwtToken.token}`,
         },
       });
-      setMenuData(response.data.message);
+  
+      const menuData = response.data.message;
+  
+      // Fornecer valores padrão apenas para exibição, mantendo valores reais (inclusive null) para PUT
+      const pratoComumDisplay = menuData.pratoComum || 'Nenhum prato comum';
+      const pratoVegetarianoDisplay = menuData.pratoVegetariano || 'Nenhum prato vegetariano';
+      const acompanhamentosDisplay = menuData.acompanhamentos || [];
+  
+      setMenuData({
+        ...menuData,
+        pratoComumDisplay,
+        pratoVegetarianoDisplay,
+        acompanhamentosDisplay,
+      });
     } catch (error) {
       console.error('Erro ao obter menu:', error);
     }
   };
+  
+  
 
   useEffect(() => {
     const fetchPratos = async () => {
@@ -78,17 +93,22 @@ const ListaPratos = () => {
 
   const enviar = async () => {
     try {
+      const pratoComumValue = selectedOptions[0] ? selectedOptions[0] : 'any';
+      const pratoVegetarianoValue = selectedOptions[1] ? selectedOptions[1] : 'any';
+  
+      const acompanhamentosValue = JSON.stringify(
+        selectedAcompanhamentoOptions.map((value) =>
+          pratosAcompanhamento.find((prato) => prato._id === value)?.prato || 'any'
+        )
+      );
+  
       const response = await axios.put(
         `http://localhost:3000/menu/${selectedDay}`,
         {
           diaSemana: selectedDay,
-          pratoComum: selectedOptions[0] || 'any',
-          pratoVegetariano: selectedOptions[1] || 'any',
-          acompanhamentos: JSON.stringify(
-            selectedAcompanhamentoOptions.map((value) =>
-              pratosAcompanhamento.find((prato) => prato._id === value)?.prato || 'any'
-            )
-          ),
+          pratoComum: pratoComumValue,
+          pratoVegetariano: pratoVegetarianoValue,
+          acompanhamentos: acompanhamentosValue,
         },
         {
           headers: {
@@ -96,7 +116,7 @@ const ListaPratos = () => {
           },
         }
       );
-
+  
       console.log('Resposta do servidor:', response.data);
     } catch (error) {
       console.error('Erro ao enviar dados:', error);
@@ -104,24 +124,8 @@ const ListaPratos = () => {
       closeModal();
     }
   };
+  
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:3000/user', {
-  //         headers: {
-  //           Authorization: `Bearer ${authContext.user.jwtToken.token}`,
-  //         },
-  //       });
-  //     } catch (error) {
-  //       console.error('Erro ao obter usuários:', error);
-  //     }
-  //   };
-
-  //   fetchUsers();
-  // }, [authContext.user.jwtToken.token]);
-
-  // Função de manipulação de checkbox para os pratos do tipo acompanhamento
   const handleCheckboxChangeAcompanhamento = (value) => {
     const isSelected = selectedAcompanhamentoOptions.includes(value);
     if (isSelected) {

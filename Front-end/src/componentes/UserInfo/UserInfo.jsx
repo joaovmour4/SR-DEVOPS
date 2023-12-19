@@ -9,6 +9,21 @@ const UserInfo = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [seed, setSeed] = useState('');
   const [expanded, setExpanded] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/user/self');
+        const userData = response.data.message;
+        setUserData(userData);
+      } catch (error) {
+        console.error('Erro ao obter dados do usuário:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const generateRandomSeed = () => {
     const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -152,10 +167,10 @@ const UserInfo = () => {
         <p className="text-xl font-bold mb-2">{user?.userName || 'Nome Indisponível'}</p>
         {expanded && (
           <div className="flex flex-col items-center mb-2">
-            <p>ID: {user?._id || 'ID Não Encontrado'}</p>
-            <p>Subsídio: {user?.userSubsidio ? 'Sim' : 'Não'}</p>
-            <p>Email: {user?.userEmail || 'Email Não Localizado'}</p>
-          </div>
+          <p>ID: {userData?._id || 'ID Não Encontrado'}</p>
+          <p>Subsídio: {userData?.userSubsidio ? 'Sim' : 'Não'}</p>
+          <p>Email: {userData?.userEmail || 'Email Não Localizado'}</p>
+        </div>
         )}
         <div className="flex flex-col items-center">
           <button
