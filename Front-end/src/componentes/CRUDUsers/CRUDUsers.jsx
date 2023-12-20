@@ -327,7 +327,7 @@ const CRUDUser = () => {
                           onClick={() => handleEdit(user._id)}
                         >
                           <FontAwesomeIcon icon={faPencilAlt} />
-                          <span className="ml-2">EDITAR</span>
+                          <span className="ml-2 hidden md:inline">EDITAR</span>
                         </button>
 
                         <button
@@ -335,19 +335,19 @@ const CRUDUser = () => {
                           onClick={() => handleDelete(user._id)}
                         >
                           <FontAwesomeIcon icon={faTrashAlt} />
-                          <span className="ml-2">DELETAR</span>
+                          <span className="ml-2 hidden md:inline">DELETAR</span>
                         </button>
 
                       </>
                     )}
                     {(isAdmin || isTec) && (
                       <button
-                        className="mx-1 flex-1 px-2 py-1 sm:px-1 sm:py-1 bg-blue-500 hover:bg-blue-900 text-white rounded-md flex items-center justify-center"
-                        onClick={() => handleViewHistory(user._id)}
-                      >
-                        <FontAwesomeIcon icon={faHistory} />
-                        <span className="ml-2">HISTÓRICO</span>
-                      </button>
+                      className="mx-1 flex-1 px-2 py-1 sm:px-1 sm:py-1 bg-blue-500 hover:bg-blue-900 text-white rounded-md flex items-center justify-center"
+                      onClick={() => handleViewHistory(user._id)}
+                    >
+                      <FontAwesomeIcon icon={faHistory} />
+                      <span className="ml-2 hidden md:inline">HISTÓRICO</span>
+                    </button>
 
 
                     )}

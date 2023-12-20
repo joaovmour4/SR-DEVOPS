@@ -192,7 +192,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         onClick={() => setAddPratoModalOpen(true)}
       >
         <FontAwesomeIcon icon={faUtensils} className="mr-2" />
-        ADICIONAR PRATO
+        <span className='ml-2 hidden md:inline'>ADICIONAR PRATO</span>
       </button>
 
 
@@ -224,8 +224,10 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
                         className="flex-1 px-2 py-1 bg-green-500 hover:bg-green-700 text-white rounded-md mr-1"
                         onClick={() => handleEdit(prato._id)}
                       >
-                        <FontAwesomeIcon icon={faEdit} className="mr-2" />
-                        Editar
+                        <div className="flex items-center">
+                          <FontAwesomeIcon icon={faEdit} className="mr-2" />
+                          <span className="ml-2 hidden md:inline">EDITAR</span>
+                        </div>
                       </button>
                       <button
                         className="flex-1 px-2 py-1 bg-red-500 hover:bg-red-700 text-white rounded-md ml-1"
@@ -233,7 +235,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
                       >
                         <div className="flex items-center">
                           <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
-                          <span>Deletar</span>
+                          <span className="ml-2 hidden md:inline">DELETAR</span>
                         </div>
                       </button>
 
