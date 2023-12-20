@@ -4,6 +4,11 @@ import Modal from 'react-modal';
 import jsPDF from 'jspdf';
 import { AuthContext } from '../../Context/AuthContext';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrashAlt, faHistory, faTimes, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+
+
+
 const CRUDAddUsers = ({ closeModal, refreshUsers }) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -159,16 +164,16 @@ const CRUDUser = () => {
       const userEmail = tempUserEmail || '';
       const userPassword = tempUserPassword || '';
       const userSubsidioValue = tempUserSubsidio === null ? null : tempUserSubsidio.toString();
-const userData = {
-  userName: editedUserName,
-  userEmail: userEmail,
-  userSubsidio: userSubsidioValue,
-  userPassword: userPassword,
-};
+      const userData = {
+        userName: editedUserName,
+        userEmail: userEmail,
+        userSubsidio: userSubsidioValue,
+        userPassword: userPassword,
+      };
 
 
 
-      
+
 
 
 
@@ -280,7 +285,7 @@ const userData = {
   };
 
   return (
-    <div className="flex flex-col items-center mt-8">
+    <div className="flex flex-col items-center mt-8 ">
       {/* Barra de busca */}
       <input
         type="text"
@@ -293,51 +298,57 @@ const userData = {
       {/* <CRUDAddUsers/> */}
 
       {/* Tabela de usuários */}
-      <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-3/5">
+      <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto max-w-screen-sm mx-auto md:max-w-none">
         {users.length > 0 ? (
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className="border p-2">ID</th>
-                <th className="border p-2">Nome</th>
-                <th className="border p-2">Subsídio</th>
-                <th className="border p-2">Cargo</th>
-                <th className="border p-2">E-mail</th>
-                <th className="border p-2">Ações</th>
+                <th className="border p-2 hidden md:table-cell">ID</th>
+                <th className="border p-2">NOME</th>
+                <th className="border p-2 md:table-cell md:w-1/5 w-1/5">SUBSÍDIO</th>
+                <th className="border p-2 hidden md:table-cell">CARGO</th>
+                <th className="border p-2 hidden md:table-cell">E-MAIL</th>
+                <th className="border p-2">AÇÕES</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
                 <tr key={user._id}>
-                  <td className="border p-2">{user._id}</td>
-                  <td className="border p-2">{user.userName}</td>
+                  <td className="border p-2 hidden md:table-cell">{user._id}</td>
+                  <td className="border p-2 ">{user.userName}</td>
                   <td className="border p-2">{user.userSubsidio}</td>
-                  <td className="border p-2">{user.userCargo}</td>
-                  <td className="border p-2">{user.userEmail}</td>
-                  <td className="border p-2 flex">
+                  <td className="border p-2 hidden md:table-cell">{user.userCargo}</td>
+                  <td className="border p-2 hidden md:table-cell">{user.userEmail}</td>
+                  <td className="border p-1 flex space-x-1">
                     {isAdmin && (
                       <>
                         <button
-                          className="mx-1 flex-1 px-2 py-1 bg-blue-500 hover:bg-blue-900 text-white rounded-md"
+                          className="mx-1 flex-1 px-2 py-1 sm:px-1 sm:py-1 bg-green-500 hover:bg-green-900 text-white rounded-md flex items-center justify-center"
                           onClick={() => handleEdit(user._id)}
                         >
-                          Editar
+                          <FontAwesomeIcon icon={faPencilAlt} />
+                          <span className="ml-2">EDITAR</span>
                         </button>
+
                         <button
-                          className="mx-1 flex-1 px-2 py-1 bg-red-500 hover:bg-red-700 text-white rounded-md"
+                          className="mx-1 flex-1 px-2 py-1 sm:px-1 sm:py-1 bg-red-500 hover:bg-red-900 text-white rounded-md flex items-center justify-center"
                           onClick={() => handleDelete(user._id)}
                         >
-                          Deletar
+                          <FontAwesomeIcon icon={faTrashAlt} />
+                          <span className="ml-2">DELETAR</span>
                         </button>
+
                       </>
                     )}
                     {(isAdmin || isTec) && (
                       <button
-                        className="mx-1 px-2 py-1 flex-1 bg-green-500 hover:bg-green-700 text-white rounded-md"
+                        className="mx-1 flex-1 px-2 py-1 sm:px-1 sm:py-1 bg-blue-500 hover:bg-blue-900 text-white rounded-md flex items-center justify-center"
                         onClick={() => handleViewHistory(user._id)}
                       >
-                        Histórico
+                        <FontAwesomeIcon icon={faHistory} />
+                        <span className="ml-2">HISTÓRICO</span>
                       </button>
+
 
                     )}
                   </td>
@@ -359,13 +370,13 @@ const userData = {
               className="mx-2 px-4 py-2 bg-red-500 text-white rounded-md"
               onClick={confirmDelete}
             >
-              Sim
+              SIM
             </button>
             <button
               className="mx-2 px-4 py-2 bg-gray-500 text-white rounded-md"
               onClick={cancelDelete}
             >
-              Cancelar
+              CANCELAR
             </button>
           </div>
         </div>
@@ -428,16 +439,19 @@ const userData = {
                 className="flex-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 mr-2"
                 onClick={closeModal}
               >
+                <FontAwesomeIcon icon={faTimes} className="mr-2" />
                 Fechar
               </button>
               <button
                 className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 ml-2"
                 onClick={generatePDF}
               >
+                <FontAwesomeIcon icon={faFilePdf} className="mr-2" />
                 Gerar PDF
               </button>
             </div>
-            
+
+
           </div>
         </Modal>
       )}
@@ -510,15 +524,15 @@ const userData = {
             <label className="block mb-4">
               Subsídio:
               <select
-  className="border p-2 w-full"
-  value={tempUserSubsidio === null ? "Selecione" : tempUserSubsidio.toString()}
-  onChange={(e) => setTempUserSubsidio(e.target.value === "true" ? true : false)}
->
-  <option value="Selecione" disabled hidden>Selecione</option>
-  <option>SELECIONE UM VALOR</option>
-  <option value="true">SIM</option>
-  <option value="false">NÃO</option>
-</select>
+                className="border p-2 w-full"
+                value={tempUserSubsidio === null ? "Selecione" : tempUserSubsidio.toString()}
+                onChange={(e) => setTempUserSubsidio(e.target.value === "true" ? true : false)}
+              >
+                <option value="Selecione" disabled hidden>Selecione</option>
+                <option>SELECIONE UM VALOR</option>
+                <option value="true">SIM</option>
+                <option value="false">NÃO</option>
+              </select>
 
             </label>
 

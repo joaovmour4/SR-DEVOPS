@@ -2,6 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthContext';
 import { BigHead } from "extended-bigheads";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 
 const UserInfo = () => {
@@ -242,7 +245,7 @@ const UserInfo = () => {
             onClick={() => logout()}
             className={`bg-green-700 hover:bg-green-500 text-white rounded-xl p-2 cursor-pointer mt-2`}
           >
-            Sair
+           <FontAwesomeIcon icon={faSignOutAlt} className="text-center p-1"/>
           </button>
         </div>
       </div>

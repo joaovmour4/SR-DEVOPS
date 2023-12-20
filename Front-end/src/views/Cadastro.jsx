@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from 'axios';
 import imgAluno from "../img/aluno.png";
 import { useNavigate } from "react-router-dom";
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -67,6 +69,7 @@ export default function Cadastro() {
               className="bg-green-500 text-white max-w-28 p-2 hover:bg-green-600 rounded-md mt-4 mx-auto"
               type="submit"
             >
+              <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
               CADASTRAR
             </button>
           </form>

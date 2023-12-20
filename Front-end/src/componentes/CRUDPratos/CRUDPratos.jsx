@@ -3,6 +3,9 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import CRUDAddPratos from '../CRUDAddPratos/CRUDAddPratos';
 import { AuthContext } from '../../Context/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt, faUtensils } from '@fortawesome/free-solid-svg-icons';
+
 
 Modal.setAppElement('#root');
 
@@ -46,7 +49,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
       setEditPratoId(null);
       refreshPratos();
     } catch (error) {
-      console.error('Erro ao adicionar o prato:', error);
+      console.error('Erro ao  o prato:', error);
     }
   };
 
@@ -188,55 +191,63 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4 mb-4"
         onClick={() => setAddPratoModalOpen(true)}
       >
-        Adicionar Prato
+        <FontAwesomeIcon icon={faUtensils} className="mr-2" />
+        ADICIONAR PRATO
       </button>
 
+
       {/* Tabela de pratos */}
-<div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto w-4/5 mx-4">
-  {filteredPratos.length > 0 ? (
-    <table className="w-full border-collapse table-auto">
-      <thead>
-        <tr>
-          <th className="border p-2 hidden md:table-cell">ID</th>
-          <th className="border p-2 hidden md:table-cell">TIPO</th>
-          <th className="border p-2">NOME</th>
-          <th className="border p-2">AÇÕES</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredPratos.map((prato) => (
-          <tr key={prato._id}>
-            <td className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] border-b border-l hidden md:table-cell">{prato._id}</td>
-            <td className="border p-2 hidden md:table-cell">{prato.pratoType}</td>
-            <td className="border p-2">
-              <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
-                {prato.prato}
-              </div>
-            </td>
-            <td className="border p-2">
-              <div className="flex items-center">
-                <button
-                  className="flex-1 px-2 py-1 bg-green-500 hover:bg-green-700 text-white rounded-md mr-1"
-                  onClick={() => handleEdit(prato._id)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="flex-1 px-2 py-1 bg-red-500 hover:bg-red-700 text-white rounded-md ml-1"
-                  onClick={() => handleDelete(prato._id)}
-                >
-                  Deletar
-                </button>
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  ) : (
-    <p>Nenhum prato encontrado.</p>
-  )}
-</div>
+      <div className="flex-1 border border-gray-300 rounded-md p-4 overflow-x-auto max-w-screen-sm mx-auto md:max-w-none">
+        {filteredPratos.length > 0 ? (
+          <table className="w-full border-collapse table-auto">
+            <thead>
+              <tr>
+                <th className="border p-2 hidden md:table-cell">ID</th>
+                <th className="border p-2 hidden md:table-cell">TIPO</th>
+                <th className="border p-2">NOME</th>
+                <th className="border p-2">AÇÕES</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredPratos.map((prato) => (
+                <tr key={prato._id}>
+                  <td className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] border-b border-l hidden md:table-cell">{prato._id}</td>
+                  <td className="border p-2 hidden md:table-cell">{prato.pratoType}</td>
+                  <td className="border p-2">
+                    <div className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
+                      {prato.prato}
+                    </div>
+                  </td>
+                  <td className="border p-2">
+                    <div className="flex items-center">
+                      <button
+                        className="flex-1 px-2 py-1 bg-green-500 hover:bg-green-700 text-white rounded-md mr-1"
+                        onClick={() => handleEdit(prato._id)}
+                      >
+                        <FontAwesomeIcon icon={faEdit} className="mr-2" />
+                        Editar
+                      </button>
+                      <button
+                        className="flex-1 px-2 py-1 bg-red-500 hover:bg-red-700 text-white rounded-md ml-1"
+                        onClick={() => handleDelete(prato._id)}
+                      >
+                        <div className="flex items-center">
+                          <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
+                          <span>Deletar</span>
+                        </div>
+                      </button>
+
+
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>Nenhum prato encontrado.</p>
+        )}
+      </div>
 
       {/* Modal de confirmação de exclusão */}
       {isDeleteModalOpen && (
@@ -296,7 +307,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
           <div className="p-4 w-full">
             {/* Formulário de edição do prato */}
             <div className="w-full">
-              
+
               <h2 className="text-2xl font-semibold mb-4">EDITAR PRATO</h2>
               <label className="block mb-2">
                 NOME DO PRATO:

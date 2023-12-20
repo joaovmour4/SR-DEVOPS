@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import Modal from 'react-modal';
 import jsPDF from 'jspdf';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faUser, faLock, faPaperPlane, faFilePdf, faCreditCard, faHistory, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 const UserButtons = ({ openModal }) => {
   const [purchaseHistory, setPurchaseHistory] = useState([]);
@@ -95,6 +98,7 @@ const UserButtons = ({ openModal }) => {
           className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[200px]"
           onClick={openEditModal}
         >
+          <FontAwesomeIcon icon={faSyncAlt} className="mr-2"/>
           ATUALIZAR DADOS
         </button>
       </div>
@@ -103,12 +107,14 @@ const UserButtons = ({ openModal }) => {
           className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[200px]"
           onClick={fetchPurchaseHistory}
         >
+          <FontAwesomeIcon icon={faHistory} className="mr-2"/>
           HISTÓRICO
         </button>
       </div>
       <div>
         <Link to="/pagamento">
           <button className="p-2 bg-green-500 text-white rounded hover:bg-green-700 min-w-[200px]">
+          <FontAwesomeIcon icon={faCreditCard} className="mr-2" />
             PAGAMENTO
           </button>
         </Link>
@@ -167,18 +173,19 @@ const UserButtons = ({ openModal }) => {
             <p>Nenhuma compra encontrada.</p>
           )}
           <div className="flex">
-          <button
-            className="flex-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 mr-2"
-            onClick={closeModal}
-          >
-            Fechar
-          </button>
-          <button
-            className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 ml-2"
-            onClick={generatePDF}
-          >
-            Gerar PDF
-          </button>
+            <button
+              className="flex-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 mr-2"
+              onClick={closeModal}
+            >
+              FECHAR
+            </button>
+            <button
+              className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mt-4 ml-2"
+              onClick={generatePDF}
+            >
+              <FontAwesomeIcon icon={faFilePdf} className="mr-2" />
+              GERAR PDF
+            </button>
           </div>
         </div>
       </Modal>
@@ -206,7 +213,7 @@ const UserButtons = ({ openModal }) => {
             maxWidth: '450px',
             maxHeight: '100vh',
             width: '100vh',
-            height:'400px',
+            height: '400px',
             boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
             position: 'absolute',
             top: '50%',
@@ -218,7 +225,8 @@ const UserButtons = ({ openModal }) => {
         <div className="p-4">
           <h2 className="text-2xl font-semibold mb-2">Editar Usuário</h2>
           <label className="block mb-2">
-            Novo Nome de Usuário:
+          <FontAwesomeIcon icon={faUser} className="mr-2" />
+           NOVO NOME:
             <input
               type="text"
               className="border p-2 w-full"
@@ -227,7 +235,8 @@ const UserButtons = ({ openModal }) => {
             />
           </label>
           <label className="block mb-2">
-            Novo Email:
+          <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
+            NOVO EMAIL:
             <input
               type="text"
               className="border p-2 w-full"
@@ -236,7 +245,8 @@ const UserButtons = ({ openModal }) => {
             />
           </label>
           <label className="block mb-2">
-            Nova Senha:
+          <FontAwesomeIcon icon={faLock} className="mr-2" />
+            NOVA SENHA:
             <input
               type="password"
               className="border p-2 w-full"
@@ -245,10 +255,11 @@ const UserButtons = ({ openModal }) => {
             />
           </label>
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline mx-auto mt-4 mb-4"
             onClick={handleEditUser}
           >
-            CONFIRMAR
+            <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
+            CONFIRMAR/ENVIAR
           </button>
         </div>
       </Modal>

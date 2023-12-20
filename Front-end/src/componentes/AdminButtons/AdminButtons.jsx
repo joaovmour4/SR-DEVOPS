@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBurger, faUserCog, faUtensilSpoon  } from '@fortawesome/free-solid-svg-icons';
 
 const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, listaUsuarios }) => {
   return (
@@ -8,28 +10,31 @@ const AdminButtons = ({ isOpen, abrirModal, fecharModal, handleSearchUser, lista
       <div className="mb-4">
         <Link to="/listuser">
           <button
-            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8 min-w-[265px]"
+            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 mt-8 min-w-[285px]"
             onClick={abrirModal}
           >
+            <FontAwesomeIcon icon={faUserCog} className="mr-2"/>
             GERENCIAR USUÁRIOS
           </button>
         </Link>
       </div>
       <div className="mb-4">
         <Link to="/adicionarpratos">
-          <button className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]">
+          <button className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[285px]">
+          <FontAwesomeIcon icon={faUtensilSpoon} className="mr-2" />
             CRIAR INGREDIENTES
           </button>
         </Link>
       </div>
       <div className="mb-4">
       <Link to="/listpratos">
-          <button
-            className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[265px]"
-            onClick={abrirModal}
-          >
-            MONTAR PRATOS DO CARDÁPIO
-          </button>
+      <button
+      className="p-2 bg-gray-500 text-white rounded hover:bg-gray-700 min-w-[285px]"
+      onClick={abrirModal}
+    >
+      <FontAwesomeIcon icon={faBurger} className="mr-2" />
+      MONTAR PRATOS DO CARDÁPIO
+    </button>
         </Link>
       </div>
       <Modal

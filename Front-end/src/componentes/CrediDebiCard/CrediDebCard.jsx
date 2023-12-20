@@ -4,6 +4,8 @@ import CreditCard from 'card-react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import jsPDF from 'jspdf';
+import { faMoneyCheckAlt, faArrowLeft, faArrowRight, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const CrediDebCard = ({ quantidadeSelecionada }) => {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -126,20 +128,7 @@ const CrediDebCard = ({ quantidadeSelecionada }) => {
                             className="text-green-500 cursor-pointer flex items-center"
                             onClick={flipCard}
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                className="h-6 w-6 mr-1 transform rotate-180"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M9 5l7 7-7 7"
-                                />
-                            </svg>
+                            <FontAwesomeIcon icon={faArrowLeft} className="mr-1" />
                             VOLTAR
                         </button>
                     ) : (
@@ -149,20 +138,7 @@ const CrediDebCard = ({ quantidadeSelecionada }) => {
                             onClick={flipCard}
                         >
                             CVV
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                className="h-6 w-6 ml-1"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M9 5l7 7-7 7"
-                                />
-                            </svg>
+                            <FontAwesomeIcon icon={faArrowRight} className="mx-2" />
                         </button>
                     )}
 
@@ -170,6 +146,7 @@ const CrediDebCard = ({ quantidadeSelecionada }) => {
                         type="submit"
                         className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 cursor-pointer"
                     >
+                        <FontAwesomeIcon icon={faMoneyCheckAlt} className="mr-2" />
                         PAGAR
                     </button>
                     {/* Modal */}
@@ -217,14 +194,15 @@ const CrediDebCard = ({ quantidadeSelecionada }) => {
                                 className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 cursor-pointer mr-2 flex-1"
                                 onClick={generatePDF}
                             >
-                                Gerar PDF
+                                <FontAwesomeIcon icon={faFilePdf} className="mr-2" />
+                                GERAR PDF
                             </button>
 
                             <button
                                 className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 cursor-pointer flex-1"
                                 onClick={closeModal}
                             >
-                                Fechar
+                                FECHAR
                             </button>
                         </div>
                     </Modal>

@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from '../Context/AuthContext';
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignInAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Login = () => {
   const { login, signed } = useContext(AuthContext)
@@ -39,7 +41,7 @@ const Login = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="E-MAIL"
+                placeholder="USUÁRIO"
                 autoComplete="on"
               />
               <input
@@ -56,9 +58,11 @@ const Login = () => {
                   className="entrar_aluno bg-green-500 text-white p-2 hover:bg-green-600"
                   id="entrarAluno"
                 >
+                  <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
                   ENTRAR
                 </button>
                 <Link to={'/cadastro'} className="cadastroVisitante bg-gray-300 p-2 hover:bg-gray-200" id="cadastroVisitante">
+                <FontAwesomeIcon icon={faUser} className="icon mr-2"/>
                   CADASTRO VISITANTE
                 </Link>
               </div>
