@@ -70,16 +70,6 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.clear();
     setUser(null);
     navigate('/login');
-    // const response = axios.get('http://localhost:3000/logout', {
-    //   headers: {
-    //     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-    //   },
-    // })
-
-    // if (response.status === 200) {
-    //   navigate('/login');
-    //   console.log('Logout realizado com sucesso!');
-    // }
   };
 
   return (

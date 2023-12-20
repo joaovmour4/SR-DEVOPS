@@ -67,34 +67,6 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     }
   };
 
-  // useEffect(() => {
-  // const fetchPrato = async () => {
-  //   if (editPratoId) {
-  //     try {
-  //       console.log('Fetching prato details for ID:', editPratoId);
-  //       const response = await axios.get(`http://localhost:3000/prato/${editPratoId}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-  //         },
-  //       });
-
-  //       const pratoData = response.data;
-  //       console.log('Prato details:', pratoData);
-  //       setNewPrato({
-  //         _id: pratoData._id,
-  //         nomePrato: pratoData.prato,
-  //         tipoPrato: pratoData.pratoType,
-  //       });
-  //     } catch (error) {
-  //       console.error('Erro ao obter detalhes do prato:', error);
-  //     }
-  //   }
-  // };
-
-
-  // fetchPrato();
-  // }, [editPratoId]);
-
   useEffect(() => {
     fetchPratos();
   }, [editPratoId]);

@@ -22,7 +22,7 @@ const CRUDAddUsers = ({ closeModal, refreshUsers }) => {
         userName: userName,
         userEmail: userEmail,
         userPassword: userPassword,
-        userSubsidio: userSubsidio, // Include userSubsidio in the request payload
+        userSubsidio: userSubsidio,
       });
 
       console.log('Novo usuário criado com sucesso!');
@@ -171,12 +171,6 @@ const CRUDUser = () => {
         userPassword: userPassword,
       };
 
-
-
-
-
-
-
       console.log('userData:', userData);
 
       const response = await axios.put(
@@ -216,7 +210,7 @@ const CRUDUser = () => {
     setEditedUserName(userToEdit.userName);
     setUserEmail(userToEdit.userEmail);
     setNewUserPassword('');
-    setOriginalUserSubsidio(userToEdit.userSubsidio); // Salve o valor original
+    setOriginalUserSubsidio(userToEdit.userSubsidio); 
     setTempUserSubsidio(userToEdit.userSubsidio);
     setEditModalOpen(true);
   };

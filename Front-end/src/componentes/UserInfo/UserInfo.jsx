@@ -37,7 +37,7 @@ const UserInfo = () => {
   let bigHeadComponent;
 
   if (user?.userName === 'Ramon') {
-    // Se o usuário for "Ramon", usar propriedades específicas
+    // Se o usuário for "Ramon"
     bigHeadComponent = (
       <BigHead
         showBackground={true}
@@ -68,7 +68,7 @@ const UserInfo = () => {
       />
     );
   } else if (user?.userCargo === 'admin') {
-    // Se o usuário for "Admin", usar propriedades específicas
+    // Se o usuário for "Admin"
     bigHeadComponent = (
       <BigHead
         showBackground={true}
@@ -98,7 +98,7 @@ const UserInfo = () => {
       />
     );
   } else if (user?.userCargo === 'tec') {
-    // Se o usuário for "Tec", usar propriedades específicas
+    // Se o usuário for "Tec"
     bigHeadComponent = (
       <BigHead
         showBackground={true}
@@ -128,7 +128,7 @@ const UserInfo = () => {
       />
     );
   } else if (user?.userName === 'JV') {
-    // Se o usuário for "Tec", usar propriedades específicas
+    // Se o usuário for "JV"
     bigHeadComponent = (
       <BigHead
         showBackground={true}
@@ -158,7 +158,7 @@ const UserInfo = () => {
       />
     );
   } else if (user?.userName === 'any') {
-    // Se o usuário for "any", usar propriedades específicas
+    // Se o usuário for "any"
     bigHeadComponent = (
       <BigHead
         backgroundColor="green"
