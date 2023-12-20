@@ -23,7 +23,7 @@ const ControleUsuario = () => {
     try {
       const response = await axios.get(`http://localhost:3000/user`, {
         headers: {
-          Authorization: `Bearer ${user.jwtToken.token}`,
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },
       });
 
@@ -51,7 +51,7 @@ const ControleUsuario = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         }
       );
@@ -79,7 +79,7 @@ const ControleUsuario = () => {
       try {
         await axios.delete(`http://localhost:3000/user/${usuarioEncontrado._id}`, {
           headers: {
-            Authorization: `Bearer ${user.jwtToken.token}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         });
 

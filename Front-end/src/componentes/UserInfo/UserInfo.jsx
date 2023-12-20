@@ -73,7 +73,7 @@ const UserInfo = () => {
         backgroundShape="circle"
         accessory="hoopEarrings"
         body="breasts"
-        circleColor="blue"
+        circlecolor="blue"
         clothing="shirt"
         clothingColor="black"
         eyebrows="raised"
@@ -88,7 +88,7 @@ const UserInfo = () => {
         hatColor="white"
         lashes
         lipColor="red"
-        mask={false}
+        mask="false"
         mouth="openSmile"
         skinTone="brown"
         className="w-32 h-32 rounded-full mb-2 overflow-hidden"

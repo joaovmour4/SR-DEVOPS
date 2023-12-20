@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { AuthContext } from '../../Context/AuthContext';
 
 const ListaPratos = () => {
-  const authContext = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   //const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
@@ -42,12 +42,12 @@ const ListaPratos = () => {
 
   const fetchMenu = async (day) => {
     try {
-      const response = await axios.get(`http://localhost:3000/menu?diaSemana=${day}`, {
+      const response = await axios.get(`http://localhost:3000/menu/${day}`, {
         headers: {
-          Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },
       });
-
+      console.log(response)
       const menuData = response.data.message;
       const pratoComumDisplay = menuData.pratoComum || 'Nenhum prato comum';
       const pratoVegetarianoDisplay = menuData.pratoVegetariano || 'Nenhum prato vegetariano';
@@ -70,11 +70,14 @@ const ListaPratos = () => {
 
 
   useEffect(() => {
+    // console.log(selectedAcompanhamentoOptions)
+    // console.log(selectedPratoComum)
+    // console.log(selectedPratoVegetariano)
     const fetchPratos = async () => {
       try {
         const response = await axios.get('http://localhost:3000/prato', {
           headers: {
-            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         });
         const pratos = response.data.message;
@@ -92,7 +95,7 @@ const ListaPratos = () => {
     };
 
     fetchPratos();
-  }, [authContext.user.jwtToken.token]);
+  }, [user]);
 
   const enviar = async () => {
     try {
@@ -102,47 +105,47 @@ const ListaPratos = () => {
   
       // Obtém os valores selecionados dos checkboxes de acompanhamento
       const acompanhamentosValue = selectedAcompanhamentoOptions.map((value) =>
-        pratosAcompanhamento.find((prato) => prato._id === value)?.prato || 'any'
+        pratosAcompanhamento.find((prato) => prato._id === value)?._id || 'any'
       );
-  
+
+      const newAcompanhamentovalue = acompanhamentosValue.join(", ", '')
+
+      // console.log(acompanhamentosValue)
+
       // Convertendo o dia da semana para minúsculas
       const lowerCaseDay = selectedDay.toLowerCase();
   
-      console.log('Dados a serem enviados:');
-      console.log('Dia da semana:', lowerCaseDay);
-      console.log('Prato Comum:', pratoComumValue);
-      console.log('Prato Vegetariano:', pratoVegetarianoValue);
-      console.log('Acompanhamentos:', acompanhamentosValue);
+      // console.log(newAcompanhamentovalue)
+      // console.log('Dados a serem enviados:');
+      // console.log('Dia da semana:', lowerCaseDay);
+      // console.log('Prato Comum:', pratoComumValue);
+      // console.log('Prato Vegetariano:', pratoVegetarianoValue);
+      // console.log('Acompanhamentos:', acompanhamentosValue);
   
       // Enviar os dados no formato correto
       const response = await axios.put(
         `http://localhost:3000/menu/${lowerCaseDay}`,
         {
-          diaSemana: lowerCaseDay,
+          acompanhamentos: newAcompanhamentovalue,
           pratoComum: pratoComumValue,
           pratoVegetariano: pratoVegetarianoValue,
-          acompanhamentos: acompanhamentosValue,
         },
         {
           headers: {
-            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
-            'Content-Type': 'application/json',
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         }
       );
   
+      // setShowModal(false)
       console.log('Resposta do servidor:', response.data);
     } catch (error) {
+      alert('Erro ao enviar dados, tente novamente.')
       console.error('Erro ao enviar dados:', error);
     } finally {
       closeModal();
     }
   };
-  
-  
-
-
-
 
   const handleCheckboxChangeAcompanhamento = (value) => {
     const isSelected = selectedAcompanhamentoOptions.includes(value);
@@ -174,9 +177,35 @@ const ListaPratos = () => {
   };
 
   const openModal = async (day) => {
-    await fetchMenu(day);
-    setShowModal(true);
-    setSelectedDay(day);
+    try {
+      const response = await axios.get(`http://localhost:3000/menu/${day}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+          },
+        });
+      
+      if (response.status === 200) {
+        setSelectedDay(day);
+        setShowModal(true);
+        
+        const menuData = response.data.message || {};
+        const pratoComumDisplay = menuData.pratoComum || 'Nenhum prato comum';
+        const pratoVegetarianoDisplay = menuData.pratoVegetariano || 'Nenhum prato vegetariano';
+        const acompanhamentosDisplay = menuData.acompanhamentos || [];
+        
+        setSelectedPratoComum(menuData.pratoComum);
+        setSelectedPratoVegetariano(menuData.pratoVegetariano);
+
+        setMenuData({
+          ...menuData,
+          pratoComumDisplay,
+          pratoVegetarianoDisplay,
+          acompanhamentosDisplay,
+        });
+      }
+  } catch (error) {
+      console.error('Erro ao obter menu:', error);
+  }
   };
 
   const closeModal = (forceClose = false) => {
@@ -204,9 +233,9 @@ const ListaPratos = () => {
 
       {/* Renderização das divs clicáveis */}
       <div className="flex justify-center mt-8">
-        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'].map((day) => (
+        {['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'].map((day) => (
           <div key={day} onClick={() => openModal(day)} className="cursor-pointer p-4 border m-2 rounded-lg bg-blue-500 text-white">
-            {day}
+            {day.charAt(0).toUpperCase() + day.slice(1)}
           </div>
         ))}
       </div>

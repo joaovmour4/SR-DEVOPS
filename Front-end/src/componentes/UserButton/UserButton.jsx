@@ -16,7 +16,7 @@ const UserButtons = ({ openModal }) => {
     try {
       const response = await axios.get('http://localhost:3000/user/purchases', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },
       });
 
@@ -75,7 +75,7 @@ const UserButtons = ({ openModal }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );

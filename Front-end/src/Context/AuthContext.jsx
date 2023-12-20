@@ -8,19 +8,17 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [userData, setUserData] = useState(null);
   
     useEffect(() => {
       const loadingStoreData = async () => {
-        const storeToken = localStorage.getItem('token');
-        const storeUser = localStorage.getItem('userName');
-  
+        const storeToken = sessionStorage.getItem('token');
         if (storeToken) {
           const data = jwtDecode(storeToken);
           if (data) {
-            setUser({ ...JSON.parse(storeUser), ...data });
-            setUserData(await fetchUserDataFromServer(storeToken)); 
+            axios.defaults.headers.common['Authorization'] = `Bearer ${storeToken}`;
+            setUser(await fetchUserDataFromServer(storeToken));
           } else {
+            sessionStorage.removeItem('token');
             navigate('/login');
           }
         }
@@ -53,11 +51,9 @@ export const AuthProvider = ({ children }) => {
         const { user, message } = response.data;
     
         const { userName, _id, jwtToken, userCargo, userSubsidio, userEmail } = user;
-        
     
         setUser(user);
-        localStorage.setItem('userName', JSON.stringify(user));
-        localStorage.setItem('token', jwtToken.token);
+        sessionStorage.setItem('token', jwtToken.token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken.token}`;
     
         console.log(user);
@@ -71,9 +67,19 @@ export const AuthProvider = ({ children }) => {
     };
 
   const logout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     setUser(null);
     navigate('/login');
+    // const response = axios.get('http://localhost:3000/logout', {
+    //   headers: {
+    //     Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    //   },
+    // })
+
+    // if (response.status === 200) {
+    //   navigate('/login');
+    //   console.log('Logout realizado com sucesso!');
+    // }
   };
 
   return (

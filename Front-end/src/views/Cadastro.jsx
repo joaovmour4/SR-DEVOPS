@@ -20,8 +20,8 @@ export default function Cadastro() {
       console.log("Resposta do cadastro:", response.data);
       const { userCargo, userName } = response.data.createdUser
 
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("userCargo", userCargo);
+      sessionStorage.setItem("userName", userName);
+      sessionStorage.setItem("userCargo", userCargo);
 
       setTimeout(() => {
         navigate("/user");

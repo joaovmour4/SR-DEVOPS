@@ -36,7 +36,7 @@ const User = () => {
 
   const openModal = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) {
         console.error('Token não encontrado.');
         return;
@@ -44,7 +44,7 @@ const User = () => {
   
       const response = await axios.get('http://localhost:3000/user', {
         headers: {
-          Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },
       });
   
@@ -77,7 +77,7 @@ const User = () => {
 
   const handleUpdateUser = async (updatedUserData) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) {
         console.error('Token não encontrado.');
         return;

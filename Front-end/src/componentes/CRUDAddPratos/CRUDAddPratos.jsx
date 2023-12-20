@@ -27,7 +27,7 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.jwtToken.token}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         }
       );

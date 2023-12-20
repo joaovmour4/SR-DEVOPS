@@ -36,7 +36,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         }
       );
@@ -54,7 +54,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     try {
       const response = await axios.get('http://localhost:3000/prato', {
         headers: {
-          Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },
       });
 
@@ -70,7 +70,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         try {
           const response = await axios.get(`http://localhost:3000/prato/${editPratoId}`, {
             headers: {
-              Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
             },
           });
 
@@ -86,11 +86,11 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     };
 
     fetchPrato();
-  }, [editPratoId, authContext.user.jwtToken.token]);
+  }, [editPratoId]);
 
   useEffect(() => {
     fetchPratos();
-  }, [editPratoId, authContext.user.jwtToken.token]);
+  }, [editPratoId]);
 
   const handleEditPrato = async () => {
     try {
@@ -102,7 +102,7 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         }
       );

@@ -135,7 +135,7 @@ const CRUDUser = () => {
       try {
         const response = await axios.get('http://localhost:3000/user', {
           headers: {
-            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         });
 
@@ -151,7 +151,7 @@ const CRUDUser = () => {
     };
 
     fetchUsers();
-  }, [authContext.user.jwtToken.token, deleteUserId, isDeleteModalOpen]);
+  }, [deleteUserId, isDeleteModalOpen]);
 
   const handleEditUser = async () => {
     try {
@@ -179,7 +179,7 @@ const userData = {
         userData,
         {
           headers: {
-            Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         }
       );
@@ -225,7 +225,7 @@ const userData = {
     try {
       const response = await axios.get(`http://localhost:3000/purchase`, {
         headers: {
-          Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },
       });
 
@@ -256,7 +256,7 @@ const userData = {
     try {
       await axios.delete(`http://localhost:3000/user/${deleteUserId}`, {
         headers: {
-          Authorization: `Bearer ${authContext.user.jwtToken.token}`,
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
         },
       });
 
