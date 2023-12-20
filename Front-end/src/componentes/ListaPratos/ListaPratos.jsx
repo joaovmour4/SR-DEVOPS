@@ -223,9 +223,9 @@ const ListaPratos = () => {
   return (
     <div className='h-screen'>
       {selectedDay && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 cursor-pointer" onClick={closeModal}>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 cursor-pointer" onClick={closeModal}>
           {/* Conteúdo da div clicável */}
-          <div className="text-white p-4 bg-gray-800 rounded-lg">
+          <div className="text-black p-4 bg-gray-800 rounded-lg">
             {/* Clique para selecionar opções para {selectedDay} */}
           </div>
         </div>
@@ -237,12 +237,12 @@ const ListaPratos = () => {
     <div
       key={day}
       onClick={() => openModal(day)}
-      className="cursor-pointer p-4 border rounded bg-green-800 max-w-2/4 min-w-2/4 mx-4"
+      className="border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer"
     >
-      <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50 uppercase">
+      <h5 className="mb-2 text-xl font-bold leading-tight uppercase">
         {day.charAt(0).toUpperCase() + day.slice(1)}
       </h5>
-      <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+      <p className="text-center text-lg font-low mb-2">
         CLIQUE PARA EDITAR OS DADOS DOS PRATOS QUE COMPÕEM O MENU
       </p>
     </div>

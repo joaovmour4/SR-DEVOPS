@@ -67,33 +67,33 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchPrato = async () => {
-      if (editPratoId) {
-        try {
-          console.log('Fetching prato details for ID:', editPratoId);
-          const response = await axios.get(`http://localhost:3000/prato/${editPratoId}`, {
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-            },
-          });
+  // useEffect(() => {
+    // const fetchPrato = async () => {
+    //   if (editPratoId) {
+    //     try {
+    //       console.log('Fetching prato details for ID:', editPratoId);
+    //       const response = await axios.get(`http://localhost:3000/prato/${editPratoId}`, {
+    //         headers: {
+    //           Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    //         },
+    //       });
 
-          const pratoData = response.data;
-          console.log('Prato details:', pratoData);
-          setNewPrato({
-            _id: pratoData._id,
-            nomePrato: pratoData.prato,
-            tipoPrato: pratoData.pratoType,
-          });
-        } catch (error) {
-          console.error('Erro ao obter detalhes do prato:', error);
-        }
-      }
-    };
+    //       const pratoData = response.data;
+    //       console.log('Prato details:', pratoData);
+    //       setNewPrato({
+    //         _id: pratoData._id,
+    //         nomePrato: pratoData.prato,
+    //         tipoPrato: pratoData.pratoType,
+    //       });
+    //     } catch (error) {
+    //       console.error('Erro ao obter detalhes do prato:', error);
+    //     }
+    //   }
+    // };
 
 
-    fetchPrato();
-  }, [editPratoId]);
+    // fetchPrato();
+  // }, [editPratoId]);
 
   useEffect(() => {
     fetchPratos();
@@ -316,7 +316,6 @@ const CRUDPrato = ({ closeModal, refreshPratos }) => {
                 <input
                   type="text"
                   className="border p-2 w-full"
-                  value={editedNome}
                   onChange={(e) => setEditedNome(e.target.value)}
                 />
               </label>
