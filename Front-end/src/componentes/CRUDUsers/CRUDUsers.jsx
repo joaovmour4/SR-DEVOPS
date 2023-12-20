@@ -342,12 +342,12 @@ const CRUDUser = () => {
                     )}
                     {(isAdmin || isTec) && (
                       <button
-                      className="mx-1 flex-1 px-2 py-1 sm:px-1 sm:py-1 bg-blue-500 hover:bg-blue-900 text-white rounded-md flex items-center justify-center"
-                      onClick={() => handleViewHistory(user._id)}
-                    >
-                      <FontAwesomeIcon icon={faHistory} />
-                      <span className="ml-2 hidden md:inline">HISTÓRICO</span>
-                    </button>
+                        className="mx-1 flex-1 px-2 py-1 sm:px-1 sm:py-1 bg-blue-500 hover:bg-blue-900 text-white rounded-md flex items-center justify-center"
+                        onClick={() => handleViewHistory(user._id)}
+                      >
+                        <FontAwesomeIcon icon={faHistory} />
+                        <span className="ml-2 hidden md:inline">HISTÓRICO</span>
+                      </button>
 
 
                     )}
@@ -363,24 +363,30 @@ const CRUDUser = () => {
 
       {/* Modal de confirmação de exclusão */}
       {isDeleteModalOpen && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75">
-          <div className="bg-white p-4 rounded-md">
-            <p>{`Tem certeza que deseja deletar o usuário ${viewHistoryUserId} (ID: ${deleteUserId})?`}</p>
-            <button
-              className="mx-2 px-4 py-2 bg-red-500 text-white rounded-md"
-              onClick={confirmDelete}
-            >
-              SIM
-            </button>
-            <button
-              className="mx-2 px-4 py-2 bg-gray-500 text-white rounded-md"
-              onClick={cancelDelete}
-            >
-              CANCELAR
-            </button>
-          </div>
-        </div>
-      )}
+  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75">
+    <div className="border border-gray-300 hover:shadow-md mx-2 cursor-pointer bg-white p-6 rounded-md shadow-lg w-64">
+      <p className="text-gray-800 break-words">
+        <span className="font-bold">TEM CERTEZA QUE DESEJA DELETAR O USER DE ID:</span> {deleteUserId}
+      </p>
+      <div className="mt-4 flex justify-end">
+        <button
+          className="mr-2 flex-1 px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
+          onClick={confirmDelete}
+        >
+          SIM
+        </button>
+        <button
+          className="px-4 flex-1 py-2 bg-gray-500 hover:bg-gray-700 text-white rounded-md"
+          onClick={cancelDelete}
+        >
+          NÃO
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
       {/* Modal de visualização de histórico */}
       {isHistoryModalOpen && (
