@@ -8,7 +8,7 @@ const AdicionarPratos = () => {
   const isTec = user && user.userCargo === 'tec';
 
   return (
-    <div className='h-full'>
+    <div className='h-full mb-8'>
       {isAdmin || isTec ? <CRUDPratos /> : null}
     </div>
   );

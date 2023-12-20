@@ -51,17 +51,9 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
   };
 
   return (
-    <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
-        <button
-          className="text-2xl font-bold"
-          onClick={handleFecharModal}
-        >
-          X
-        </button>
-      </div>
-      <h2 className="text-2xl font-semibold mb-4">CRIAR PRATO</h2>
-      <label className="block mb-2">
+    <div className="w-full">
+      <h2 className="text-2xl font-semibold mb-2">CRIAR PRATO</h2>
+      <label className="block mb-2 font-bold">
         NOME DO PRATO:
         <input
           type="text"
@@ -70,7 +62,7 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
           onChange={(e) => handleChange('nomePrato', e.target.value)}
         />
       </label>
-      <label className="block mb-2">
+      <label className="block mb-2 font-bold">
         TIPO DO PRATO:
         <select
           value={prato.tipoPrato}
@@ -84,10 +76,10 @@ const CRUDAddPratos = ({ closeModal, refreshPratos }) => {
         </select>
       </label>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-        <div style={{ flex: '1', marginRight: '4%' }}>
+      <div className="flex justify-between mt-2">
+        <div className="flex-1">
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus.outline.none focus.shadow.outline w-full"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline w-full"
             onClick={handleEnviar}
           >
             CADASTRAR

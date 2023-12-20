@@ -91,7 +91,7 @@ export default function Cardapio() {
       const response = await axios.get(`http://localhost:3000/menu/${newDia}`);
       if (response.data.message) {
         const { pratoComum, pratoVegetariano, acompanhamentos } = response.data.message;
-  
+
         // Certifique-se de que pratoComum, pratoVegetariano e acompanhamentos são objetos antes de acessar suas propriedades
         setCardapioData((prevState) => ({
           ...prevState,
@@ -111,7 +111,7 @@ export default function Cardapio() {
     }
   };
 
-  
+
   useEffect(() => {
     console.log('CardapioData:', cardapioData);
   }, [cardapioData]);
@@ -121,76 +121,82 @@ export default function Cardapio() {
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 font-serif p-4 md:mx-40">
         <CarouselCardapio />
 
-          <div
-            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
-            onClick={() => {
-              lidarComCliqueNoBloco('segunda')
-              atualizarCardapio('segunda');
-            }}
-          >
-            <h2 className="text-center text-lg font-bold mb-2">SEGUNDA</h2>
-          </div>
-          <div
-            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
-            onClick={() => {
-              lidarComCliqueNoBloco('terca')
-              atualizarCardapio('terca');
-            }}
-          >
-            <h2 className="text-center text-lg font-bold mb-2">TERÇA</h2>
-          </div>
-          <div
-            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
-            onClick={() => {
-              lidarComCliqueNoBloco('quarta')
-              atualizarCardapio('quarta');
-            }}
-          >
-            <h2 className="text-center text-lg font-bold mb-2">QUARTA</h2>
-          </div>
-          <div
-            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
-            onClick={() => {
-              lidarComCliqueNoBloco('quinta')
-              atualizarCardapio('quinta');
-            }}
-          >
-            <h2 className="text-center text-lg font-bold mb-2">QUINTA</h2>
-          </div>
-          <div
-            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
-            onClick={() => {
-              lidarComCliqueNoBloco('sexta')
-              atualizarCardapio('sexta');
-            }}
-          >
-            <h2 className="text-center text-lg font-bold mb-2">SEXTA</h2>
-          </div>
-          <div
-            className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
-            onClick={() => {
-              lidarComCliqueNoBloco('sabado')
-              atualizarCardapio('sabado');
-            }}
-          >
-            <h2 className="text-center text-lg font-bold mb-2">SÁBADO</h2>
-          </div>
+        <div
+          className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+          onClick={() => {
+            lidarComCliqueNoBloco('SEGUNDA')
+            atualizarCardapio('segunda');
+          }}
+        >
+          <h2 className="text-center text-lg font-bold mb-2">SEGUNDA</h2>
+        </div>
+        <div
+          className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+          onClick={() => {
+            lidarComCliqueNoBloco('TERCA')
+            atualizarCardapio('terca');
+          }}
+        >
+          <h2 className="text-center text-lg font-bold mb-2">TERÇA</h2>
+        </div>
+        <div
+          className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+          onClick={() => {
+            lidarComCliqueNoBloco('QUARTA')
+            atualizarCardapio('quarta');
+          }}
+        >
+          <h2 className="text-center text-lg font-bold mb-2">QUARTA</h2>
+        </div>
+        <div
+          className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+          onClick={() => {
+            lidarComCliqueNoBloco('QUINTA')
+            atualizarCardapio('quinta');
+          }}
+        >
+          <h2 className="text-center text-lg font-bold mb-2">QUINTA</h2>
+        </div>
+        <div
+          className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+          onClick={() => {
+            lidarComCliqueNoBloco('SEXTA')
+            atualizarCardapio('sexta');
+          }}
+        >
+          <h2 className="text-center text-lg font-bold mb-2">SEXTA</h2>
+        </div>
+        <div
+          className={`border border-gray-300 rounded p-4 md:col-span-1 lg:col-span-1 md:h-full lg:h-full hover:shadow-md mx-2 cursor-pointer`}
+          onClick={() => {
+            lidarComCliqueNoBloco('SABADO')
+            atualizarCardapio('sabado');
+          }}
+        >
+          <h2 className="text-center text-lg font-bold mb-2">SÁBADO</h2>
+        </div>
       </main>
 
       {blocoClicado && (
-  <div className="fixed inset-0 flex items-center justify-center">
-    <div className="absolute inset-0 bg-gray-800 opacity-75" onClick={handleCloseModal}></div>
-    <div
-      className="relative bg-white p-8 rounded-lg text-center md:w-96 lg:w-96 md:mx-auto lg:mx-auto mt-8 z-10"
-      style={{
-        maxWidth: '350px',
-        width: '100%',
-      }}
-    >
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gray-800 opacity-75" onClick={handleCloseModal}></div>
+          <div
+            className="relative bg-white p-8 rounded-lg text-center md:w-96 lg:w-96 md:mx-auto lg:mx-auto mt-8 z-10"
+            style={{
+              maxWidth: '350px',
+              width: '100%',
+            }}
+          >
             <h2 className="text-center text-xl font-bold mb-4">{blocoClicado}</h2>
-            <p className="text-left">PRATO: {cardapioData[blocoClicado.toLowerCase()].pratoComum}</p>
-            <p className="text-left">VEGETARIANO: {cardapioData[blocoClicado.toLowerCase()].pratoVegetariano}</p>
-            <p className="text-left">ACOMPANHAMENTO: {cardapioData[blocoClicado.toLowerCase()].acompanhamentos.join(', ')}</p>
+            <p className="text-left">
+              <span className="font-bold">PRATO:</span> {cardapioData[blocoClicado.toLowerCase()].pratoComum}
+            </p>
+            <p className="text-left">
+              <span className="font-bold">VEGETARIANO:</span> {cardapioData[blocoClicado.toLowerCase()].pratoVegetariano}
+            </p>
+            <p className="text-left">
+              <span className="font-bold">ACOMPANHAMENTO:</span> {cardapioData[blocoClicado.toLowerCase()].acompanhamentos.join(', ')}
+            </p>
             <div className="flex justify-center mt-6">
               {/* <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded mr-2" onClick={handleCompraClick}>
                 Comprar

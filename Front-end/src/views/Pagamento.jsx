@@ -10,7 +10,6 @@ export default function Pagamento() {
   };
 
   const handleIrParaCrediDebCard = () => {
-    // Lógica para ir para o componente CrediDebCard
     console.log('Indo para CrediDebCard');
   };
 

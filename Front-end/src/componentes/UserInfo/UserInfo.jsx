@@ -124,6 +124,36 @@ const UserInfo = () => {
         className="w-32 h-32 rounded-full mb-2 overflow-hidden"
       />
     );
+  } else if (user?.userName === 'JV') {
+    // Se o usuário for "Tec", usar propriedades específicas
+    bigHeadComponent = (
+      <BigHead
+        showBackground={true}
+        backgroundColor="green"
+        backgroundShape="circle"
+        accessory="none"
+        body="chest"
+        circleColor="blue"
+        clothing="shirt"
+        clothingColor="white"
+        eyebrows="raised"
+        eyes="normal"
+        faceMask={false}
+        faceMaskColor="white"
+        facialHair="stubble"
+        graphic="none"
+        hair="buzz"
+        hairColor="black"
+        hat="none2"
+        hatColor="white"
+        lashes={false}
+        lipColor="red"
+        mask={false}
+        mouth="openSmile"
+        skinTone="brown"
+        className="w-32 h-32 rounded-full mb-2 overflow-hidden"
+      />
+    );
   } else if (user?.userName === 'any') {
     // Se o usuário for "any", usar propriedades específicas
     bigHeadComponent = (

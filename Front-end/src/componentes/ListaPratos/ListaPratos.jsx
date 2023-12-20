@@ -60,9 +60,9 @@ const ListaPratos = () => {
         acompanhamentosDisplay,
       });
 
-    setSelectedPratoComum(menuData.pratoComum);
-    setSelectedPratoVegetariano(menuData.pratoVegetariano);
-  } catch (error) {
+      setSelectedPratoComum(menuData.pratoComum);
+      setSelectedPratoVegetariano(menuData.pratoVegetariano);
+    } catch (error) {
       console.error('Erro ao obter menu:', error);
     }
   };
@@ -102,7 +102,7 @@ const ListaPratos = () => {
       // Obtém os valores selecionados das caixas de seleção
       const pratoComumValue = selectedPratoComum || 'any';
       const pratoVegetarianoValue = selectedPratoVegetariano || 'any';
-  
+
       // Obtém os valores selecionados dos checkboxes de acompanhamento
       const acompanhamentosValue = selectedAcompanhamentoOptions.map((value) =>
         pratosAcompanhamento.find((prato) => prato._id === value)?._id || 'any'
@@ -114,14 +114,14 @@ const ListaPratos = () => {
 
       // Convertendo o dia da semana para minúsculas
       const lowerCaseDay = selectedDay.toLowerCase();
-  
+
       // console.log(newAcompanhamentovalue)
       // console.log('Dados a serem enviados:');
       // console.log('Dia da semana:', lowerCaseDay);
       // console.log('Prato Comum:', pratoComumValue);
       // console.log('Prato Vegetariano:', pratoVegetarianoValue);
       // console.log('Acompanhamentos:', acompanhamentosValue);
-  
+
       // Enviar os dados no formato correto
       const response = await axios.put(
         `http://localhost:3000/menu/${lowerCaseDay}`,
@@ -136,7 +136,7 @@ const ListaPratos = () => {
           },
         }
       );
-  
+
       // setShowModal(false)
       console.log('Resposta do servidor:', response.data);
     } catch (error) {
@@ -179,20 +179,20 @@ const ListaPratos = () => {
   const openModal = async (day) => {
     try {
       const response = await axios.get(`http://localhost:3000/menu/${day}`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-          },
-        });
-      
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      });
+
       if (response.status === 200) {
         setSelectedDay(day);
         setShowModal(true);
-        
+
         const menuData = response.data.message || {};
         const pratoComumDisplay = menuData.pratoComum || 'Nenhum prato comum';
         const pratoVegetarianoDisplay = menuData.pratoVegetariano || 'Nenhum prato vegetariano';
         const acompanhamentosDisplay = menuData.acompanhamentos || [];
-        
+
         setSelectedPratoComum(menuData.pratoComum);
         setSelectedPratoVegetariano(menuData.pratoVegetariano);
 
@@ -203,9 +203,9 @@ const ListaPratos = () => {
           acompanhamentosDisplay,
         });
       }
-  } catch (error) {
+    } catch (error) {
       console.error('Erro ao obter menu:', error);
-  }
+    }
   };
 
   const closeModal = (forceClose = false) => {
@@ -221,7 +221,7 @@ const ListaPratos = () => {
   };
 
   return (
-    <div>
+    <div className='h-screen'>
       {selectedDay && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 cursor-pointer" onClick={closeModal}>
           {/* Conteúdo da div clicável */}
@@ -232,13 +232,23 @@ const ListaPratos = () => {
       )}
 
       {/* Renderização das divs clicáveis */}
-      <div className="flex justify-center mt-8">
-        {['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'].map((day) => (
-          <div key={day} onClick={() => openModal(day)} className="cursor-pointer p-4 border m-2 rounded-lg bg-blue-500 text-white">
-            {day.charAt(0).toUpperCase() + day.slice(1)}
-          </div>
-        ))}
-      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8 text-center">
+  {['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'].map((day) => (
+    <div
+      key={day}
+      onClick={() => openModal(day)}
+      className="cursor-pointer p-4 border rounded bg-green-800 max-w-2/4 min-w-2/4 mx-4"
+    >
+      <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50 uppercase">
+        {day.charAt(0).toUpperCase() + day.slice(1)}
+      </h5>
+      <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+        CLIQUE PARA EDITAR OS DADOS DOS PRATOS QUE COMPÕEM O MENU
+      </p>
+    </div>
+  ))}
+</div>
+
 
       {showModal && (
         <div
@@ -259,38 +269,38 @@ const ListaPratos = () => {
           <h1 className='text-center font-bold uppercase mb-8'>{selectedDay}</h1>
 
           {/* 1ª ComboBox - Pratos do Tipo Comum */}
-<div className="select-container">
-  <label htmlFor="comumSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Comum:</label>
-  <select
-    id="comumSelect"
-    className="p-1 border rounded"
-    value={selectedPratoComum || 'any'}
-    onChange={(e) => setSelectedPratoComum(e.target.value)}
-  >
-    {pratosComum.map((prato) => (
-      <option key={prato._id} value={prato._id}>
-        {prato.prato}
-      </option>
-    ))}
-  </select>
-</div>
+          <div className="select-container">
+            <label htmlFor="comumSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Comum:</label>
+            <select
+              id="comumSelect"
+              className="p-1 border rounded"
+              value={selectedPratoComum || 'any'}
+              onChange={(e) => setSelectedPratoComum(e.target.value)}
+            >
+              {pratosComum.map((prato) => (
+                <option key={prato._id} value={prato._id}>
+                  {prato.prato}
+                </option>
+              ))}
+            </select>
+          </div>
 
-{/* 2ª ComboBox - Pratos do Tipo Vegetariano */}
-<div className="select-container">
-  <label htmlFor="vegetarianoSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Vegetariano:</label>
-  <select
-    id="vegetarianoSelect"
-    className="p-1 border rounded"
-    value={selectedPratoVegetariano || 'any'}
-    onChange={(e) => setSelectedPratoVegetariano(e.target.value)}
-  >
-    {pratosVegetariano.map((prato) => (
-      <option key={prato._id} value={prato._id}>
-        {prato.prato}
-      </option>
-    ))}
-  </select>
-</div>
+          {/* 2ª ComboBox - Pratos do Tipo Vegetariano */}
+          <div className="select-container">
+            <label htmlFor="vegetarianoSelect" className="text-sm font-bold uppercase mb-1">Pratos do Tipo Vegetariano:</label>
+            <select
+              id="vegetarianoSelect"
+              className="p-1 border rounded"
+              value={selectedPratoVegetariano || 'any'}
+              onChange={(e) => setSelectedPratoVegetariano(e.target.value)}
+            >
+              {pratosVegetariano.map((prato) => (
+                <option key={prato._id} value={prato._id}>
+                  {prato.prato}
+                </option>
+              ))}
+            </select>
+          </div>
 
 
           {/* 3ª Lista de Checkbox - Pratos do Tipo Acompanhamento */}
